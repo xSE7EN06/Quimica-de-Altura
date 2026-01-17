@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { HeaderComponent } from '../../components/header/header.component';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonChip, IonLabel, IonIcon, IonGrid, IonRow, IonCol, IonImg } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { flask, leaf, informationCircle } from 'ionicons/icons';
-import { GetPlantDetailsUseCase } from '../../../application/use-cases/get-plant-details.use-case';
-import { Plant } from '../../../domain/models/plant.entity';
+import { GetPlantDetailsUseCase } from '../../../../application/use-cases/get-plant-details.use-case';
+import { Plant } from '../../../../domain/models/plant.entity';
 
 @Component({
     selector: 'app-result',

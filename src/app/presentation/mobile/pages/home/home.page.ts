@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../components/header/header.component';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonFab, IonFabButton, IonImg, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { scan, leaf } from 'ionicons/icons';
-import { CameraService } from '../../../infrastructure/services/camera.service';
-import { IdentifyPlantUseCase } from '../../../application/use-cases/identify-plant.use-case';
+import { CameraService } from '../../../../infrastructure/services/camera.service';
+import { IdentifyPlantUseCase } from '../../../../application/use-cases/identify-plant.use-case';
 import { Router } from '@angular/router';
 
 @Component({
