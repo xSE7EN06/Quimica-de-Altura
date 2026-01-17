@@ -1,0 +1,49 @@
+<app-header title="Detalles" [showBackButton]="true" defaultHref="/home"></app-header>
+
+<ion-content [fullscreen]="true" class="main-content" *ngIf="plant">
+    <div class="header-image-container">
+        <ion-img [src]="plant.imageUrl"></ion-img>
+        <div class="overlay-gradient"></div>
+    </div>
+
+    <div class="content-container">
+        <div class="glass-panel">
+
+            <div class="plant-header">
+                <h1>{{ plant.commonName }}</h1>
+                <p class="scientific-name">
+                    <ion-icon name="leaf"></ion-icon> {{ plant.scientificName }}
+                </p>
+            </div>
+
+            <div class="description-section">
+                <p>{{ plant.description }}</p>
+            </div>
+
+            <div class="compounds-section" *ngIf="plant.compounds.length > 0">
+                <h3><ion-icon name="flask"></ion-icon> Compuestos Químicos</h3>
+                <ion-card *ngFor="let compound of plant.compounds" class="compound-card">
+                    <ion-card-header>
+                        <ion-card-title>{{ compound.name }}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <p>{{ compound.description }}</p>
+                        <div class="properties-chips">
+                            <ion-chip *ngFor="let prop of compound.properties" color="success">
+                                <ion-label>{{ prop }}</ion-label>
+                            </ion-chip>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+
+            <div class="features-section" *ngIf="plant.identifyingFeatures?.length">
+                <h3><ion-icon name="information-circle"></ion-icon> Identificación</h3>
+                <ion-chip *ngFor="let feature of plant.identifyingFeatures" outline="true" color="light">
+                    {{ feature }}
+                </ion-chip>
+            </div>
+
+        </div>
+    </div>
+</ion-content>
