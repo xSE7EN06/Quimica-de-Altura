@@ -1,21 +1,23 @@
 ion-header {
     ion-toolbar {
-        --background: #5E794B;
-        --color: white;
+        --background: var(--ion-color-primary);
+        --color: var(--ion-color-primary-contrast);
         padding-top: 10px;
         padding-bottom: 10px;
     }
 }
 
+
+
 :host {
     ion-content {
-        --background: #EFEFEF;
+        --background: #ffffff;
         --color: #333333;
     }
 }
 
 .login-content {
-    --background: #EFEFEF;
+    --background: #ffffff;
 }
 
 .logo-container {
@@ -23,11 +25,11 @@ ion-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #EFEFEF;
+    background: #ffffff;
 
     .logo-placeholder {
-        width: 180px;
-        height: 180px;
+        width: 330px;
+        height: 350px;
 
         img {
             width: 100%;
@@ -50,13 +52,13 @@ ion-header {
     margin-bottom: 30px;
 
     ion-segment {
-        background: #5D7554;
+        background: var(--ion-color-primary);
         border-radius: 25px;
         padding: 2px;
 
         ion-segment-button {
             --color: white;
-            --color-checked: #5D7554;
+            --color-checked: var(--ion-color-primary);
             --background-checked: white;
             --border-radius: 23px;
             font-weight: 500;
@@ -73,7 +75,7 @@ ion-header {
 }
 
 .custom-input {
-    --background: #EEE8E8;
+    --background: #f4f5f8;
     /* Light gray input background */
     --border-radius: 12px;
     --padding-start: 15px;
@@ -90,8 +92,8 @@ ion-header {
 
 .button-container {
     .submit-btn {
-        --background: #5D7554;
-        --color: white;
+        --background: var(--ion-color-primary);
+        --color: var(--ion-color-primary-contrast);
         height: 50px;
         font-size: 16px;
         font-weight: 600;
