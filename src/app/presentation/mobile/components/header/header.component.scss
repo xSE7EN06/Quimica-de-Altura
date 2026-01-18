@@ -1,10 +1,11 @@
 .transparent-toolbar {
     --background: transparent;
     --color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    /* Postion absolute removed to fix overlap */
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+    /* width: 100%; */
 }
 
 .app-title {

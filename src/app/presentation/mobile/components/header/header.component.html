@@ -1,8 +1,11 @@
 <ion-header [translucent]="true" class="ion-no-border">
-    <ion-toolbar class="transparent-toolbar">
+    <ion-toolbar class="transparent-toolbar" color="primary">
         <ion-buttons slot="start" *ngIf="showBackButton">
             <ion-back-button [defaultHref]="defaultHref" color="light"></ion-back-button>
         </ion-buttons>
-        <ion-title class="app-title">{{ title }}</ion-title>
+        <ion-title class="app-title ion-text-center">{{ title }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-menu-button color="light" autoHide="false" menu="mobile-menu"></ion-menu-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
