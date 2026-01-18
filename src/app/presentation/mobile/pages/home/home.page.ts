@@ -34,6 +34,10 @@ export class HomePage {
         // Implement filtering logic here
     }
 
+    viewDetail() {
+        this.router.navigate(['/detail-plant']);
+    }
+
     async scanPlant() {
         this.isScanning = true;
 

@@ -19,13 +19,13 @@
     <h3>Planta del día</h3>
   </div>
 
-  <div class="plant-of-day-card">
+  <div class="plant-of-day-card" (click)="viewDetail()">
     <div class="image-overlay"></div>
     <img src="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" alt="Arnica">
     <div class="content">
       <div class="header-row">
         <h4>Árnica mexicana</h4>
-        <span class="details-link">Ver detalles</span>
+        <span class="details-link" (click)="$event.stopPropagation(); viewDetail()">Ver detalles</span>
       </div>
       <p>Usado en la medicina tradicional para aliviar problemas digestivos.</p>
     </div>
@@ -38,7 +38,7 @@
 
   <div class="horizontal-scroll-container">
     <app-plant-card name="Árnica mexicana" subtitle="Heteritheca inuloides Cass"
-      imageUrl="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" (action)="onFilter()">
+      imageUrl="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" (action)="viewDetail()">
     </app-plant-card>
 
     <app-plant-card name="Epazote" subtitle="Dysphania ambrosioides"
