@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Global CSS */
+
+/* Make modal background transparent so we can use rounded corners on the content */
+ion-modal.auto-height-modal {
+    --background: transparent;
+    --box-shadow: none;
+    --backdrop-opacity: 0.6;
+
+    &::part(content) {
+        background: transparent;
+        box-shadow: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
