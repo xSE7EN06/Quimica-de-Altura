@@ -17,5 +17,9 @@ export const MOBILE_ROUTES: Routes = [
     {
         path: 'result/:id',
         loadComponent: () => import('./pages/result/result.page').then(m => m.ResultPage)
+    },
+    {
+        path: 'detail-plant',
+        loadComponent: () => import('./pages/detail-plant/detail-plant.page').then(m => m.DetailPlantPage)
     }
 ];
