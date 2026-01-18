@@ -1,0 +1,16 @@
+<div class="card-container">
+    <div class="info-icon">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+    </div>
+
+    <div class="image-container">
+        <img [src]="imageUrl" [alt]="name">
+    </div>
+
+    <h3 class="plant-name">{{ name }}</h3>
+    <p class="plant-subtitle">{{ subtitle }}</p>
+
+    <ion-button class="action-btn" shape="round" color="primary" (click)="onAction()" mode="ios">
+        {{ buttonText }}
+    </ion-button>
+</div>
