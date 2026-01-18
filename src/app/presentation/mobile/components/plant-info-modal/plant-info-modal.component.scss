@@ -1,0 +1,278 @@
+// Variables for colors based on the image
+$modal-bg: #ffffff;
+$overlay-bg: rgba(0, 0, 0, 0.4);
+$green-primary: #557155; // Matches the darker green in the app
+$text-dark: #333333;
+$text-gray: #666666;
+$warning-bg: #748c66; // Muted green/brown for warning box
+$warning-text: #ffffff; // White text for warning box
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none; // Let clicks pass through if not open
+
+  // When open, enable pointer events
+  &>* {
+    pointer-events: auto;
+  }
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $overlay-bg;
+  display: flex;
+  justify-content: center;
+  align-items: center; // Vertical centering like the image
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+  pointer-events: auto;
+}
+
+.modal-container {
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh; // Leave some space top/bottom
+  background-color: $modal-bg;
+  border-radius: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-top: 40px; // Space for the floating image
+  opacity: 0;
+  animation: slideUp 0.3s forwards 0.1s;
+}
+
+// Close Button
+.close-btn-wrapper {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+}
+
+.close-btn {
+  background: white; // Or transparent
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 24px;
+    color: #888;
+  }
+}
+
+// Header Image - Floating circle
+.header-image-wrapper {
+  position: absolute;
+  top: -85px; // Half outside the modal
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 5;
+}
+
+.image-mask {
+  width: 170px; // Adjust size
+  height: 110px; // It's a half-circle look in the design, but let's make it a nice crop
+  // Actually the design shows a rectangular image cropped or masked by the modal shape? 
+  // Looking closely at the user request image:
+  // It looks like a rectangular image fully inside the modal at the top?
+  // Wait, the user image shows a circular cutout on the main page BEHIND the modal, 
+  // and the modal itself has a rectangular image at the top.
+  // Ah, wait. Looking at the user's uploaded image...
+  // The modal is the white card.
+  // Inside the white card, at the very top, there is a rectangular image of flowers.
+  // Below that is the text.
+  // The circular image is part of the Background Page, not the modal itself?
+  // Let's re-examine the upload.
+  // The uploaded image "1768773880105.png" shows:
+  // A modal popup.
+  // Inside the modal:
+  // Top: Rectangular image of yellow flowers.
+  // Below: Text "Heterotheca inuloides Cass", "Árnica mexicana".
+  // Below: Scrollable text.
+  // Bottom: "Aviso importante" box.
+  // Close button: Top right of the modal image.
+
+  // OK, so the code I wrote for "floating circle" might be wrong if I assumed the circle behind was part of it.
+  // Let's adjust to be a rectangular banner image inside the modal.
+
+  width: 100%;
+  height: 140px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.plant-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Override previous attempt at "floating" since re-reading the image suggests it's contained.
+.header-image-wrapper {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  margin-bottom: 0px;
+}
+
+.modal-container {
+  margin-top: 0; // Reset margin
+}
+
+
+.modal-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: hidden; // Parent handles scroll wrapper
+  display: flex;
+  flex-direction: column;
+}
+
+.titles-wrapper {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.scientific-name {
+  font-size: 14px;
+  color: $text-gray;
+  margin: 0;
+  font-weight: 500;
+}
+
+.common-name {
+  font-size: 18px;
+  color: $green-primary;
+  margin: 5px 0 0;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.scrollable-body {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 5px; // Space for scrollbar
+
+  // Hide scrollbar for cleaner look
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+}
+
+.section {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.section-title {
+  font-size: 14px;
+  color: $green-primary;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.section-text {
+  font-size: 13px;
+  color: $text-dark;
+  line-height: 1.5;
+  margin: 0;
+  text-align: justify;
+}
+
+.uses-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    font-size: 13px;
+    color: $text-dark;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    position: relative;
+    padding-left: 15px;
+
+    &:before {
+      content: "-";
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+  }
+}
+
+.warning-box {
+  background-color: $warning-bg;
+  border-radius: 12px;
+  padding: 15px;
+  color: $warning-text;
+}
+
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  ion-icon {
+    font-size: 18px;
+    color: #ffc409; // Brighter yellow icon
+  }
+
+  span {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+.warning-text {
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0.9;
+}
+
+// Animations
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
