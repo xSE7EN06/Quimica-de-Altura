@@ -1,0 +1,13 @@
+.transparent-toolbar {
+    --background: transparent;
+    --color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.app-title {
+    font-weight: 700;
+    letter-spacing: 1px;
+}
