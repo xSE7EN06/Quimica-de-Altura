@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonFab, IonFabButton, IonImg, IonSpinner, IonText } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { scan, leaf } from 'ionicons/icons';
+import { HeaderComponent } from '../../components/header/header.component';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonText, IonButton, IonSpinner, ModalController } from '@ionic/angular/standalone';
 import { CameraService } from '../../../../infrastructure/services/camera.service';
 import { IdentifyPlantUseCase } from '../../../../application/use-cases/identify-plant.use-case';
 import { Router } from '@angular/router';
+import { SearchInputComponent } from '../../components/search-input/search-input.component';
+import { PlantCardComponent } from '../../components/plant-card/plant-card.component';
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
     standalone: true,
-    imports: [CommonModule, IonContent, HeaderComponent, IonTitle, IonToolbar, IonButton, IonIcon, IonFab, IonFabButton, IonImg, IonSpinner, IonText]
+    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonText, IonButton, IonSpinner, CommonModule, HeaderComponent, SearchInputComponent, PlantCardComponent],
 })
 export class HomePage {
     isScanning = false;
@@ -22,28 +22,47 @@ export class HomePage {
         private cameraService: CameraService,
         private identifyPlantUseCase: IdentifyPlantUseCase,
         private router: Router
-    ) {
-        addIcons({ scan, leaf });
+    ) { }
+
+    onSearch(term: string) {
+        console.log('Searching for:', term);
+        // Implement search logic here
+    }
+
+    onFilter() {
+        console.log('Filter clicked');
+        // Implement filtering logic here
     }
 
     async scanPlant() {
         this.isScanning = true;
-        const imageData = await this.cameraService.takePicture();
 
-        if (imageData) {
-            this.identifyPlantUseCase.execute(imageData).subscribe({
-                next: (plant) => {
-                    this.isScanning = false;
-                    if (plant) {
-                        this.router.navigate(['/result', plant.id]);
+        // Simulating scan or using actual service
+        // const imageData = await this.cameraService.takePicture(); 
+
+        // For now, let's just log or keep the existing logic if it was working
+        // Re-enabling the logic:
+        try {
+            // Note: Ensure CameraService is correctly implemented for the platform
+            const imageData = await this.cameraService.takePicture();
+            if (imageData) {
+                this.identifyPlantUseCase.execute(imageData).subscribe({
+                    next: (plant) => {
+                        this.isScanning = false;
+                        if (plant) {
+                            this.router.navigate(['/result', plant.id]); // Assuming plant.id exists
+                        }
+                    },
+                    error: (err) => {
+                        this.isScanning = false;
+                        console.error(err);
                     }
-                },
-                error: (err) => {
-                    this.isScanning = false;
-                    console.error(err);
-                }
-            });
-        } else {
+                });
+            } else {
+                this.isScanning = false;
+            }
+        } catch (error) {
+            console.error('Error scanning:', error);
             this.isScanning = false;
         }
     }

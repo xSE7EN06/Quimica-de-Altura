@@ -1,27 +1,76 @@
-<app-header title="Planta Vision"></app-header>
+<app-header title="Inicio"></app-header>
 
-<ion-content [fullscreen]="true" class="ion-padding main-content">
-  <div class="background-image"></div>
-  <div class="center-container">
-    <div class="glass-card">
-      <ion-icon name="leaf" class="logo-icon"></ion-icon>
-      <ion-text>
-        <h1>Identifica tu Planta</h1>
-        <p>Captura una foto para analizar sus propiedades medicinales.</p>
-      </ion-text>
-
-      <div class="action-area">
-        <ion-button *ngIf="!isScanning" (click)="scanPlant()" expand="block" shape="round" size="large"
-          class="scan-button">
-          <ion-icon slot="start" name="scan"></ion-icon>
-          Escanear Ahora
-        </ion-button>
-
-        <div *ngIf="isScanning" class="scanning-loader">
-          <ion-spinner name="crescent"></ion-spinner>
-          <p>Analizando...</p>
-        </div>
-      </div>
+<ion-content class="ion-padding">
+  <div class="welcome-section">
+    <div class="robot-container">
+      <!-- Placeholder for the robot image -->
+      <img src="/yolotl.png" alt="Yolotl Robot" />
+    </div>
+    <div class="text-container">
+      <h2>¡Bienvenido, Ángel!</h2>
+      <p>Descubre plantas, aprende sus propiedades y conecta con su historia.</p>
     </div>
   </div>
+
+  <app-search-input (search)="onSearch($event)" (filter)="onFilter()" (camera)="scanPlant()">
+  </app-search-input>
+
+  <div class="section-title-row">
+    <h3>Planta del día</h3>
+  </div>
+
+  <div class="plant-of-day-card">
+    <div class="image-overlay"></div>
+    <img src="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" alt="Arnica">
+    <div class="content">
+      <div class="header-row">
+        <h4>Árnica mexicana</h4>
+        <span class="details-link">Ver detalles</span>
+      </div>
+      <p>Usado en la medicina tradicional para aliviar problemas digestivos.</p>
+    </div>
+  </div>
+
+  <div class="section-title-row">
+    <h3>Plantas medicinales comunes</h3>
+    <span class="see-more">Ver más</span>
+  </div>
+
+  <div class="horizontal-scroll-container">
+    <app-plant-card name="Árnica mexicana" subtitle="Heteritheca inuloides Cass"
+      imageUrl="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" (action)="onFilter()">
+    </app-plant-card>
+
+    <app-plant-card name="Epazote" subtitle="Dysphania ambrosioides"
+      imageUrl="https://tse3.mm.bing.net/th/id/OIP.Wxoj0W_PTJDFZ6FwcK0PUwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+      (action)="onFilter()">
+    </app-plant-card>
+
+    <app-plant-card name="Manzanilla" subtitle="Matricaria chamomilla"
+      imageUrl="https://www.nutricionysaludblog.com/src/uploads/2016/11/manzanilla.jpg" (action)="onFilter()">
+    </app-plant-card>
+  </div>
+
+  <div class="section-title-row">
+    <h3>Explora plantas por categoría</h3>
+    <span class="see-more">Ver más</span>
+  </div>
+
+  <div class="horizontal-scroll-container last-section">
+    <app-plant-card name="Energizantes" subtitle="Plantas energizantes."
+      imageUrl="https://img.freepik.com/premium-vector/man-running-park-morning_165429-792.jpg" buttonText="Ver plantas"
+      (action)="onFilter()">
+    </app-plant-card>
+
+    <app-plant-card name="Relajantes" subtitle="Plantas relajantes."
+      imageUrl="https://img.freepik.com/free-vector/meditating-concept-illustration_114360-2972.jpg"
+      buttonText="Ver plantas" (action)="onFilter()">
+    </app-plant-card>
+
+    <app-plant-card name="Dolor" subtitle="Plantas para dolor."
+      imageUrl="https://img.freepik.com/free-vector/flat-person-having-headache_23-2148924043.jpg"
+      buttonText="Ver plantas" (action)="onFilter()">
+    </app-plant-card>
+  </div>
+
 </ion-content>
