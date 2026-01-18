@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSegment, IonSegmentButton, IonImg, IonText } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSegment, IonSegmentButton, IonImg, IonText, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mail, lockClosed } from 'ionicons/icons';
+import { SuccessModalComponent } from '../../components/success-modal/success-modal.component';
 
 @Component({
     selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginPage implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private router: Router
+        private router: Router,
+        private modalCtrl: ModalController
     ) {
         addIcons({ mail, lockClosed });
         this.loginForm = this.fb.group({
@@ -35,9 +37,21 @@ export class LoginPage implements OnInit {
         this.segmentValue = event.detail.value;
     }
 
-    onSubmit() {
+    async onSubmit() {
         if (this.loginForm.valid) {
-            // Mock login - just navigate to home
+            // Show success modal as requested by user
+            const modal = await this.modalCtrl.create({
+                component: SuccessModalComponent,
+                cssClass: 'auto-height-modal', // We might need to add this globally or handle sizing in component
+                backdropDismiss: false,
+                componentProps: {}
+            });
+
+            await modal.present();
+
+            // Wait for the modal to be dismissed before navigating
+            await modal.onWillDismiss();
+
             this.router.navigate(['/home']);
         }
     }
