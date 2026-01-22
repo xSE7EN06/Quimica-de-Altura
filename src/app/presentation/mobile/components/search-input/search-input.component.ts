@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
@@ -12,6 +12,10 @@ import { searchOutline, filterOutline, cameraOutline } from 'ionicons/icons';
     styleUrls: ['./search-input.component.scss']
 })
 export class SearchInputComponent {
+    @Input() placeholder: string = 'Buscar plantas por nombre';
+    @Input() showCamera: boolean = true;
+    @Input() showFilter: boolean = true;
+
     @Output() search = new EventEmitter<string>();
     @Output() filter = new EventEmitter<void>();
     @Output() camera = new EventEmitter<void>();

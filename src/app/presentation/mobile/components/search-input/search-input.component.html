@@ -1,15 +1,14 @@
 <div class="search-container">
     <div class="search-bar-wrapper">
         <ion-icon name="search-outline" class="search-icon"></ion-icon>
-        <input type="text" placeholder="Buscar plantas por nombre" class="custom-input"
-            (input)="onSearchChange($event)">
+        <input type="text" [placeholder]="placeholder" class="custom-input" (input)="onSearchChange($event)">
     </div>
 
-    <button class="action-btn" (click)="onFilterClick()">
+    <button *ngIf="showFilter" class="action-btn" (click)="onFilterClick()">
         <ion-icon name="filter-outline"></ion-icon>
     </button>
 
-    <button class="action-btn" (click)="onCameraClick()">
+    <button *ngIf="showCamera" class="action-btn" (click)="onCameraClick()">
         <ion-icon name="camera-outline"></ion-icon>
     </button>
 </div>
