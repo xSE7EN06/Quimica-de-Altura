@@ -38,6 +38,10 @@ export class HomePage {
         this.router.navigate(['/detail-plant']);
     }
 
+    viewCategories() {
+        this.router.navigate(['/categories']);
+    }
+
     async scanPlant() {
         this.isScanning = true;
 
