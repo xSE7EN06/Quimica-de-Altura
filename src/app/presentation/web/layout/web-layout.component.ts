@@ -2,20 +2,17 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'app-web-layout',
-    standalone: true,
-    imports: [RouterOutlet],
-    template: `
+  selector: 'app-web-layout',
+  standalone: true,
+  imports: [RouterOutlet],
+  template: `
     <div class="web-container">
-      <header class="web-header">
-        <h1>Química de Altura - Web Dashboard</h1>
-      </header>
       <main class="web-content">
         <router-outlet></router-outlet>
       </main>
     </div>
   `,
-    styles: [`
+  styles: [`
     .web-container {
       display: flex;
       flex-direction: column;
@@ -35,8 +32,9 @@ import { RouterOutlet } from '@angular/router';
     }
     .web-content {
       flex: 1;
-      overflow-y: auto;
-      padding: 2rem;
+      height: 100%;
+      overflow: hidden; /* Let child component handle overflow if needed */
+      padding: 0; /* Remove padding so full-screen components fit perfectly */
     }
   `]
 })

@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const WEB_ROUTES: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'login',
         pathMatch: 'full'
     },
     {
