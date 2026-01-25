@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
     @Input() title: string = '';
     @Input() defaultHref: string = '/';
     @Input() showBackButton: boolean = false;
+    @Input() showMenuButton: boolean = true;
 
     constructor() { }
 
