@@ -12,7 +12,7 @@ import { searchOutline, filterOutline, cameraOutline } from 'ionicons/icons';
     styleUrls: ['./search-input.component.scss']
 })
 export class SearchInputComponent {
-    @Input() placeholder: string = 'Buscar plantas por nombre';
+    @Input() placeholder: string = 'Buscar plantas por síntomas, nombre o uso...';
     @Input() showCamera: boolean = true;
     @Input() showFilter: boolean = true;
 
