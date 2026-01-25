@@ -25,5 +25,13 @@ export const MOBILE_ROUTES: Routes = [
     {
         path: 'categories',
         loadComponent: () => import('./pages/categories/categories.page').then(m => m.CategoriesPage)
+    },
+    {
+        path: 'most-searched-plants',
+        loadComponent: () => import('./pages/most-searched-plants/most-searched-plants.page').then(m => m.MostSearchedPlantsPage)
+    },
+    {
+        path: 'energizers',
+        loadComponent: () => import('./pages/energizers/energizers.page').then(m => m.EnergizersPage)
     }
 ];
