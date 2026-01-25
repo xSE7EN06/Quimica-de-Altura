@@ -4,15 +4,12 @@
     border-radius: 16px;
     padding: 15px 10px;
     width: 160px;
-    /* Fixed width for horizontal scrolling consistency */
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     flex-shrink: 0;
-    /* Prevent shrinking in flex container */
     margin-right: 15px;
-    /* Spacing between cards */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 
     .info-icon {
@@ -55,9 +52,9 @@
         font-weight: 500;
         line-height: 1.2;
         min-height: 2.4em;
-        /* Ensure uniform height for 2 lines */
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }

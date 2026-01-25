@@ -20,7 +20,7 @@ export class PlantCardComponent {
     @Output() action = new EventEmitter<void>();
 
     constructor() {
-        addIcons({ alertCircleOutline }); // Using alert-circle-outline for the "!" icon
+        addIcons({ alertCircleOutline });
     }
 
     onAction() {
