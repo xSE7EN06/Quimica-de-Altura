@@ -1,0 +1,27 @@
+<div class="plant-card">
+    <div class="image-container">
+        <img [src]="imageUrl" [alt]="name" />
+    </div>
+    <div class="content-container">
+        <div class="header">
+            <div class="title-group">
+                <h3 class="plant-name">{{ name }}</h3>
+                <span class="scientific-name">{{ scientificName }}</span>
+            </div>
+            <div class="action-button" (click)="onAction()">
+                {{ buttonText }}
+                <ion-icon name="alert-circle-outline"></ion-icon>
+            </div>
+        </div>
+
+        <div class="properties-list">
+            <div class="property-item" *ngFor="let prop of properties">
+                <span class="property-name">{{ prop.name }}</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" [style.width.%]="prop.percentage"></div>
+                </div>
+                <span class="property-percentage">{{ prop.percentage }}%</span>
+            </div>
+        </div>
+    </div>
+</div>
