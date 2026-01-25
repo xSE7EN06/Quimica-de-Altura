@@ -7,7 +7,7 @@
       <img src="/yolotl.png" alt="Yolotl Robot" />
     </div>
     <div class="text-container">
-      <h2>¡Bienvenido, Ángel!</h2>
+      <h2>¡Bienvenido, Geovanny!</h2>
       <p>Descubre plantas, aprende sus propiedades y conecta con su historia.</p>
     </div>
   </div>
@@ -32,8 +32,8 @@
   </div>
 
   <div class="section-title-row">
-    <h3>Plantas medicinales comunes</h3>
-    <span class="see-more">Ver más</span>
+    <h3>Plantas medicinales más buscadas</h3>
+    <span class="see-more" (click)="viewMostSearchedPlants()">Ver más</span>
   </div>
 
   <div class="horizontal-scroll-container">
@@ -59,7 +59,7 @@
   <div class="horizontal-scroll-container last-section">
     <app-plant-card name="Energizantes" subtitle="Plantas energizantes."
       imageUrl="https://img.freepik.com/premium-vector/man-running-park-morning_165429-792.jpg" buttonText="Ver plantas"
-      (action)="onFilter()">
+      (action)="viewEnergizers()">
     </app-plant-card>
 
     <app-plant-card name="Relajantes" subtitle="Plantas relajantes."

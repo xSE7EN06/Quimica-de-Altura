@@ -38,8 +38,16 @@ export class HomePage {
         this.router.navigate(['/detail-plant']);
     }
 
+    viewEnergizers() {
+        this.router.navigate(['/energizers']);
+    }
+
     viewCategories() {
         this.router.navigate(['/categories']);
+    }
+
+    viewMostSearchedPlants() {
+        this.router.navigate(['/most-searched-plants']);
     }
 
     async scanPlant() {
