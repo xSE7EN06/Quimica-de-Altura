@@ -33,5 +33,9 @@ export const MOBILE_ROUTES: Routes = [
     {
         path: 'energizers',
         loadComponent: () => import('./pages/energizers/energizers.page').then(m => m.EnergizersPage)
+    },
+    {
+        path: 'account',
+        loadComponent: () => import('./pages/account/account.page').then(m => m.AccountPage)
     }
 ];
