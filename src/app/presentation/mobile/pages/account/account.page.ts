@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { HeaderComponent } from '../../components/header/header.component';
 import { MostSearchedCardComponent } from '../../components/most-searched-card/most-searched-card.component';
 import { addIcons } from 'ionicons';
-import { createOutline } from 'ionicons/icons';
+import { createOutline, leafOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-account',
@@ -34,11 +34,14 @@ export class AccountPage {
         { name: 'Antibacterianas', active: false }
     ];
 
-    savedPlants = [
+    selectedCategory = 'Energizantes';
+
+    allSavedPlants = [
         {
             name: 'Ginseng',
             scientificName: 'Panax ginseng',
             imageUrl: 'https://cdn.shopify.com/s/files/1/0636/8755/7304/files/ginseng-rojo-amoseeds-especialista-superalimentos-bio3.jpg?v=1750933674',
+            category: 'Energizantes',
             properties: [
                 { name: 'Energía', percentage: 90 },
                 { name: 'Concentración', percentage: 85 },
@@ -49,16 +52,41 @@ export class AccountPage {
             name: 'Maca',
             scientificName: 'Lepidium meyenii',
             imageUrl: 'https://www.almalibreacaihouse.com/wp-content/uploads/2021/11/maca-superalimento-acai-espana.jpg',
+            category: 'Energizantes',
             properties: [
                 { name: 'Vitalidad', percentage: 88 },
                 { name: 'Resistencia', percentage: 80 },
                 { name: 'Libido', percentage: 75 }
             ]
+        },
+        {
+            name: 'Manzanilla',
+            scientificName: 'Matricaria chamomilla',
+            imageUrl: 'https://images.ecestaticos.com/lZ6gT-pQW34vE5G7tW5o5g/0x0:999x999/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com/original/842/85a/2aa/84285a2aa77777777777777777777777.jpg',
+            category: 'Relajantes',
+            properties: [
+                { name: 'Relajación', percentage: 95 },
+                { name: 'Sueño', percentage: 90 },
+                { name: 'Ansiedad', percentage: 85 }
+            ]
         }
     ];
 
+    savedPlants: any[] = [];
+
     constructor() {
-        addIcons({ createOutline });
+        addIcons({ createOutline, leafOutline });
+        this.filterPlants();
+    }
+
+    selectCategory(categoryName: string) {
+        this.selectedCategory = categoryName;
+        this.categories.forEach(cat => cat.active = cat.name === categoryName);
+        this.filterPlants();
+    }
+
+    filterPlants() {
+        this.savedPlants = this.allSavedPlants.filter(p => p.category === this.selectedCategory);
     }
 
     onEditProfile() {

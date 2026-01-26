@@ -43,10 +43,16 @@
     <div class="categories-section">
         <h3 class="section-title" style="color: #5b7c55;">Plantas guardadas por categoría</h3>
         <div class="chips-container">
-            <div class="chip" *ngFor="let cat of categories" [class.active]="cat.active">
+            <div class="chip" *ngFor="let cat of categories" [class.active]="cat.active"
+                (click)="selectCategory(cat.name)">
                 {{ cat.name }}
             </div>
         </div>
+    </div>
+
+    <div class="empty-state" *ngIf="savedPlants.length === 0">
+        <ion-icon name="leaf-outline" style="color: #5b7c55;"></ion-icon>
+        <p>No hay plantas guardadas en {{ selectedCategory }}</p>
     </div>
 
     <div class="plants-list">
