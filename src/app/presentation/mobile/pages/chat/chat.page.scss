@@ -1,0 +1,172 @@
+ion-toolbar {
+    --background: #557C55; // Match previous dark green
+    --color: #fff;
+    --min-height: 56px;
+
+    ion-title {
+        text-align: center;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    ion-back-button {
+        --color: #fff;
+    }
+}
+
+.chat-subheader {
+    background: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+    .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #e0e0e0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .info {
+        h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #4CAF50; // Online green
+            font-weight: 500;
+        }
+    }
+}
+
+ion-content {
+    --background: #fff;
+}
+
+.chat-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 80px; // Space for footer
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    max-width: 85%;
+
+    &.user {
+        align-self: flex-end;
+        flex-direction: row-reverse; // Flip for user
+
+        .message-bubble {
+            background: #557C55;
+            color: #fff;
+            border-radius: 18px 18px 2px 18px;
+        }
+    }
+
+    &.bot {
+        align-self: flex-start;
+
+        .message-bubble {
+            background: #f0f0f0;
+            color: #333;
+            border-radius: 18px 18px 18px 2px;
+        }
+    }
+}
+
+.avatar-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.message-bubble {
+    padding: 12px 16px;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+    p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+        white-space: pre-wrap; // Preserve newlines
+    }
+}
+
+ion-footer {
+    background: transparent;
+    padding: 0;
+}
+
+.input-area {
+    padding: 12px 16px 24px 16px;
+    background: #fff; // Or transparent if we want floating
+
+    .input-wrapper {
+        background: #fff;
+        border-radius: 30px;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #f0f0f0;
+
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            color: #333;
+            padding: 8px 0;
+
+            &::placeholder {
+                color: #aaa;
+            }
+        }
+
+        ion-icon {
+            font-size: 20px;
+            color: #888;
+
+            &.send-icon {
+                color: #557C55;
+                font-size: 22px;
+                transform: rotate(0deg); // Adjust if needed
+                cursor: pointer;
+            }
+
+            &.mic-icon {
+                font-size: 22px;
+            }
+        }
+    }
+}
