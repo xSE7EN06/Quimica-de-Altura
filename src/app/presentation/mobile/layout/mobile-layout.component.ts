@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline } from 'ionicons/icons';
@@ -6,7 +7,7 @@ import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCi
 @Component({
   selector: 'app-mobile-layout',
   standalone: true,
-  imports: [IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg],
+  imports: [RouterLink, IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg],
   template: `
     <ion-app>
       <ion-menu side="end" menuId="mobile-menu" contentId="main-content">
@@ -31,14 +32,9 @@ import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCi
                 <ion-label>Inicio</ion-label>
               </ion-item>
 
-              <ion-item button detail="false" class="menu-item">
+              <ion-item button detail="false" routerLink="/chat" class="menu-item">
                 <ion-icon slot="start" name="chatbubbles-outline"></ion-icon>
                 <ion-label>Chat con Yolotl</ion-label>
-              </ion-item>
-
-              <ion-item button detail="false" class="menu-item">
-                <ion-icon slot="start" name="flower-outline"></ion-icon>
-                <ion-label>Categorías</ion-label>
               </ion-item>
 
               <ion-item button detail="false" class="menu-item">
@@ -46,7 +42,7 @@ import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCi
                 <ion-label>Buscar planta por foto</ion-label>
               </ion-item>
 
-              <ion-item button detail="false" class="menu-item">
+              <ion-item button detail="false" routerLink="/account" class="menu-item">
                 <ion-icon slot="start" name="person-circle-outline"></ion-icon>
                 <ion-label>Cuenta</ion-label>
               </ion-item>
