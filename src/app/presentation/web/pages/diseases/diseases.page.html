@@ -1,0 +1,86 @@
+<div class="diseases-page">
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <!-- Bar Chart -->
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <div class="y-axis">
+                    <span>100</span>
+                    <span>75</span>
+                    <span>50</span>
+                    <span>25</span>
+                    <span>0</span>
+                </div>
+                <div class="bar-chart">
+                    <div class="grid-lines">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="bars-area">
+                        <!-- Custom colors for bars based on screenshot -->
+                        <div class="bar-group">
+                            <div class="bar" style="height: 100%; background-color: #56774f;"></div>
+                            <span class="label">Producto A</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 75%; background-color: #56774f;"></div>
+                            <span class="label">Producto B</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 95%; background-color: #A9BFA3;"></div>
+                            <span class="label">Producto C</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 25%; background-color: #1a4d2e;"></div>
+                            <span class="label">Producto D</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x-axis-title">Categoria</div>
+        </div>
+
+        <!-- Predominant Categories -->
+        <div class="predominant-section">
+            <div class="section-title">Categoría de enfermedades predominantes</div>
+
+            <div *ngFor="let stat of diseaseStats" class="category-bar-container" [ngClass]="stat.class">
+                <!-- Bind width dynamically -->
+                <div class="progress-fill" [style.width.%]="stat.percentage"></div>
+                <!-- Bind text dynamically -->
+                <div class="category-text" [ngClass]="stat.textClass">
+                    {{ stat.label }}: {{ stat.percentage }}%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Bar -->
+    <app-action-bar searchPlaceholder="Buscar" addButtonText="Agregar enfermedades" (search)="onSearch($event)"
+        (add)="onAddDisease()">
+    </app-action-bar>
+
+    <!-- Data Table -->
+    <app-data-table [data]="diseases" [columns]="columns"></app-data-table>
+
+    <!-- Templates -->
+    <ng-template #nameTpl let-item>
+        <span class="text-primary">{{ item.name }}</span>
+    </ng-template>
+
+    <ng-template #viewFileTpl let-item>
+        <a href="#" class="view-link">View file <mat-icon
+                style="font-size: 14px; width:14px; height:14px; margin-left: 2px;">check_circle_outline</mat-icon></a>
+    </ng-template>
+
+    <ng-template #actionsTpl let-item>
+        <div class="actions">
+            <!-- Trash and Edit icons -->
+            <button class="btn-icon"><mat-icon>delete_outline</mat-icon></button>
+            <button class="btn-icon"><mat-icon>edit</mat-icon></button>
+        </div>
+    </ng-template>
+</div>

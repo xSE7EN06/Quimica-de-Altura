@@ -1,0 +1,281 @@
+.diseases-page {
+    padding: 1rem;
+}
+
+.charts-section {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    /* Give more space to bar chart */
+    gap: 2rem;
+    margin-bottom: 3rem;
+    /* background: white;  Optional container background */
+    /* padding: 2rem; */
+    border-radius: 8px;
+}
+
+/* Reusing Bar Chart Styles */
+.chart-container {
+    background: white;
+    padding: 2rem;
+    position: relative;
+    border-radius: 12px;
+}
+
+.chart-wrapper {
+    display: flex;
+    height: 300px;
+}
+
+.y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1rem;
+    color: #777;
+    font-size: 0.75rem;
+    height: 250px;
+}
+
+.bar-chart {
+    flex: 1;
+    position: relative;
+    height: 250px;
+    margin-bottom: 2rem;
+}
+
+.grid-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+}
+
+.bars-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    width: 50px;
+    position: relative;
+}
+
+.bar {
+    width: 100%;
+    background-color: #56774f;
+    /* Matches design darker green */
+    transition: height 0.3s ease;
+}
+
+/* Alternate color for bars if needed, design shows distinct colors? No, mostly green. 
+   Wait, design shows different shades: #56774f, #8FA888, #A9BFA3. 
+   I will adapt bar colors in HTML via style or classes. 
+*/
+
+.label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 0.75rem;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.x-axis-title {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #333;
+    margin-top: 5px;
+}
+
+/* Predominant Categories (Progress Bars) */
+.predominant-section {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    padding-top: 1rem;
+}
+
+.section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #56774f;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    /* Design looks centered or left? Centeredish title */
+}
+
+.category-bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    height: 48px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    /* Wrapper */
+    border: 2px solid;
+    /* Border determines color */
+    background-color: white;
+}
+
+.progress-fill {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    /* Curved end inside */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Text sits inside or outside? Design: Text inside. */
+    padding-right: 1rem;
+}
+
+/* Custom Colors for categories */
+.cat-digestivas {
+    border-color: #56774f;
+}
+
+.cat-digestivas .progress-fill {
+    background-color: #56774f;
+    color: white;
+}
+
+.cat-respiratorias {
+    border-color: #A9BFA3;
+}
+
+.cat-respiratorias .progress-fill {
+    background-color: #A9BFA3;
+    color: white;
+}
+
+.cat-nerviosas {
+    border-color: #1a4d2e;
+    /* Darker green */
+}
+
+.cat-nerviosas .progress-fill {
+    background-color: #1a4d2e;
+    color: white;
+}
+
+.category-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    z-index: 2;
+    font-size: 0.9rem;
+    color: #56774f;
+    /* Default text color if outside? */
+}
+
+/* Actually in the screenshot, text "Digestivas: 40%" is fully visible. 
+   If bar is 40%, text might overlap. 
+   Let's use a simpler approach: 
+   Container has border. 
+   Fill has background.
+   Text is centered in the Container (absolute center) so it sits on top of fill.
+   If text color needs to flip based on bg... simpler to keep it white or dark?
+   Design: Text is WHITE inside the filled part? No, text looks dark green on white, white on green?
+   Wait, screenshot: 
+   "Digestivas: 40%" -> White text on Dark Green fill.
+   "Respiratorias: 30%" -> White text on Olive fill.
+   "Nerviosas: 20%" -> Green text on White part? No, looks like text is inside fill if fill is large enough?
+   Actually, looking closer at the screenshot:
+   The text is centered in the BAR.
+   Digestivas (40% fill): Text is white, inside the fill? Or centered in the whole bar?
+   It looks like "Digestivas: 40%" is white text.
+   "Respiratorias: 30%" is white text.
+   "Nerviosas: 20%" is Green Text (Dark green) on the White background part! 
+   
+   Okay, I will center the text absolutely in the container. 
+   And mix-blend-mode might be overkill. 
+   Let's just put text inside the fill if separate, or just centered.
+   
+   Actually looking at Nerviosas (20%): Text is clearly to the RIGHT of the fill.
+   So text is likely centered in the available 'white' space or just centered in the bar and color changes?
+   
+   Let's try: Text is centered in the container. z-index higher than fill. Color matches border color (Dark Green).
+   If implementation is simple, let's just make text centered with that color.
+*/
+
+.category-text {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    z-index: 10;
+    color: #56774f;
+    /* Fallback */
+}
+
+/* Modifiers for specific text colors if needed */
+.text-white {
+    color: white;
+}
+
+.text-dark {
+    color: #1a4d2e;
+}
+
+
+/* Helper styles for templates */
+.text-primary {
+    color: #3880ff;
+    font-weight: 500;
+}
+
+.view-link {
+    color: #3880ff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.7;
+    color: #56774f;
+    padding: 0;
+}
+
+.btn-icon:hover {
+    opacity: 1;
+}
