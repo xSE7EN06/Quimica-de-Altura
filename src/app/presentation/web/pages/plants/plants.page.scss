@@ -1,0 +1,201 @@
+.plants-page {
+    padding: 1rem;
+}
+
+/* Stats Section */
+.stats-overview {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.chart-container {
+    background: white;
+    padding: 2rem;
+    position: relative;
+}
+
+.chart-wrapper {
+    display: flex;
+    height: 300px;
+}
+
+.y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1rem;
+    color: #777;
+    font-size: 0.75rem;
+    height: 250px;
+    /* Align with chart height */
+}
+
+.bar-chart {
+    flex: 1;
+    position: relative;
+    height: 250px;
+    margin-bottom: 2rem;
+}
+
+.grid-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+}
+
+.bars-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    width: 60px;
+    position: relative;
+}
+
+.bar {
+    width: 100%;
+    background-color: #56774f;
+    /* Muted Green */
+    transition: height 0.3s ease;
+}
+
+.label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 0.75rem;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.x-axis-title {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #333;
+    margin-top: 5px;
+}
+
+.y-axis-title {
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: rotate(-90deg);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+.stats-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 2px solid #8FA888;
+    /* Light green border */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 140px;
+}
+
+.card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.big-number {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #777;
+    margin: 0;
+}
+
+.card-icon {
+    color: #56774f;
+}
+
+.card-icon mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+}
+
+/* Styles used in projected content (Templates) */
+.text-primary {
+    color: #3880ff;
+    font-weight: 500;
+}
+
+.view-link {
+    color: #3880ff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.inline-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    color: #56774f;
+    padding: 4px;
+}
+
+.btn-icon:hover {
+    opacity: 1;
+}
+
+.btn-icon mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
