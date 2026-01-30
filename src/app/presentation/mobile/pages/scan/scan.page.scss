@@ -1,0 +1,132 @@
+.camera-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  overflow: hidden;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Overlay mask to darken areas outside the focus
+.overlay-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // Using a radial gradient to simulate a centered clear area or just keeping it clear for now
+  // For a true cutout we might need SVG or complex border tricks. 
+  // Let's use a subtle darkening for the whole screen but keep it simple first
+  background: rgba(0, 0, 0, 0.1); 
+  pointer-events: none;
+}
+
+.top-bar {
+  position: absolute;
+  top: 40px; // Safe area
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.back-button {
+  --background: rgba(255, 255, 255, 0.2);
+  --border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  --padding-start: 0;
+  --padding-end: 0;
+  
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+// The "Dynamic Island" style pill at the top
+.pill {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 35px;
+  background: black;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pill-notch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1a1a2e; // Dark blueish for lens look
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.2);
+}
+
+// Scanning Frame (Corners)
+.scan-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: rgba(255, 255, 255, 0.5);
+  border-style: solid;
+  border-width: 0;
+  border-radius: 8px;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+  border-top-width: 6px;
+  border-left-width: 6px;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  border-top-width: 6px;
+  border-right-width: 6px;
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 6px;
+  border-left-width: 6px;
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 6px;
+  border-right-width: 6px;
+}
+
+.scan-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5; // Below back button but above video
+}

@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true">
+  <div class="camera-container">
+    <video #videoElement autoplay playsinline muted></video>
+    
+    <!-- Dark overlay with transparent cutout -->
+    <div class="overlay-mask"></div>
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <ion-button fill="clear" color="light" routerLink="/mobile/home" class="back-button">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      
+      <div class="pill">
+        <div class="pill-notch"></div>
+      </div>
+    </div>
+
+    <!-- Scanning Frame -->
+    <div class="scan-frame">
+      <div class="corner top-left"></div>
+      <div class="corner top-right"></div>
+      <div class="corner bottom-left"></div>
+      <div class="corner bottom-right"></div>
+    </div>
+
+    <!-- Instructions/Tap area -->
+    <div class="scan-trigger" (click)="capture()"></div>
+
+  </div>
+
+  <!-- Result Card (Bottom Sheet) -->
+  <app-scan-result-card 
+    *ngIf="showResult" 
+    [plant]="scannedPlant"
+    (close)="closeResult()">
+  </app-scan-result-card>
+
+</ion-content>
