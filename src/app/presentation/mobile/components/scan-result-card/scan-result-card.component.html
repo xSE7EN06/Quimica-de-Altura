@@ -1,0 +1,50 @@
+<div class="card-container">
+    <div class="drag-handle"></div>
+
+    <div class="header">
+        <div class="robot-icon">
+            <!-- Using a placeholder plant icon or generic robot if image not found -->
+            <ion-icon name="happy-outline" class="fallback-robot"></ion-icon>
+        </div>
+        <div class="title-group">
+            <h1 class="common-name">{{ plant.commonName }}</h1>
+            <h3 class="scientific-name">{{ plant.scientificName }}</h3>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="section">
+            <div class="section-header">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>Descripción</span>
+            </div>
+            <p class="description-text">
+                {{ plant.description }}
+            </p>
+        </div>
+
+        <div class="section">
+            <h4 class="section-title">Propiedades terapéuticas</h4>
+            <div class="properties-grid">
+                <div class="property-item" *ngFor="let prop of plant.properties">
+                    <div class="circle-progress">
+                        <!-- Simple SVG for circular progress -->
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path class="circle-bg" d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" [attr.stroke-dasharray]="prop.value + ', 100'" d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="icon-container">
+                            <ion-icon [name]="prop.icon"></ion-icon>
+                        </div>
+                    </div>
+                    <span class="prop-name">{{ prop.name }}</span>
+                    <span class="prop-value">{{ prop.value }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
