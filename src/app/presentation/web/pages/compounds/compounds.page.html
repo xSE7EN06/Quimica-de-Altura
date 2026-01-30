@@ -1,0 +1,96 @@
+<div class="compounds-page">
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <!-- Bar Chart -->
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <div class="y-axis">
+                    <span>100</span>
+                    <span>75</span>
+                    <span>50</span>
+                    <span>25</span>
+                    <span>0</span>
+                </div>
+                <div class="bar-chart">
+                    <div class="grid-lines">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="bars-area">
+                        <div class="bar-group">
+                            <div class="bar" style="height: 100%;"></div>
+                            <span class="label">Producto A</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 75%;"></div>
+                            <span class="label">Producto B</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 95%;"></div>
+                            <span class="label">Producto C</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 25%;"></div>
+                            <span class="label">Producto D</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x-axis-title">Categoria</div>
+        </div>
+
+        <!-- Donut Chart -->
+        <div class="donut-container">
+            <div class="donut-header">
+                <h3>Valor</h3>
+            </div>
+            <div class="donut-wrapper">
+                <div class="donut-chart">
+                    <div class="donut-hole"></div>
+                </div>
+                <!-- Labels simulating the connecting lines in the design -->
+                <div class="donut-label label-right-top">
+                    <div>Producto A</div>
+                    <strong>35.0%</strong>
+                </div>
+                <div class="donut-label label-right-bottom">
+                    <div>Producto B</div>
+                    <strong>25.0%</strong>
+                </div>
+                <div class="donut-label label-left">
+                    <div>Outros</div>
+                    <strong>40.0%</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Bar -->
+    <app-action-bar searchPlaceholder="Buscar" addButtonText="Agregar compuesto" (search)="onSearch($event)"
+        (add)="onAddCompound()">
+    </app-action-bar>
+
+    <!-- Data Table -->
+    <app-data-table [data]="compounds" [columns]="columns"></app-data-table>
+
+    <!-- Templates -->
+    <ng-template #nameTpl let-item>
+        <span class="text-primary">{{ item.commonName }}</span>
+    </ng-template>
+
+    <ng-template #viewFileTpl let-item>
+        <a href="#" class="view-link">View file <mat-icon
+                style="font-size: 14px; width:14px; height:14px; margin-left: 2px;">check_circle_outline</mat-icon></a>
+    </ng-template>
+
+    <ng-template #actionsTpl let-item>
+        <div class="actions">
+            <!-- Trash and Edit icons matching design -->
+            <button class="btn-icon"><mat-icon>delete_outline</mat-icon></button>
+            <button class="btn-icon"><mat-icon>edit</mat-icon></button>
+        </div>
+    </ng-template>
+</div>

@@ -1,0 +1,90 @@
+<div class="plants-page">
+    <!-- Stats Section -->
+    <div class="stats-overview">
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <div class="y-axis">
+                    <span>100</span>
+                    <span>75</span>
+                    <span>50</span>
+                    <span>25</span>
+                    <span>0</span>
+                </div>
+                <div class="bar-chart">
+                    <div class="grid-lines">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="bars-area">
+                        <div class="bar-group">
+                            <div class="bar" style="height: 100%;"></div>
+                            <span class="label">Producto A</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 75%;"></div>
+                            <span class="label">Producto B</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 90%;"></div>
+                            <span class="label">Producto C</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 25%;"></div>
+                            <span class="label">Producto D</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x-axis-title">Categoria</div>
+            <div class="y-axis-title">Valor</div>
+        </div>
+
+        <div class="stats-cards">
+            <div class="card">
+                <div class="card-content">
+                    <h3>Total de números de plantas registradas</h3>
+                    <p class="big-number">1,200 especies</p>
+                </div>
+                <div class="card-icon">
+                    <mat-icon>local_florist</mat-icon>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3>Plantas registradas por mes</h3>
+                    <p class="big-number">300 especies</p>
+                </div>
+                <div class="card-icon">
+                    <mat-icon>local_florist</mat-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions Bar -->
+    <app-action-bar searchPlaceholder="Buscar" addButtonText="Agregar planta" (search)="onSearch($event)"
+        (add)="onAddPlant()">
+    </app-action-bar>
+
+    <!-- Data Table -->
+    <app-data-table [data]="plants" [columns]="columns"></app-data-table>
+
+    <!-- Templates for Table Cells -->
+    <ng-template #nameTpl let-item>
+        <span class="text-primary">{{ item.name }}</span>
+    </ng-template>
+
+    <ng-template #descTpl let-item>
+        <a href="#" class="view-link">View file <mat-icon class="inline-icon">description</mat-icon></a>
+    </ng-template>
+
+    <ng-template #actionsTpl let-item>
+        <div class="actions">
+            <button class="btn-icon delete"><mat-icon>delete_outline</mat-icon></button>
+            <button class="btn-icon edit"><mat-icon>edit</mat-icon></button>
+        </div>
+    </ng-template>
+</div>

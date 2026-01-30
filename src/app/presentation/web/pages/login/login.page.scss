@@ -1,0 +1,160 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Fit parent container */
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-card {
+    background: white;
+    width: 100%;
+    max-width: 900px;
+    min-height: 500px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    /* Clean, soft shadow */
+    display: flex;
+    overflow: hidden;
+}
+
+/* LEFT SIDE: Content/Input Section */
+.form-section {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-title {
+    color: #557b55;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Custom Input Field */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-wrapper mat-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.custom-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px 0 45px;
+    /* Space for icon */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+
+.custom-input:focus {
+    border-color: #557b55;
+}
+
+/* Button */
+.login-btn {
+    background-color: #557b55;
+    color: white;
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    /* Pill shape */
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #446344;
+}
+
+/* RIGHT SIDE: Image Section */
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* position: relative; */
+}
+
+/* Decorative box removal - just clean image presentation */
+.image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+    object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-card {
+        flex-direction: column-reverse;
+        /* Stack appropriately */
+        height: auto;
+        padding-bottom: 20px;
+    }
+
+    .image-section {
+        padding: 20px;
+        height: 200px;
+    }
+
+    .form-section {
+        padding: 20px 40px;
+    }
+
+    .image-wrapper img {
+        max-width: 150px;
+    }
+}

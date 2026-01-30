@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar class="custom-toolbar">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home" color="dark" icon="chevron-back-outline" text=""
+                class="back-btn-bg"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="header-curve"></div>
+
+    <div class="content-container">
+        <div class="image-wrapper">
+            <img [src]="plantData.image" [alt]="plantData.name">
+        </div>
+
+        <div class="title-section ion-text-center">
+            <h1>{{ plantData.name }}</h1>
+            <p>{{ plantData.scientificName }}</p>
+        </div>
+
+        <div class="properties-card">
+            <div class="robot-icon">
+                <!-- Placeholder for robot icon -->
+                <img src="/yolotl.png" alt="Yolotl" />
+            </div>
+
+            <h3 class="section-title">Propiedades terapéuticas</h3>
+
+            <div class="property-list">
+                <div class="property-item" *ngFor="let prop of plantData.properties">
+                    <div class="prop-label">
+                        <!-- Using generic icons or emojis based on mock -->
+                        <span class="icon" *ngIf="prop.name.includes('Antiinflamatoria')">🏠</span>
+                        <span class="icon" *ngIf="prop.name.includes('Antioxidantes')">🛡️</span>
+                        <span class="icon" *ngIf="prop.name.includes('Analgésicos')">💊</span>
+                        <span class="icon" *ngIf="prop.name.includes('Cicatrizante')">🩹</span>
+                        <span class="icon" *ngIf="prop.name.includes('Antimicrobiana')">🦠</span>
+
+                        <span class="name">{{ prop.name }} ({{ prop.percentage * 100 }}%)</span>
+                    </div>
+                    <div class="progress-container">
+                        <ion-progress-bar [value]="prop.percentage"></ion-progress-bar>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-action">
+            <ion-button shape="round" expand="block" class="info-btn" fill="outline" mode="ios"
+                (click)="openInfoModal()">
+                <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+                Información
+            </ion-button>
+        </div>
+    </div>
+</ion-content>
+
+<app-plant-info-modal [isOpen]="showInfoModal" [plant]="modalPlantData" (closeModal)="showInfoModal = false">
+</app-plant-info-modal>

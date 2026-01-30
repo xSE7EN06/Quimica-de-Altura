@@ -1,0 +1,59 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="onClose()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <!-- Close Button -->
+        <div class="close-btn-wrapper">
+            <div class="close-btn" (click)="onClose()">
+                <ion-icon name="close-outline"></ion-icon>
+            </div>
+        </div>
+
+        <!-- Header Image -->
+        <div class="header-image-wrapper">
+            <div class="image-mask">
+                <img [src]="plant.image" [alt]="plant.commonName" class="plant-image">
+            </div>
+        </div>
+
+        <div class="modal-content">
+            <!-- Titles -->
+            <div class="titles-wrapper">
+                <h3 class="scientific-name">{{ plant.scientificName }}</h3>
+                <h1 class="common-name">{{ plant.commonName }}</h1>
+            </div>
+
+            <!-- Scrollable body -->
+            <div class="scrollable-body">
+
+                <!-- Warning -->
+                <div class="warning-box" *ngIf="plant.warning">
+                    <div class="warning-header">
+                        <ion-icon name="warning" color="warning"></ion-icon>
+                        <span>Aviso importante</span>
+                    </div>
+                    <p class="warning-text">
+                        {{ plant.warning }}
+                    </p>
+                </div>
+
+                <!-- Description -->
+                <div class="section">
+                    <h4 class="section-title">Descripción</h4>
+                    <p class="section-text">
+                        {{ plant.description }}
+                    </p>
+                </div>
+
+                <!-- Traditional Uses -->
+                <div class="section" *ngIf="plant.traditionalUses && plant.traditionalUses.length > 0">
+                    <h4 class="section-title">Usos tradicionales</h4>
+                    <ul class="uses-list">
+                        <li *ngFor="let use of plant.traditionalUses">
+                            {{ use }}
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

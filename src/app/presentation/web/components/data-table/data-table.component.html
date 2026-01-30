@@ -1,0 +1,36 @@
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th *ngFor="let col of columns">{{ col.header }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data">
+                <td *ngFor="let col of columns">
+                    <!-- Check if a custom template is provided for this column -->
+                    <ng-container *ngIf="col.cellTemplate; else defaultCell">
+                        <ng-container *ngTemplateOutlet="col.cellTemplate; context: { $implicit: item }"></ng-container>
+                    </ng-container>
+                    <!-- Default text rendering -->
+                    <ng-template #defaultCell>
+                        {{ item[col.key] }}
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button class="page-btn"><mat-icon>navigate_before</mat-icon> Anterior</button>
+        <div class="page-numbers">
+            <!-- Mock Pagination logic for UI, can be improved later -->
+            <button class="page-num active">04</button>
+            <button class="page-num">05</button>
+            <button class="page-num">06</button>
+            <span class="dots">...</span>
+            <button class="page-num">13</button>
+        </div>
+        <button class="page-btn">Siguiente <mat-icon>navigate_next</mat-icon></button>
+    </div>
+</div>
