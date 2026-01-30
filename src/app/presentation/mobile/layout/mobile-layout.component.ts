@@ -37,7 +37,7 @@ import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCi
                 <ion-label>Chat con Yolotl</ion-label>
               </ion-item>
 
-              <ion-item button detail="false" class="menu-item">
+              <ion-item button detail="false" routerLink="/scan" class="menu-item">
                 <ion-icon slot="start" name="camera-outline"></ion-icon>
                 <ion-label>Buscar planta por foto</ion-label>
               </ion-item>
