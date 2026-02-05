@@ -20,4 +20,10 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss']
 })
-export class WebLoginPage { }
+export class WebLoginPage {
+
+  goToDashboard() {
+    window.location.href = '/dashboard';
+    console.log("yendo")
+  }
+}
