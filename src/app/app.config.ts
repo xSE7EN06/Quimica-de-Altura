@@ -6,6 +6,7 @@ import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideServiceWorker } from '@angular/service-worker';
 import { PlantRepository } from './domain/repositories/plant.repository';
 import { MockPlantRepository } from './infrastructure/repositories/mock-plant.repository';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    { provide: PlantRepository, useClass: MockPlantRepository }
+    { provide: PlantRepository, useClass: MockPlantRepository },
+    provideCharts(withDefaultRegisterables())
   ]
 };
