@@ -1,4 +1,3 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
@@ -8,14 +7,12 @@
 
 html {
   height: 100%;
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
 }
 
 body {
@@ -35,21 +32,24 @@ body {
   margin: 0;
   height: 100%;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 /* Global CSS */
 
 /* Make modal background transparent so we can use rounded corners on the content */
 ion-modal.auto-height-modal {
-    --background: transparent;
-    --box-shadow: none;
-    --backdrop-opacity: 0.6;
+  --background: transparent;
+  --box-shadow: none;
+  --backdrop-opacity: 0.6;
 
-    &::part(content) {
-        background: transparent;
-        box-shadow: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+  &::part(content) {
+    background: transparent;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
+
+@import 'app/app.scss';
