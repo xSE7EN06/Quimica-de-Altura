@@ -1,9 +1,207 @@
-/* Table */
+/* Table Container - Standard */
 .table-container {
-    background: #f9f9f9;
-    /* Light gray background */
-    border-radius: 0;
-    padding: 1rem 0;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    /* Slightly rounded container is fine, but internal rows must be square */
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+    box-shadow: none;
+    margin-top: 1.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Collapse borders for a grid-like look */
+    border-spacing: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+    /* Thicker header border */
+    background-color: var(--bg-secondary);
+}
+
+td {
+    padding: 1.1rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    /* Separator line */
+    vertical-align: middle;
+}
+
+tbody tr {
+    transition: background-color 0.2s;
+
+    &:last-child td {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background-color: var(--bg-hover);
+        /* No rounded corners, no transform */
+    }
+}
+
+/* Helper classes for projected content */
+::ng-deep .text-primary {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+::ng-deep .text-muted {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+::ng-deep .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.active {
+        background-color: rgba(46, 204, 113, 0.15);
+        color: #2ecc71;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+
+    &.pending {
+        background-color: rgba(241, 196, 15, 0.15);
+        color: #f1c40f;
+        border: 1px solid rgba(241, 196, 15, 0.2);
+    }
+
+    &.inactive {
+        background-color: rgba(149, 165, 166, 0.15);
+        color: #95a5a6;
+        border: 1px solid rgba(149, 165, 166, 0.2);
+    }
+}
+
+::ng-deep .view-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+    }
+}
+
+::ng-deep .actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+::ng-deep .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background-color: var(--bg-hover);
+        color: var(--text-primary);
+    }
+
+    &.delete:hover {
+        color: #e74c3c;
+        background-color: rgba(231, 76, 60, 0.1);
+    }
+
+    &.edit:hover {
+        color: #3498db;
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    /* Right align standard */
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    gap: 1rem;
+}
+
+.page-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+        background-color: var(--bg-hover);
+        color: var(--text-primary);
+        border-color: var(--text-secondary);
+    }
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.page-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+
+    &:hover {
+        background-color: var(--bg-hover);
+        color: var(--text-primary);
+    }
+}
+
+.page-num.active {
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: 600;
 }
 
 table {
