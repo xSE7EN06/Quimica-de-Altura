@@ -1,0 +1,195 @@
+$card-bg: #ffffff;
+$text-primary: #557155;
+$text-secondary: #666;
+$text-body: #333;
+
+.card-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: $card-bg;
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.drag-handle {
+    width: 40px;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.robot-icon {
+    width: 60px;
+    height: 60px;
+    background: #f0f5ee; // Light green touch
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .fallback-robot {
+        font-size: 32px;
+        color: $text-primary;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.title-group {
+    flex: 1;
+}
+
+.common-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 4px;
+}
+
+.scientific-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-secondary;
+    margin: 0;
+    font-style: italic;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: $text-primary;
+    font-weight: 600;
+
+    ion-icon {
+        font-size: 20px;
+    }
+
+    span {
+        font-size: 16px;
+    }
+}
+
+.description-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: $text-body;
+    margin: 0;
+    text-align: justify;
+}
+
+.section-title {
+    color: $text-primary;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 15px;
+}
+
+.properties-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.property-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.circle-progress {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 8px;
+}
+
+.circular-chart {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke: $text-primary;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+}
+
+.icon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: $text-primary;
+
+    ion-icon {
+        font-size: 24px;
+    }
+}
+
+.prop-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: $text-primary;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.prop-value {
+    font-size: 12px;
+    font-weight: 400;
+    color: $text-secondary;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

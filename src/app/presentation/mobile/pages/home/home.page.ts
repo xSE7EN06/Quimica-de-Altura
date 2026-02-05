@@ -50,36 +50,7 @@ export class HomePage {
         this.router.navigate(['/most-searched-plants']);
     }
 
-    async scanPlant() {
-        this.isScanning = true;
-
-        // Simulating scan or using actual service
-        // const imageData = await this.cameraService.takePicture(); 
-
-        // For now, let's just log or keep the existing logic if it was working
-        // Re-enabling the logic:
-        try {
-            // Note: Ensure CameraService is correctly implemented for the platform
-            const imageData = await this.cameraService.takePicture();
-            if (imageData) {
-                this.identifyPlantUseCase.execute(imageData).subscribe({
-                    next: (plant) => {
-                        this.isScanning = false;
-                        if (plant) {
-                            this.router.navigate(['/result', plant.id]); // Assuming plant.id exists
-                        }
-                    },
-                    error: (err) => {
-                        this.isScanning = false;
-                        console.error(err);
-                    }
-                });
-            } else {
-                this.isScanning = false;
-            }
-        } catch (error) {
-            console.error('Error scanning:', error);
-            this.isScanning = false;
-        }
+    scanPlant() {
+        this.router.navigate(['/scan']);
     }
 }

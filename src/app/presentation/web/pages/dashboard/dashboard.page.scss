@@ -1,0 +1,260 @@
+// Variables matching sidebar dark theme
+$dashboard-bg: var(--bg-primary);
+$card-bg: var(--bg-secondary); // Slightly lighter than bg
+$text-main: var(--text-primary);
+$text-muted: var(--text-secondary);
+$icon-color: var(--text-secondary);
+$green-accent: var(--accent-color);
+$green-bg: var(--bg-hover);
+$blue-accent: #3498db;
+$border-color: var(--border-color);
+
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto; // Allow scroll within the dashboard area
+    background-color: $dashboard-bg;
+    color: $text-main;
+    font-family: 'Inter', sans-serif;
+}
+
+.dashboard-container {
+    padding: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+// Header
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .search-bar {
+        flex: 1;
+        max-width: 600px;
+        background-color: $card-bg; // Or smaller darker input bg
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .search-icon {
+            color: $text-muted;
+        }
+
+        input {
+            background: none;
+            border: none;
+            color: $text-main;
+            width: 100%;
+            outline: none;
+            font-size: 0.95rem;
+
+            &::placeholder {
+                color: #555;
+            }
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        .time-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: $card-bg;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid $border-color;
+            color: $text-main;
+            font-size: 0.9rem;
+            cursor: pointer;
+
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                color: $text-muted;
+            }
+        }
+
+        .btn-primary {
+            background-color: #2e7d32; // Darker green
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+
+            &:hover {
+                background-color: #388e3c;
+            }
+        }
+    }
+}
+
+// Stats Grid
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background-color: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: #333;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .card-title {
+            font-size: 0.9rem;
+            color: $text-muted;
+            font-weight: 500;
+        }
+
+        .card-icon {
+            color: #444; // Darker icon
+            font-size: 20px;
+        }
+    }
+
+    .card-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        margin-top: 0.25rem;
+
+        .trend {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+
+            &.positive {
+                color: $green-accent;
+                // background-color: rgba(46, 204, 113, 0.1);
+            }
+
+            &.negative {
+                color: #e74c3c;
+            }
+        }
+    }
+
+    .card-subtitle {
+        font-size: 0.8rem;
+        color: #555;
+    }
+}
+
+// Charts Grid
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); // Wider charts
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-card {
+    background-color: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: 1.5rem;
+    min-height: 280px; // Ensure height for chart
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+
+        .chart-title-group {
+            h3 {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.1rem;
+                color: $text-main;
+            }
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: $text-main;
+        }
+
+        .chart-subtitle {
+            font-size: 0.85rem;
+            color: $text-muted;
+
+            .highlight-green {
+                color: $green-accent;
+                font-weight: 600;
+            }
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 1rem;
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.8rem;
+                color: $text-muted;
+
+                .dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+
+                    &.blue {
+                        background-color: $blue-accent;
+                    }
+
+                    &.green {
+                        background-color: $green-accent;
+                    }
+                }
+            }
+        }
+    }
+
+    .chart-container {
+        position: relative;
+        height: 220px;
+        width: 100%;
+    }
+}

@@ -41,5 +41,9 @@ export const MOBILE_ROUTES: Routes = [
     {
         path: 'chat',
         loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatPage)
+    },
+    {
+        path: 'scan',
+        loadComponent: () => import('./pages/scan/scan.page').then(m => m.ScanPage)
     }
 ];

@@ -1,0 +1,32 @@
+/* Global Theme Variables */
+:root {
+    /* Default Dark Theme (FloraSearch) */
+    --bg-primary: #0f1115;
+    --bg-secondary: #15191e;
+    --text-primary: #ffffff;
+    --text-secondary: #8e95a2;
+    --border-color: #1f2329;
+    --accent-color: #2ecc71;
+    --bg-hover: rgba(255, 255, 255, 0.03);
+    --card-shadow: none;
+}
+
+[data-theme="light"] {
+    /* Light Theme (Original) */
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #eeeeee;
+    --accent-color: #2e7d32;
+    /* Slightly darker green for light mode contrast */
+    --bg-hover: rgba(46, 125, 50, 0.08);
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
