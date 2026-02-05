@@ -16,7 +16,7 @@ export const WEB_ROUTES: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'plants',
+                redirectTo: 'home',
                 pathMatch: 'full'
             },
             {
