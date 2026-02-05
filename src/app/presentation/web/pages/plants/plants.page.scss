@@ -1,13 +1,96 @@
 .plants-page {
-    padding: 1rem;
+    padding: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
-/* Stats Section */
-.stats-overview {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 2rem;
-    margin-bottom: 3rem;
+.plants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .page-title h1 {
+        font-size: 1.75rem;
+        /* Larger */
+        font-weight: 600;
+        /* Less bold, more refined */
+        margin: 0;
+        color: var(--text-primary);
+        font-family: 'Playfair Display', serif;
+        /* Or just a cleaner sans if serif is not desired, but "formal" usually suggests serif or light sans. Let's try standard sans but cleaner. */
+        letter-spacing: -0.5px;
+    }
+
+    .header-controls {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-bar {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 300px;
+        transition: border-color 0.2s;
+
+        &:focus-within {
+            border-color: var(--accent-color);
+        }
+
+        .search-icon {
+            color: var(--text-secondary);
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+        }
+
+        input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            outline: none;
+            font-size: 0.9rem;
+
+            &::placeholder {
+                color: var(--text-secondary);
+            }
+        }
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.2s;
+
+        mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+        }
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
 }
 
 .chart-container {

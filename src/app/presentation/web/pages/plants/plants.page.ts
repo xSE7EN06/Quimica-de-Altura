@@ -7,8 +7,10 @@ import { DataTableComponent, ColumnConfig } from '../../components/data-table/da
 interface Plant {
     id: string;
     name: string;
+    scientificName: string;
     category: string;
-    description: string;
+    status: 'Active' | 'Pending' | 'Inactive';
+    date: string;
 }
 
 @Component({
@@ -20,26 +22,26 @@ interface Plant {
 })
 export class PlantsPage {
     plants: Plant[] = [
-        { id: 'Darlene Robertson', name: 'Alvarez', category: 'View file', description: '' },
-        { id: 'Guy Hawkins', name: 'Perez', category: 'View file', description: '' },
-        { id: 'Esther Howard', name: 'Lara', category: 'View file', description: '' },
+        { id: '#PL-001', name: 'Manzanilla', scientificName: 'Matricaria chamomilla', category: 'Medicinal', status: 'Active', date: '2023-10-15' },
+        { id: '#PL-002', name: 'Aloe Vera', scientificName: 'Aloe barbadensis miller', category: 'Cosmética', status: 'Active', date: '2023-10-18' },
+        { id: '#PL-003', name: 'Menta', scientificName: 'Mentha piperita', category: 'Aromática', status: 'Pending', date: '2023-10-20' },
+        { id: '#PL-004', name: 'Lavanda', scientificName: 'Lavandula angustifolia', category: 'Aromática', status: 'Active', date: '2023-10-22' },
+        { id: '#PL-005', name: 'Romero', scientificName: 'Salvia rosmarinus', category: 'Culinaria', status: 'Inactive', date: '2023-10-25' },
+        { id: '#PL-006', name: 'Tomillo', scientificName: 'Thymus vulgaris', category: 'Culinaria', status: 'Active', date: '2023-10-26' },
     ];
 
     columns: ColumnConfig[] = [];
 
-    // We will initialize columns in AfterViewInit if we need access to templates, 
-    // or we can references them in the HTML directly if we pass TemplateRefs.
-    // However, since ColumnConfig needs TemplateRef, we usually get them via @ViewChild.
-
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
-    @ViewChild('descTpl', { static: true }) descTpl!: TemplateRef<any>;
+    @ViewChild('statusTpl', { static: true }) statusTpl!: TemplateRef<any>;
     @ViewChild('actionsTpl', { static: true }) actionsTpl!: TemplateRef<any>;
 
     ngOnInit() {
         this.columns = [
-            { key: 'id', header: 'ID' },
-            { key: 'name', header: 'Nombre', cellTemplate: this.nameTpl },
-            { key: 'category', header: 'Descripción', cellTemplate: this.descTpl }, // Using category field for Description col based on previous mocks
+            { key: 'name', header: 'Nombre Común', cellTemplate: this.nameTpl },
+            { key: 'category', header: 'Categoría' },
+            { key: 'date', header: 'Fecha Registro' },
+            { key: 'status', header: 'Estado', cellTemplate: this.statusTpl },
             { key: 'actions', header: 'Acciones', cellTemplate: this.actionsTpl }
         ];
     }
