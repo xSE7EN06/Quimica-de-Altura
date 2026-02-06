@@ -2,12 +2,12 @@
     <table>
         <thead>
             <tr>
-                <th *ngFor="let col of columns">{{ col.header }}</th>
+                <th *ngFor="let col of displayedColumns">{{ col.header }}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of data">
-                <td *ngFor="let col of columns">
+                <td *ngFor="let col of displayedColumns">
                     <!-- Check if a custom template is provided for this column -->
                     <ng-container *ngIf="col.cellTemplate; else defaultCell">
                         <ng-container *ngTemplateOutlet="col.cellTemplate; context: { $implicit: item }"></ng-container>

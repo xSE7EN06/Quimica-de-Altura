@@ -3,13 +3,13 @@
     <!-- Top Bar -->
     <header class="plants-header">
         <div class="page-title">
-            <h1>Plantas</h1>
+            <h1>Botanica Medicinal</h1>
         </div>
 
         <div class="header-controls">
             <div class="search-bar">
                 <mat-icon class="search-icon">search</mat-icon>
-                <input type="text" placeholder="Buscar..." />
+                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar plantas..." />
             </div>
 
             <button class="btn-primary" (click)="onAddPlant()">
@@ -23,21 +23,28 @@
 
     <!-- Templates for Table Cells -->
     <ng-template #nameTpl let-item>
-        <div style="display: flex; flex-direction: column;">
-            <span class="text-primary" style="color: var(--text-primary); font-weight: 600;">{{ item.name }}</span>
-            <span class="text-muted" style="font-size: 0.8rem; color: var(--text-secondary);">{{ item.scientificName
-                }}</span>
+        <div class="plant-name-cell">
+            <div class="plant-thumb">
+                <img [src]="item.imageUrl" [alt]="item.commonName">
+            </div>
+            <div class="plant-info">
+                <span class="common-name">{{ item.commonName }}</span>
+                <span class="scientific-name">{{ item.scientificName }}</span>
+            </div>
         </div>
     </ng-template>
 
-    <ng-template #statusTpl let-item>
-        <span class="status-badge" [ngClass]="item.status.toLowerCase()">
-            {{ item.status }}
-        </span>
+    <ng-template #propertiesTpl let-item>
+        <div class="properties-container">
+            <span *ngFor="let prop of item.properties" class="property-tag">
+                {{ prop }}
+            </span>
+        </div>
     </ng-template>
 
     <ng-template #actionsTpl let-item>
         <div class="actions">
+            <button class="btn-icon view" title="Ver Detalles"><mat-icon>visibility</mat-icon></button>
             <button class="btn-icon edit" title="Editar"><mat-icon>edit</mat-icon></button>
             <button class="btn-icon delete" title="Eliminar"><mat-icon>delete_outline</mat-icon></button>
         </div>

@@ -12,33 +12,55 @@ export class MockPlantRepository extends PlantRepository {
             id: '1',
             commonName: 'Aloe Vera',
             scientificName: 'Aloe barbadensis miller',
-            description: 'Succulent plant species of the genus Aloe. It is widely distributed, and is considered an invasive species in many world regions.',
+            description: 'Planta suculenta conocida por sus propiedades curativas para la piel y el sistema digestivo.',
+            properties: ['Antiinflamatorio', 'Cicatrizante', 'Hidratante'],
             imageUrl: 'assets/mock-images/aloe.jpg',
             compounds: [
                 {
                     id: 'c1',
-                    name: 'Aloin',
-                    description: 'Bitter, yellow-brown colored compound.',
-                    properties: ['Laxative', 'Anti-inflammatory']
+                    name: 'Aloína',
+                    description: 'Compuesto amargo y amarillento extraído de la planta.',
+                    properties: ['Laxante', 'Desintoxicante']
                 }
             ],
-            identifyingFeatures: ['Thick, fleshy leaves', 'Serrated margins', 'Green to grey-green colour']
+            identifyingFeatures: ['Hojas carnosas y espinosas', 'Gel transparente en su interior', 'Flores tubulares amarillas'],
+            region: 'Regiones tropicales y subtropicales'
         },
         {
             id: '2',
             commonName: 'Manzanilla',
             scientificName: 'Matricaria chamomilla',
-            description: 'Medicinal herb used for stomach ailments and as a mild sedative.',
+            description: 'Hierba aromática utilizada tradicionalmente para problemas digestivos y como calmante suave.',
+            properties: ['Antiespasmódico', 'Sedante suave', 'Digestivo'],
             imageUrl: 'assets/mock-images/chamomile.jpg',
             compounds: [
                 {
                     id: 'c2',
-                    name: 'Chamazulene',
-                    description: 'Aromatic chemical compound.',
-                    properties: ['Anti-inflammatory', 'Antispasmodic']
+                    name: 'Chamazuleno',
+                    description: 'Compuesto químico aromático presente en muchos aceites esenciales.',
+                    properties: ['Antiinflamatorio', 'Antioxidante']
                 }
             ],
-            identifyingFeatures: ['Daisy-like flowers', 'Apple-like scent', 'Feathery leaves']
+            identifyingFeatures: ['Flores blancas con centro amarillo', 'Aroma similar a la manzana', 'Hojas Plumosas'],
+            region: 'Europa y Asia templada'
+        },
+        {
+            id: '3',
+            commonName: 'Árnica',
+            scientificName: 'Arnica montana',
+            description: 'Planta medicinal valorada por sus potentes efectos analgésicos y antiinflamatorios externos.',
+            properties: ['Analgésico', 'Antiinflamatorio', 'Antiequimótico'],
+            imageUrl: 'assets/mock-images/arnica.jpg',
+            compounds: [
+                {
+                    id: 'c3',
+                    name: 'Helenalina',
+                    description: 'Lactona sesquiterpénica con efectos antiinflamatorios.',
+                    properties: ['Antiinflamatorio', 'Inhibidor NF-kB']
+                }
+            ],
+            identifyingFeatures: ['Flores amarillas brillantes', 'Hojas basales en roseta', 'Crecimiento en praderas de montaña'],
+            region: 'Zonas montañosas de Europa'
         }
     ];
 
