@@ -1,15 +1,15 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { ActionBarComponent } from '../../components/action-bar/action-bar.component';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
+import { AddPlantModalComponent } from '../../components/add-plant-modal/add-plant-modal.component';
 import { Plant } from '../../../../domain/models/plant.entity';
 import { PlantRepository } from '../../../../domain/repositories/plant.repository';
 
 @Component({
     selector: 'app-plants',
     standalone: true,
-    imports: [CommonModule, MatIconModule, DataTableComponent],
+    imports: [CommonModule, MatIconModule, DataTableComponent, AddPlantModalComponent],
     templateUrl: './plants.page.html',
     styleUrls: ['./plants.page.scss']
 })
@@ -20,6 +20,7 @@ export class PlantsPage implements OnInit {
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('propertiesTpl', { static: true }) propertiesTpl!: TemplateRef<any>;
     @ViewChild('actionsTpl', { static: true }) actionsTpl!: TemplateRef<any>;
+    @ViewChild(AddPlantModalComponent) addPlantModal!: AddPlantModalComponent;
 
     constructor(private plantRepository: PlantRepository) { }
 
@@ -49,6 +50,6 @@ export class PlantsPage implements OnInit {
     }
 
     onAddPlant() {
-        console.log('Add Plant');
+        this.addPlantModal.open();
     }
 }
