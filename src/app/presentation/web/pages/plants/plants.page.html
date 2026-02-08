@@ -20,7 +20,8 @@
 
     <!-- Data Table -->
     <app-data-table [data]="plants" [columns]="columns"></app-data-table>
-
+    <app-add-plant-modal (plantsAdded)="onPlantsAdded($event)">
+    </app-add-plant-modal>
     <!-- Templates for Table Cells -->
     <ng-template #nameTpl let-item>
         <div class="plant-name-cell">

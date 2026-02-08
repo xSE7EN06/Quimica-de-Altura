@@ -5,7 +5,9 @@ import { DataTableComponent, ColumnConfig } from '../../components/data-table/da
 import { AddPlantModalComponent } from '../../components/add-plant-modal/add-plant-modal.component';
 import { Plant } from '../../../../domain/models/plant.entity';
 import { PlantRepository } from '../../../../domain/repositories/plant.repository';
-
+import { ToastController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { checkmarkCircle } from 'ionicons/icons';
 @Component({
     selector: 'app-plants',
     standalone: true,
@@ -22,7 +24,7 @@ export class PlantsPage implements OnInit {
     @ViewChild('actionsTpl', { static: true }) actionsTpl!: TemplateRef<any>;
     @ViewChild(AddPlantModalComponent) addPlantModal!: AddPlantModalComponent;
 
-    constructor(private plantRepository: PlantRepository) { }
+    constructor(private plantRepository: PlantRepository, private toastController: ToastController) { addIcons({ checkmarkCircle }); }
 
     ngOnInit() {
         this.loadPlants();
@@ -51,5 +53,29 @@ export class PlantsPage implements OnInit {
 
     onAddPlant() {
         this.addPlantModal.open();
+    }
+
+    async onPlantsAdded(newPlants: any[]) {
+        this.loadPlants();
+
+        const toast = await this.toastController.create({
+            header: '¡Éxito!',
+            message: `${newPlants.length} planta(s) guardada(s) correctamente.`,
+            duration: 3000,
+            position: 'bottom',
+            color: 'dark',
+            icon: 'checkmark-circle',
+            cssClass: 'custom-success-toast',
+
+            buttons: [
+                {
+                    side: 'end',
+                    icon: 'close',
+                    role: 'cancel'
+                }
+            ]
+        });
+
+        await toast.present();
     }
 }
