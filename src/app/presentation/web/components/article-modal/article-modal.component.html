@@ -17,13 +17,22 @@
             </div>
 
             <div class="modal-body">
+                <!-- File Upload Zone (Only in Add mode) -->
+                <div *ngIf="mode === 'add'" class="upload-container" (drop)="onFileDropped($event)"
+                    (dragover)="onDragOver($event)">
+                    <div class="drop-zone">
+                        <mat-icon>cloud_upload</mat-icon>
+                        <p>Arrastra tu artículo aquí o <span>haz clic para buscar</span></p>
+                        <input type="file" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.txt">
+                    </div>
+                </div>
+
                 <div class="form-grid">
                     <div class="form-group full">
                         <label>Título de la Investigación</label>
                         <input type="text" [(ngModel)]="article.title" [disabled]="mode === 'view'"
                             placeholder="Ej. Análisis de alcaloides en plantas medicinales...">
                     </div>
-
                     <div class="form-group">
                         <label>Año de Publicación</label>
                         <input type="number" [(ngModel)]="article.year" [disabled]="mode === 'view'">
@@ -65,6 +74,13 @@
                 <button class="btn-cancel" (click)="close()">Cancelar</button>
                 <button class="btn-save" (click)="onSave()">
                     {{ mode === 'add' ? 'Publicar Artículo' : 'Guardar Cambios' }}
+                </button>
+            </div>
+
+            <div class="modal-footer" *ngIf="mode === 'view'">
+                <button class="btn-cancel" (click)="close()">Cerrar</button>
+                <button class="btn-save" (click)="setMode('edit')">
+                    <mat-icon>edit</mat-icon> Editar Artículo
                 </button>
             </div>
         </div>

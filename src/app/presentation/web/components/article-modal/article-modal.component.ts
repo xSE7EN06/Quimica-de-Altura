@@ -64,4 +64,36 @@ export class ArticleModalComponent {
             this.close();
         }
     }
+
+    setMode(newMode: 'add' | 'edit' | 'view') {
+        this.mode = newMode;
+    }
+
+    onFileSelected(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            this.handleFile(file);
+        }
+    }
+
+    onFileDropped(event: DragEvent) {
+        event.preventDefault();
+        const file = event.dataTransfer?.files[0];
+        if (file) {
+            this.handleFile(file);
+        }
+    }
+
+    onDragOver(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    private handleFile(file: File) {
+        // Simulating file data extraction
+        console.log('Archivo recibido:', file.name);
+        // You could use a library to parse PDF/Text here
+        // For now, we just notify the user
+        alert(`Archivo "${file.name}" cargado. En una integración real, aquí extraeríamos la metadata.`);
+    }
 }

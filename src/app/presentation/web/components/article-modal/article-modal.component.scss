@@ -71,6 +71,54 @@
     flex: 1;
     overflow-y: auto;
     padding: 30px 40px;
+
+    .upload-container {
+        margin-bottom: 30px;
+
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(52, 152, 219, 0.05);
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+
+            &:hover {
+                border-color: #3498db;
+                background: rgba(52, 152, 219, 0.1);
+            }
+
+            mat-icon {
+                font-size: 40px;
+                width: 40px;
+                height: 40px;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
+
+            p {
+                margin: 0;
+                color: var(--text-secondary);
+
+                span {
+                    color: #3498db;
+                    font-weight: 700;
+                }
+            }
+
+            input[type="file"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .form-grid {
