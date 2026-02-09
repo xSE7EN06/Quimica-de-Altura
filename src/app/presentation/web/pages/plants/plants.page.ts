@@ -45,7 +45,6 @@ export class PlantsPage implements OnInit {
     ngOnInit() {
         this.loadPlants();
         this.columns = [
-            /* Se omite el ID por solicitud del usuario */
             { key: 'commonName', header: 'Planta', cellTemplate: this.nameTpl },
             { key: 'properties', header: 'Propiedades', cellTemplate: this.propertiesTpl },
             { key: 'region', header: 'Región' },
@@ -92,6 +91,7 @@ export class PlantsPage implements OnInit {
                 this.selectedPlantId = undefined;
             });
         }
+        this.loadPlants();
     }
 
     onSavePlant(plant: Plant) {
