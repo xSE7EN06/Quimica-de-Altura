@@ -39,7 +39,7 @@
 
     <div class="cards-container">
         <app-most-searched-card *ngFor="let plant of plants" [name]="plant.name" [scientificName]="plant.scientificName"
-            [imageUrl]="plant.imageUrl" [properties]="plant.properties" (action)="viewDetail()">
+            [imageUrl]="plant.imageUrl" [properties]="plant.properties" (action)="viewDetail(plant.id)">
         </app-most-searched-card>
     </div>
 </ion-content>

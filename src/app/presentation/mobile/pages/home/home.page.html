@@ -19,13 +19,13 @@
     <h3>Planta del día</h3>
   </div>
 
-  <div class="plant-of-day-card" (click)="viewDetail()">
+  <div class="plant-of-day-card" (click)="viewDetail('2')">
     <div class="image-overlay"></div>
     <img src="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" alt="Arnica">
     <div class="content">
       <div class="header-row">
         <h4>Árnica mexicana</h4>
-        <span class="details-link" (click)="$event.stopPropagation(); viewDetail()">Ver detalles</span>
+        <span class="details-link" (click)="$event.stopPropagation(); viewDetail('2')">Ver detalles</span>
       </div>
       <p>Usado en la medicina tradicional para aliviar problemas digestivos.</p>
     </div>
@@ -37,17 +37,8 @@
   </div>
 
   <div class="horizontal-scroll-container">
-    <app-plant-card name="Árnica mexicana" subtitle="Heteritheca inuloides Cass"
-      imageUrl="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" (action)="viewDetail()">
-    </app-plant-card>
-
-    <app-plant-card name="Epazote" subtitle="Dysphania ambrosioides"
-      imageUrl="https://tse3.mm.bing.net/th/id/OIP.Wxoj0W_PTJDFZ6FwcK0PUwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-      (action)="onFilter()">
-    </app-plant-card>
-
-    <app-plant-card name="Manzanilla" subtitle="Matricaria chamomilla"
-      imageUrl="https://www.nutricionysaludblog.com/src/uploads/2016/11/manzanilla.jpg" (action)="onFilter()">
+    <app-plant-card *ngFor="let plant of plants" [name]="plant.commonName" [subtitle]="plant.scientificName"
+      [imageUrl]="plant.imageUrl" (action)="viewDetail(plant.id)">
     </app-plant-card>
   </div>
 

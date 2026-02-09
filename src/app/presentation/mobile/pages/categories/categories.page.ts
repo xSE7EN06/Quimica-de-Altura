@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonIcon, IonButtons } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
+import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline } from 'ionicons/icons';
 
@@ -44,7 +45,7 @@ export class CategoriesPage implements OnInit {
         }
     ];
 
-    constructor() {
+    constructor(private router: Router) {
         addIcons({ alertCircleOutline });
     }
 
@@ -61,6 +62,10 @@ export class CategoriesPage implements OnInit {
 
     scanPlant() {
         console.log('Scan Plant');
+    }
+
+    viewCategory(category: string) {
+        this.router.navigate(['/category-detail', category]);
     }
 
 }
