@@ -1,0 +1,127 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="user-modal">
+    <ng-template>
+        <div class="modal-wrapper">
+            <!-- Premium Header (Banner Style) -->
+            <div class="modal-banner">
+                <div class="banner-overlay">
+                    <button class="close-btn" (click)="close()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <div class="banner-content">
+                        <div class="user-avatar-large">
+                            {{ userForm.get('firstName')?.value?.[0] }}{{ userForm.get('lastName')?.value?.[0] }}
+                        </div>
+                        <div class="header-info">
+                            <span class="role-badge-header">{{ userForm.get('role')?.value }}</span>
+                            <h1>{{ mode === 'add' ? 'Crear Nuevo Perfil' : (userForm.get('firstName')?.value + ' ' +
+                                userForm.get('lastName')?.value) }}</h1>
+                            <p class="subtitle" *ngIf="mode !== 'add'">@{{ userForm.get('userName')?.value }} • {{
+                                userForm.get('email')?.value }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="modal-scroll-content">
+                <form [formGroup]="userForm" class="user-form">
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <mat-icon>admin_panel_settings</mat-icon>
+                            <h3>Credenciales de Acceso</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Nombre de Usuario</label>
+                                <input type="text" formControlName="userName" [readOnly]="isReadOnly"
+                                    placeholder="Ej. jperez">
+                            </div>
+                            <div class="form-field">
+                                <label>Correo Institucional</label>
+                                <input type="email" formControlName="email" [readOnly]="isReadOnly"
+                                    placeholder="correo@ejemplo.com">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Rol en el Sistema</label>
+                                <select formControlName="role" *ngIf="!isReadOnly">
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Investigador">Investigador</option>
+                                    <option value="Editor">Editor</option>
+                                    <option value="Visualizador">Visualizador</option>
+                                </select>
+                                <div class="read-only-box" *ngIf="isReadOnly">
+                                    {{ userForm.get('role')?.value }}
+                                </div>
+                            </div>
+                            <div class="form-field" *ngIf="mode === 'add'">
+                                <label>Contraseña Temporal</label>
+                                <input type="password" formControlName="password" placeholder="********">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <mat-icon>person</mat-icon>
+                            <h3>Información Personal</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Nombre(s)</label>
+                                <input type="text" formControlName="firstName" [readOnly]="isReadOnly"
+                                    placeholder="Juan">
+                            </div>
+                            <div class="form-field">
+                                <label>Apellidos</label>
+                                <input type="text" formControlName="lastName" [readOnly]="isReadOnly"
+                                    placeholder="Pérez">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Fecha de Nacimiento</label>
+                                <input type="date" formControlName="birthdate" [readOnly]="isReadOnly">
+                            </div>
+                            <div class="form-field">
+                                <label>Nacionalidad</label>
+                                <input type="text" formControlName="nationality" [readOnly]="isReadOnly"
+                                    placeholder="Mexicana">
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Dirección de Domicilio</label>
+                            <textarea formControlName="address" [readOnly]="isReadOnly" rows="3"
+                                placeholder="Calle, Número, Ciudad, Estado"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Enhanced Footer -->
+            <div class="modal-footer">
+                <div class="footer-actions">
+                    <button *ngIf="isReadOnly" class="btn-edit-mode" (click)="toggleEdit()">
+                        <mat-icon>edit_note</mat-icon> Editar Información
+                    </button>
+
+                    <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">
+                        Cancelar
+                    </button>
+
+                    <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()" [disabled]="userForm.invalid">
+                        <mat-icon>{{ mode === 'add' ? 'person_add' : 'check_circle' }}</mat-icon>
+                        {{ mode === 'add' ? 'Crear Usuario' : 'Confirmar Cambios' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>

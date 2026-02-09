@@ -32,14 +32,9 @@ export const WEB_ROUTES: Routes = [
                 loadComponent: () => import('./pages/compounds/compounds.page').then(m => m.CompoundsPage)
             },
             {
-                path: 'diseases',
-                loadComponent: () => import('./pages/diseases/diseases.page').then(m => m.DiseasesPage)
-            },
-            // Add other routes as placeholders or components when created
-            { path: 'sintomas', redirectTo: 'plants' }, // Placeholder
-            { path: 'vias-admin', redirectTo: 'plants' }, // Placeholder
-            { path: 'tratamientos', redirectTo: 'plants' }, // Placeholder
-            { path: 'usuarios', redirectTo: 'plants' } // Placeholder
+                path: 'users',
+                loadComponent: () => import('./pages/users/users.page').then(m => m.UsersPage)
+            }
         ]
     }
 ];

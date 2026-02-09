@@ -24,17 +24,27 @@ export class MockPlantRepository extends PlantRepository {
             compounds: [
                 {
                     id: 'c1',
-                    name: 'Safrol',
-                    description: 'Aceite esencial que otorga el aroma anisado.',
+                    name: 'Safrole',
+                    iupacName: '5-prop-2-enyl-1,3-benzodioxole',
                     molecularFormula: 'C10H10O2',
-                    properties: ['Aromático', 'Antiséptico', 'Hepatotóxico en altas dosis']
+                    molecularWeight: '162.19 g/mol',
+                    pubchemCid: '10503',
+                    smiles: 'C1=CC2=C(C=C1CC=C)OCO2',
+                    inchi: 'InChI=1S/C10H10O2/c1-2-3-8-4-5-9-10(6-8)12-7-11-9/h1-2,4-6H,3,7H2',
+                    inchiKey: 'SQUYVHKIQLSRE-UHFFFAOYSA-N',
+                    description: 'Aceite esencial que otorga el aroma anisado.'
                 },
                 {
                     id: 'c2',
                     name: 'Linalool',
-                    description: 'Terpeno con propiedades ansiolíticas.',
+                    iupacName: '3,7-dimethylocta-1,6-dien-3-ol',
                     molecularFormula: 'C10H18O',
-                    properties: ['Sedante', 'Anticonvulsivo', 'Aromático']
+                    molecularWeight: '154.25 g/mol',
+                    pubchemCid: '6549',
+                    smiles: 'CC(=CCCC(C)(C=C)O)C',
+                    inchi: 'InChI=1S/C10H18O/c1-5-10(4,11)8-6-7-9(2)3/h5,7,11H,1,6,8H2,2-4H3',
+                    inchiKey: 'CDOSHBVCOALMLC-UHFFFAOYSA-N',
+                    description: 'Terpeno con propiedades ansiolíticas.'
                 }
             ]
         },
@@ -54,16 +64,27 @@ export class MockPlantRepository extends PlantRepository {
             compounds: [
                 {
                     id: 'c3',
-                    name: 'Limoneno',
-                    description: 'Responsable del aroma cítrico y efecto relajante.',
+                    name: 'Limonene',
+                    iupacName: '1-methyl-4-prop-1-en-2-ylcyclohexene',
                     molecularFormula: 'C10H16',
-                    properties: ['Antioxidante', 'Antiinflamatorio', 'Volátil']
+                    molecularWeight: '136.23 g/mol',
+                    pubchemCid: '22311',
+                    smiles: 'CC1=CCC(CC1)C(=C)C',
+                    inchi: 'InChI=1S/C10H16/c1-9(2)10-5-3-8(11)4-6-10/h3,10H,1,4-6H2,2H3',
+                    inchiKey: 'XMGQYMWWDOXLRX-UHFFFAOYSA-N',
+                    description: 'Responsable del aroma cítrico y efecto relajante.'
                 },
                 {
                     id: 'c4',
-                    name: 'Flavonoides',
-                    description: 'Antioxidantes naturales presentes en las flores.',
-                    properties: ['Antioxidante', 'Antiviral', 'Protector cardiovascular']
+                    name: 'Quercetin',
+                    iupacName: '2-(3,4-dihydroxyphenyl)-3,5,7-trihydroxychromen-4-one',
+                    molecularFormula: 'C15H10O7',
+                    molecularWeight: '302.24 g/mol',
+                    pubchemCid: '5280343',
+                    smiles: 'C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O',
+                    inchi: 'InChI=1S/C15H10O7/c16-7-4-10(19)12-11(5-7)22-15(14(21)13(12)20)6-1-2-8(17)9(18)3-6/h1-5,16-19,21H',
+                    inchiKey: 'REFJWTPEDBCVDE-UHFFFAOYSA-N',
+                    description: 'Antioxidante natural potente.'
                 }
             ]
         },
@@ -83,15 +104,27 @@ export class MockPlantRepository extends PlantRepository {
             compounds: [
                 {
                     id: 'c5',
-                    name: 'Mucílagos',
-                    description: 'Sustancia viscosa que protege las mucosas irritadas.',
-                    properties: ['Demulcente', 'Emoliente', 'Hidratante']
+                    name: 'Luteolin',
+                    iupacName: '2-(3,4-dihydroxyphenyl)-5,7-dihydroxychromen-4-one',
+                    molecularFormula: 'C15H10O6',
+                    molecularWeight: '286.24 g/mol',
+                    pubchemCid: '5280445',
+                    smiles: 'C1=CC(=C(C=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O)O',
+                    inchi: 'InChI=1S/C15H10O6/c16-7-4-10(19)12-11(5-7)21-15(6-13(12)20)8-1-2-9(17)14(18)3-8/h1-5,16-17,19-20H',
+                    inchiKey: 'IJOOHUBCXALUOV-UHFFFAOYSA-N',
+                    description: 'Flavonoide con propiedades antiinflamatorias y expectorantes.'
                 },
                 {
                     id: 'c6',
-                    name: 'Saponinas',
-                    description: 'Ayuda a reducir la tensión superficial del moco.',
-                    properties: ['Expectorante', 'Antimicrobiano', 'Espumante']
+                    name: 'Beta-Sitosterol',
+                    iupacName: '17-(5-ethyl-6-methylheptan-2-yl)-10,13-dimethyl-2,3,4,7,8,9,11,12,14,15,16,17-dodecahydro-1H-cyclopenta[a]phenanthren-3-ol',
+                    molecularFormula: 'C29H50O',
+                    molecularWeight: '414.7 g/mol',
+                    pubchemCid: '222284',
+                    smiles: 'CCC(CC(C)C)C(C)C1CCC2C1(CCC3C2CC=C4C3(CCC(C4)O)C)C',
+                    inchi: 'InChI=1S/C29H50O/c1-7-21(24(2)3)13-12-20(4)25-16-17-26-27-14-15-22-19-23(30)10-11-28(22,5)29(27,6)18-12-25/h12,20-27,30H,7-11,13-19H2,1-6H3',
+                    inchiKey: 'KZVAKBWBGRBTMN-UHFFFAOYSA-N',
+                    description: 'Fitosterol que ayuda a reducir la inflamación de las vías respiratorias.'
                 }
             ]
         },
@@ -111,15 +144,27 @@ export class MockPlantRepository extends PlantRepository {
             compounds: [
                 {
                     id: 'c7',
-                    name: 'Antocianinas',
-                    description: 'Pigmentos solubles responsables del color.',
-                    properties: ['Antioxidante potente', 'Antiinflamatorio', 'Hidrosoluble']
+                    name: 'Cyanidin-3-glucoside',
+                    iupacName: '2-(3,4-dihydroxyphenyl)-3-(beta-D-glucopyranosyloxy)-5,7-dihydroxychromenylium',
+                    molecularFormula: 'C21H21O11',
+                    molecularWeight: '449.38 g/mol',
+                    pubchemCid: '115201',
+                    smiles: 'C1=CC(=C(C=C1C2=C(C=C3C(=CC(=CC3=[O+]2)O)O)O[C@H]4[C@@H]([C@H]([C@@H]([C@H](O4)CO)O)O)O)O)O',
+                    inchi: 'InChI=1S/C21H20O11/c22-7-16-18(27)19(28)20(29)21(32-16)31-15-6-11-12(25)8-10(23)9-13(11)30-14(15)5-1-2-17(26)7(3)18/h1-6,16,18-20,22,25-29H,7-9H2/t16-,18-,19+,20-,21+/m1/s1',
+                    inchiKey: 'SQUYVHKIQLSRE-UHFFFAOYSA-N',
+                    description: 'Antocianina responsable del color azul/morado del extracto.'
                 },
                 {
                     id: 'c8',
-                    name: 'Kaempferitrina',
-                    description: 'Glucósido con potencial antidiabético.',
-                    properties: ['Hipoglucemiante', 'Cicatrizante']
+                    name: 'Kaempferitrin',
+                    iupacName: '3,7-bis(6-deoxy-alpha-L-mannopyranosyloxy)-5-hydroxy-2-(4-hydroxyphenyl)chromen-4-one',
+                    molecularFormula: 'C27H30O14',
+                    molecularWeight: '578.5 g/mol',
+                    pubchemCid: '5282161',
+                    smiles: 'CC1C(C(C(C(O1)OC2=CC3=C(C(=O)C(=C(O3)C4=CC=C(C=C4)O)OC5C(C(C(C(O5)C)O)O)O)C(=C2)O)O)O)O',
+                    inchi: 'InChI=1S/C27H30O14/c1-10-18(30)20(32)22(34)25(37-10)39-13-6-15-17(16(29)7-13)41-24(12-4-8-14(28)9-5-12)23(27(15)36)40-26-21(33)19(31)11(2)38-26/h4-9,10-11,18-22,25-26,28-34H,1-2H3',
+                    inchiKey: 'IJOOHUBCXALUOV-UHFFFAOYSA-N',
+                    description: 'Glucósido de flavonol con propiedades medicinales.'
                 }
             ]
         },
@@ -139,10 +184,15 @@ export class MockPlantRepository extends PlantRepository {
             compounds: [
                 {
                     id: 'c9',
-                    name: 'Ascaridol',
-                    description: 'Compuesto principal contra parásitos.',
+                    name: 'Ascaridole',
+                    iupacName: '1-isopropyl-4-methyl-2,3-dioxabicyclo[2.2.2]oct-5-ene',
                     molecularFormula: 'C10H16O2',
-                    properties: ['Antihelmíntico', 'Tóxico en dosis altas', 'Explosivo puro']
+                    molecularWeight: '168.23 g/mol',
+                    pubchemCid: '10452',
+                    smiles: 'CC(C)C12CCC(C=C1)(OO2)C',
+                    inchi: 'InChI=1S/C10H16O2/c1-8(2)10-6-4-9(3,11-12-10)5-7-10/h4-5,8H,6-7H2,1-3H3',
+                    inchiKey: 'XMGQYMWWDOXLRX-UHFFFAOYSA-N',
+                    description: 'Compuesto principal contra parásitos intestinales.'
                 }
             ]
         },
@@ -162,15 +212,19 @@ export class MockPlantRepository extends PlantRepository {
             compounds: [
                 {
                     id: 'c10',
-                    name: 'Helenalina',
-                    description: 'Lactona responsable del efecto antiinflamatorio.',
+                    name: 'Helenalin',
+                    iupacName: '(3aS,4S,4aR,7aS,8R,9aS)-4-hydroxy-4a,8-dimethyl-3-methylidene-3a,4,5,7a,8,9,9a,9b-octahydroazuleno[4,5-b]furan-2,6-dione',
                     molecularFormula: 'C15H18O4',
-                    properties: ['Antiinflamatorio', 'Citotóxico', 'Irritante de piel']
+                    molecularWeight: '262.3 g/mol',
+                    pubchemCid: '441063',
+                    smiles: 'CC1C2CC(C3(C2CC=C4C3CC(=C)C(=O)O4)C)C(=O)C1O',
+                    inchi: 'InChI=1S/C15H18O4/c1-8-12-11(13(17)9(2)14(12)18)10-5-4-7-15(10,3)6-12/h5,8,10-11,14,18H,1,4,6-7H2,2-3H3/t8-,10-,11+,12-,14+,15+/m1/s1',
+                    inchiKey: 'KZVAKBWBGRBTMN-UHFFFAOYSA-N',
+                    description: 'Lactona terpénica con potente acción antiinflamatoria.'
                 }
             ]
         }
     ];
-
 
     getPlants(): Observable<Plant[]> {
         return of(this.plants);
@@ -191,8 +245,6 @@ export class MockPlantRepository extends PlantRepository {
     }
 
     identifyPlant(imageData: string): Observable<Plant | undefined> {
-        // Mock identification logic: returns a random plant or a specific one
-        // For demo purposes, we'll return Aloe Vera
         return of(this.plants[0]);
     }
 
@@ -201,9 +253,7 @@ export class MockPlantRepository extends PlantRepository {
             ...plant,
             id: Date.now().toString()
         };
-
         this.plants.unshift(newPlant);
-
         return of(undefined).pipe(delay(500));
     }
 

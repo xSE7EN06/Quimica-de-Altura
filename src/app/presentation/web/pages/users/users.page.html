@@ -1,0 +1,59 @@
+<div class="users-page">
+    <!-- Top Bar -->
+    <header class="users-header">
+        <div class="page-title">
+            <h1>Gestión de Usuarios</h1>
+            <p>Administra los accesos y perfiles del sistema</p>
+        </div>
+
+        <div class="header-controls">
+            <button class="btn-primary" (click)='onAddUser()'>
+                <mat-icon>person_add</mat-icon> Nuevo Usuario
+            </button>
+        </div>
+    </header>
+
+    <!-- Data Table -->
+    <app-data-table [data]="users" [columns]="columns"></app-data-table>
+
+    <!-- Modals -->
+    <app-user-modal (saved)="onSaveUser($event)"></app-user-modal>
+
+    <app-confirmation-modal title="Eliminar Usuario"
+        message="¿Estás seguro de que deseas eliminar este usuario? Esta acción revocará todos sus accesos."
+        confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
+    <!-- Templates for Table Cells -->
+    <ng-template #userTpl let-item>
+        <div class="user-cell">
+            <div class="user-avatar">
+                {{ item.firstName[0] }}{{ item.lastName[0] }}
+            </div>
+            <div class="user-info">
+                <span class="full-name">{{ item.firstName }} {{ item.lastName }}</span>
+                <span class="user-name">@{{ item.userName }}</span>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #roleTpl let-item>
+        <span class="role-badge" [ngClass]="item.role.toLowerCase()">
+            {{ item.role }}
+        </span>
+    </ng-template>
+
+    <ng-template #actionsTpl let-item>
+        <div class="actions">
+            <button class="btn-icon view" title="Ver Detalles" (click)="onViewUser(item)">
+                <mat-icon>visibility</mat-icon>
+            </button>
+            <button class="btn-icon edit" title="Editar" (click)="onEditUser(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button class="btn-icon delete" title="Eliminar" (click)="onDeleteUser(item)">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+</div>

@@ -1,0 +1,105 @@
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { IonModal } from '@ionic/angular/standalone';
+import { User } from '../../../../domain/models/user.entity';
+
+export type UserModalMode = 'view' | 'edit' | 'add';
+
+@Component({
+    selector: 'app-user-modal',
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        IonModal
+    ],
+    templateUrl: './user-modal.component.html',
+    styleUrls: ['./user-modal.component.scss']
+})
+export class UserModalComponent implements OnInit {
+    @Input() isOpen = false;
+    @Input() mode: UserModalMode = 'view';
+    @Input() user?: User;
+
+    @Output() saved = new EventEmitter<User>();
+    @Output() closed = new EventEmitter<void>();
+
+    userForm!: FormGroup;
+
+    constructor(private fb: FormBuilder) { }
+
+    ngOnInit() {
+        this.initForm();
+    }
+
+    private initForm() {
+        this.userForm = this.fb.group({
+            id: [''],
+            userName: ['', Validators.required],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            role: ['Editor', Validators.required],
+            birthdate: ['', Validators.required],
+            nationality: ['', Validators.required],
+            address: ['', Validators.required],
+            password: ['']
+        });
+    }
+
+    open(mode: UserModalMode, user?: User) {
+        this.mode = mode;
+        this.user = user;
+        this.isOpen = true;
+
+        if (this.userForm) {
+            if (user) {
+                this.userForm.patchValue(user);
+                if (mode === 'edit') {
+                    this.userForm.get('password')?.setValidators(null);
+                }
+            } else {
+                this.userForm.reset({ role: 'Editor' });
+                this.userForm.get('password')?.setValidators([Validators.required]);
+            }
+            this.userForm.get('password')?.updateValueAndValidity();
+        }
+    }
+
+    close() {
+        this.isOpen = false;
+        this.closed.emit();
+    }
+
+    onDidDismiss() {
+        this.isOpen = false;
+        this.closed.emit();
+    }
+
+    onSave() {
+        if (this.userForm.valid) {
+            this.saved.emit(this.userForm.value);
+            this.close();
+        }
+    }
+
+    toggleEdit() {
+        this.mode = 'edit';
+        this.userForm.get('password')?.setValidators(null);
+        this.userForm.get('password')?.updateValueAndValidity();
+    }
+
+    get isReadOnly(): boolean {
+        return this.mode === 'view';
+    }
+
+    get title(): string {
+        if (this.mode === 'add') return 'Nuevo Usuario';
+        if (this.mode === 'edit') return 'Editar Usuario';
+        return 'Detalles del Usuario';
+    }
+}
