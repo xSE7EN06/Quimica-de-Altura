@@ -22,7 +22,7 @@
                     <div class="card-content">
                         <h4>{{ category.name }}</h4>
                         <p>{{ category.description }}</p>
-                        <button class="ver-plantas-btn">Ver plantas</button>
+                        <button class="ver-plantas-btn" (click)="viewCategory(category.name)">Ver plantas</button>
                     </div>
                 </div>
             </ion-col>
