@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
 import { ApiModalComponent } from '../../components/api-modal/api-modal.component';
+import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
 import { ExternalApi } from '../../../../domain/models/external-api.entity';
 import { ExternalApiRepository } from '../../../../domain/repositories/external-api.repository';
 import { ToastController } from '@ionic/angular/standalone';
@@ -16,7 +17,8 @@ import { globe, code, timer, toggle, checkmarkCircle, trash, alertCircle, add } 
         CommonModule,
         MatIconModule,
         DataTableComponent,
-        ApiModalComponent
+        ApiModalComponent,
+        ConfirmationModalComponent
     ],
     templateUrl: './external-apis.page.html',
     styleUrls: ['./external-apis.page.scss']
@@ -29,6 +31,10 @@ export class ExternalApisPage implements OnInit {
     isModalOpen = false;
     modalMode: 'add' | 'edit' | 'view' = 'view';
     selectedApi?: ExternalApi;
+
+    // Confirmation modal state
+    isConfirmModalOpen = false;
+    apiToDelete?: ExternalApi;
 
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('authTpl', { static: true }) authTpl!: TemplateRef<any>;
@@ -88,10 +94,16 @@ export class ExternalApisPage implements OnInit {
     }
 
     onDeleteApi(api: ExternalApi) {
-        if (confirm(`¿Estás seguro de que deseas eliminar la configuración de ${api.name}?`)) {
-            this.apiRepository.deleteApi(api.id).subscribe(() => {
+        this.apiToDelete = api;
+        this.isConfirmModalOpen = true;
+    }
+
+    onConfirmDelete() {
+        if (this.apiToDelete) {
+            this.apiRepository.deleteApi(this.apiToDelete.id).subscribe(() => {
                 this.loadApis();
-                this.showToast(`${api.name} eliminada.`);
+                this.showToast(`${this.apiToDelete?.name} eliminada.`);
+                this.isConfirmModalOpen = false;
             });
         }
     }

@@ -24,6 +24,11 @@
         (saved)="onSaveApi($event)">
     </app-api-modal>
 
+    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar API"
+        [message]="'¿Estás seguro de que deseas eliminar la configuración de ' + apiToDelete?.name + '?'"
+        confirmText="Eliminar" (confirmed)="onConfirmDelete()" (cancelled)="isConfirmModalOpen = false">
+    </app-confirmation-modal>
+
     <!-- Templates for Table Cells -->
     <ng-template #nameTpl let-item>
         <div class="api-name-cell">

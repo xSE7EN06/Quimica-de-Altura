@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
 import { ArticleModalComponent } from '../../components/article-modal/article-modal.component';
+import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
 import { Article } from '../../../../domain/models/article.entity';
 import { ArticleRepository } from '../../../../domain/repositories/article.repository';
 import { ToastController } from '@ionic/angular/standalone';
@@ -14,7 +15,8 @@ import { ToastController } from '@ionic/angular/standalone';
         CommonModule,
         MatIconModule,
         DataTableComponent,
-        ArticleModalComponent
+        ArticleModalComponent,
+        ConfirmationModalComponent
     ],
     templateUrl: './articles.page.html',
     styleUrls: ['./articles.page.scss']
@@ -27,6 +29,10 @@ export class ArticlesPage implements OnInit {
     isModalOpen = false;
     modalMode: 'add' | 'edit' | 'view' = 'view';
     selectedArticle?: Article;
+
+    // Confirmation modal state
+    isConfirmModalOpen = false;
+    articleToDelete?: Article;
 
     @ViewChild('titleTpl', { static: true }) titleTpl!: TemplateRef<any>;
     @ViewChild('authorsTpl', { static: true }) authorsTpl!: TemplateRef<any>;
@@ -86,10 +92,16 @@ export class ArticlesPage implements OnInit {
     }
 
     onDeleteArticle(article: Article) {
-        if (confirm(`¿Estás seguro de que deseas eliminar el artículo "${article.title}"?`)) {
-            this.articleRepository.deleteArticle(article.id).subscribe(() => {
+        this.articleToDelete = article;
+        this.isConfirmModalOpen = true;
+    }
+
+    onConfirmDelete() {
+        if (this.articleToDelete) {
+            this.articleRepository.deleteArticle(this.articleToDelete.id).subscribe(() => {
                 this.loadArticles();
                 this.showToast('Artículo eliminado del repositorio.');
+                this.isConfirmModalOpen = false;
             });
         }
     }

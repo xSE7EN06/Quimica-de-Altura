@@ -24,6 +24,11 @@
         (closed)="isModalOpen = false" (saved)="onSaveArticle($event)">
     </app-article-modal>
 
+    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar Artículo"
+        [message]="'¿Estás seguro de que deseas eliminar el artículo ' + articleToDelete?.title + '?'"
+        confirmText="Eliminar" (confirmed)="onConfirmDelete()" (cancelled)="isConfirmModalOpen = false">
+    </app-confirmation-modal>
+
     <!-- Templates for Table Cells -->
     <ng-template #titleTpl let-item>
         <div class="article-title-cell">

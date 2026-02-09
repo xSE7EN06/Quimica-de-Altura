@@ -67,4 +67,8 @@ export class ApiModalComponent {
     removeEndpoint(index: number) {
         this.api.endpoints.splice(index, 1);
     }
+
+    setMode(newMode: 'add' | 'edit' | 'view') {
+        this.mode = newMode;
+    }
 }
