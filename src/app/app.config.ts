@@ -12,6 +12,8 @@ import { CompoundRepository } from './domain/repositories/compound.repository';
 import { MockCompoundRepository } from './infrastructure/repositories/mock-compound.repository';
 import { ExternalApiRepository } from './domain/repositories/external-api.repository';
 import { MockExternalApiRepository } from './infrastructure/repositories/mock-external-api.repository';
+import { ArticleRepository } from './domain/repositories/article.repository';
+import { MockArticleRepository } from './infrastructure/repositories/mock-article.repository';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
@@ -27,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     { provide: UserRepository, useClass: MockUserRepository },
     { provide: CompoundRepository, useClass: MockCompoundRepository },
     { provide: ExternalApiRepository, useClass: MockExternalApiRepository },
+    { provide: ArticleRepository, useClass: MockArticleRepository },
     provideCharts(withDefaultRegisterables())
   ]
 };

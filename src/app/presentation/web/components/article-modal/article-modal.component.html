@@ -1,0 +1,72 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="article-management-modal">
+    <ng-template>
+        <div class="modal-wrapper">
+            <div class="modal-header">
+                <div class="header-icon">
+                    <mat-icon>{{ mode === 'add' ? 'library_add' : 'menu_book' }}</mat-icon>
+                </div>
+                <div class="header-text">
+                    <h2>{{ mode === 'add' ? 'Nuevo Artículo' : mode === 'edit' ? 'Editar Artículo' : 'Ficha Técnica de
+                        Investigación' }}</h2>
+                    <p>{{ mode === 'view' ? 'Detalles de la publicación académica' : 'Ingresa la información
+                        bibliográfica y técnica' }}</p>
+                </div>
+                <button class="close-btn" (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Título de la Investigación</label>
+                        <input type="text" [(ngModel)]="article.title" [disabled]="mode === 'view'"
+                            placeholder="Ej. Análisis de alcaloides en plantas medicinales...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Año de Publicación</label>
+                        <input type="number" [(ngModel)]="article.year" [disabled]="mode === 'view'">
+                    </div>
+
+                    <div class="form-group">
+                        <label>País de Origen</label>
+                        <input type="text" [(ngModel)]="article.country" [disabled]="mode === 'view'"
+                            placeholder="México, Perú, etc.">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>URL / DOI</label>
+                        <input type="text" [(ngModel)]="article.doi" [disabled]="mode === 'view'"
+                            placeholder="https://doi.org/10.xxxx/xxxx">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Autores (Separados por coma)</label>
+                        <input type="text" [(ngModel)]="authorsList" [disabled]="mode === 'view'"
+                            placeholder="Pérez, J., Smith, A., etc.">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Palabras Clave (Separadas por coma)</label>
+                        <input type="text" [(ngModel)]="keywordsList" [disabled]="mode === 'view'"
+                            placeholder="Química, Botánica, Medicina...">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Resumen / Abstract</label>
+                        <textarea [(ngModel)]="article.abstract" [disabled]="mode === 'view'" rows="6"
+                            placeholder="Resumen detallado de la investigación..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" *ngIf="mode !== 'view'">
+                <button class="btn-cancel" (click)="close()">Cancelar</button>
+                <button class="btn-save" (click)="onSave()">
+                    {{ mode === 'add' ? 'Publicar Artículo' : 'Guardar Cambios' }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>

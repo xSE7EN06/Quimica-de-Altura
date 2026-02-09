@@ -1,0 +1,70 @@
+<div class="articles-page">
+    <header class="articles-header">
+        <div class="page-title">
+            <h1>Repositorio de Artículos</h1>
+            <p>Base de conocimientos científica y académica del proyecto</p>
+        </div>
+
+        <div class="header-controls">
+            <div class="search-bar">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
+                    placeholder="Buscar por título, autor o palabras clave..." />
+            </div>
+
+            <button class="btn-primary" (click)="onAddArticle()">
+                <mat-icon>library_add</mat-icon> Subir Artículo
+            </button>
+        </div>
+    </header>
+
+    <app-data-table [data]="articles" [columns]="columns"></app-data-table>
+
+    <app-article-modal [isOpen]="isModalOpen" [mode]="modalMode" [article]="selectedArticle!"
+        (closed)="isModalOpen = false" (saved)="onSaveArticle($event)">
+    </app-article-modal>
+
+    <!-- Templates for Table Cells -->
+    <ng-template #titleTpl let-item>
+        <div class="article-title-cell">
+            <div class="article-icon">
+                <mat-icon>menu_book</mat-icon>
+            </div>
+            <div class="article-info">
+                <span class="main-title">{{ item.title }}</span>
+                <div class="keywords-list">
+                    <span *ngFor="let key of item.keywords | slice:0:3" class="keyword-tag">{{ key }}</span>
+                    <span *ngIf="item.keywords.length > 3" class="keyword-more">+{{ item.keywords.length - 3 }}</span>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #authorsTpl let-item>
+        <div class="authors-cell">
+            <span class="author-primary">{{ item.authors[0] }}</span>
+            <span *ngIf="item.authors.length > 1" class="author-others">et al.</span>
+        </div>
+    </ng-template>
+
+    <ng-template #doiTpl let-item>
+        <a [href]="item.doi" target="_blank" class="doi-link">
+            <mat-icon>link</mat-icon>
+            Ver Fuente
+        </a>
+    </ng-template>
+
+    <ng-template #actionsTpl let-item>
+        <div class="actions">
+            <button class="btn-icon view" title="Ver Resumen" (click)="onViewArticle(item)">
+                <mat-icon>visibility</mat-icon>
+            </button>
+            <button class="btn-icon edit" title="Editar" (click)="onEditArticle(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button class="btn-icon delete" title="Remover" (click)="onDeleteArticle(item)">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+</div>
