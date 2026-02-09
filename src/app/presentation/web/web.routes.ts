@@ -16,11 +16,11 @@ export const WEB_ROUTES: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'home',
+                redirectTo: 'analytics',
                 pathMatch: 'full'
             },
             {
-                path: 'home',
+                path: 'analytics',
                 loadComponent: () => import('./pages/dashboard/dashboard.page').then(m => m.DashboardPage)
             },
             {

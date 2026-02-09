@@ -2,117 +2,150 @@
 
     <!-- Top Bar -->
     <header class="dashboard-header">
-        <div class="search-bar">
-            <mat-icon class="search-icon">search</mat-icon>
-            <input type="text" placeholder="Buscar planta por nombre científico..." />
+        <div class="page-title">
+            <h1>Panel de Análisis y Estadísticas</h1>
+            <p>Monitoreo global de interacciones y puntos de mejora</p>
         </div>
 
         <div class="header-actions">
             <div class="time-filter">
-                <span>Últimas 24h</span>
+                <mat-icon>calendar_today</mat-icon>
+                <span>Últimos 30 días</span>
                 <mat-icon>expand_more</mat-icon>
             </div>
-            <button class="btn-primary">Buscar</button>
+            <button class="btn-refresh">
+                <mat-icon>sync</mat-icon> Actualizar
+            </button>
         </div>
     </header>
 
-    <!-- Stats Grid -->
+    <!-- Global Stats -->
     <div class="stats-grid">
-        <!-- Card 1 -->
         <div class="stat-card">
             <div class="card-header">
-                <span class="card-title">Búsquedas Totales</span>
-                <mat-icon class="card-icon">search</mat-icon>
+                <span class="card-title">Interacciones Totales</span>
+                <mat-icon class="card-icon blue">analytics</mat-icon>
             </div>
-            <div class="card-value">1,284 <span class="trend positive">+12.5%</span></div>
-            <div class="card-subtitle">Últimas 24 horas</div>
+            <div class="card-value">24,592 <span class="trend positive">+18.2%</span></div>
+            <div class="card-subtitle">Consultas en todos los módulos</div>
         </div>
 
-        <!-- Card 2 -->
         <div class="stat-card">
             <div class="card-header">
-                <span class="card-title">APIs Consultadas</span>
-                <mat-icon class="card-icon">dns</mat-icon> <!-- or database -->
+                <span class="card-title">Usuarios Activos</span>
+                <mat-icon class="card-icon green">people</mat-icon>
             </div>
-            <div class="card-value">4,470 <span class="trend positive">+8.2%</span></div>
-            <div class="card-subtitle">5 fuentes activas</div>
+            <div class="card-value">1,840 <span class="trend positive">+5.4%</span></div>
+            <div class="card-subtitle">En la última semana</div>
         </div>
 
-        <!-- Card 3 -->
         <div class="stat-card">
             <div class="card-header">
-                <span class="card-title">Artículos Analizados</span>
-                <mat-icon class="card-icon">description</mat-icon>
+                <span class="card-title">Tasa de Conversión</span>
+                <mat-icon class="card-icon yellow">auto_awesome</mat-icon>
             </div>
-            <div class="card-value">892 <span class="trend positive">+15.3%</span></div>
-            <div class="card-subtitle">PubMed, Scopus</div>
+            <div class="card-value">92.5% <span class="trend positive">+2.1%</span></div>
+            <div class="card-subtitle">Búsquedas con resultados</div>
         </div>
 
-        <!-- Card 4 -->
         <div class="stat-card">
             <div class="card-header">
-                <span class="card-title">Análisis IA</span>
-                <mat-icon class="card-icon">auto_awesome</mat-icon>
+                <span class="card-title">Consultas Yolotl</span>
+                <mat-icon class="card-icon purple">forum</mat-icon>
             </div>
-            <div class="card-value">256 <span class="trend positive">+23.1%</span></div>
-            <div class="card-subtitle">Compuestos extraídos</div>
+            <div class="card-value">4,120 <span class="trend positive">+32.0%</span></div>
+            <div class="card-subtitle">Chats finalizados con éxito</div>
         </div>
     </div>
 
-    <!-- Charts Grid -->
-    <div class="charts-grid">
-
-        <!-- Line Chart Section -->
-        <div class="chart-card">
+    <!-- Main Charts Section -->
+    <div class="charts-grid horizontal">
+        <!-- Plantas más consultadas -->
+        <div class="chart-card large">
             <div class="chart-header">
-                <div class="chart-title-group">
-                    <h3>Búsquedas</h3>
-                    <div class="chart-legend">
-                        <span class="legend-item"><span class="dot blue"></span> Total</span>
-                        <span class="legend-item"><span class="dot green"></span> Exitosas</span>
-                    </div>
+                <div class="header-icon-box green">
+                    <mat-icon>eco</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Plantas Más Consultadas</h3>
+                    <p>Top 6 especies con mayor interés por parte de los usuarios</p>
                 </div>
             </div>
-            <div class="chart-container">
-                <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'">
+            <div class="chart-content">
+                <canvas baseChart [data]="plantsChartData" [options]="plantsChartOptions" [type]="'bar'">
                 </canvas>
             </div>
         </div>
 
-        <!-- Bar Chart Section -->
+        <!-- Módulos más clickeados -->
+        <div class="chart-card small">
+            <div class="chart-header">
+                <div class="header-icon-box blue">
+                    <mat-icon>touch_app</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Módulos de la App</h3>
+                    <p>Distribución de clicks por sección</p>
+                </div>
+            </div>
+            <div class="chart-content doughnut-box">
+                <canvas baseChart [data]="modulesChartData" [options]="modulesChartOptions" [type]="'doughnut'">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Charts Section -->
+    <div class="charts-grid-three">
+        <!-- Malestares -->
         <div class="chart-card">
             <div class="chart-header">
-                <h3>APIs Consultadas</h3>
-                <span class="chart-subtitle">Latencia promedio <span class="highlight-green">148ms</span></span>
+                <div class="header-icon-box yellow">
+                    <mat-icon>healing</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Malestares Buscados</h3>
+                    <p>Puntos de dolor más frecuentes</p>
+                </div>
             </div>
-            <div class="chart-container">
-                <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'">
+            <div class="chart-content">
+                <canvas baseChart [data]="ailmentsChartData" [options]="ailmentsChartOptions" [type]="'bar'">
                 </canvas>
             </div>
         </div>
 
-        <!-- Doughnut Chart Section (Fuentes) -->
+        <!-- Propiedades -->
         <div class="chart-card">
             <div class="chart-header">
-                <h3>Fuentes de Datos</h3>
+                <div class="header-icon-box green">
+                    <mat-icon>science</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Propiedades de Interés</h3>
+                    <p>Fito-propiedades más valoradas</p>
+                </div>
             </div>
-            <div class="chart-container" style="display: flex; justify-content: center;">
-                <canvas baseChart [data]="doughnutChartData" [options]="doughnutChartOptions" [type]="'doughnut'">
+            <div class="chart-content">
+                <canvas baseChart [data]="propertiesChartData" [options]="propertiesChartOptions" [type]="'bar'">
                 </canvas>
             </div>
         </div>
 
-        <!-- Vertical Bar Chart Section (Families) -->
+        <!-- Métodos de Preparación -->
         <div class="chart-card">
             <div class="chart-header">
-                <h3>Familias Más Buscadas</h3>
+                <div class="header-icon-box purple">
+                    <mat-icon>coffee_maker</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Métodos de Preparación</h3>
+                    <p>Uso relativo por técnica aplicada</p>
+                </div>
             </div>
-            <div class="chart-container">
-                <canvas baseChart [data]="familiesChartData" [options]="familiesChartOptions" [type]="'bar'">
+            <div class="chart-content">
+                <canvas baseChart [data]="methodsChartData" [options]="methodsChartOptions" [type]="'bar'">
                 </canvas>
             </div>
         </div>
-
-
     </div>
 </div>

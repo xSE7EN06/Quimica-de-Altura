@@ -13,148 +13,160 @@ import { ChartConfiguration, ChartOptions } from 'chart.js';
 })
 export class DashboardPage {
 
-  // Line Chart (Bi-curved smooth)
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Ahora'],
+  // 1. Plantas más consultadas (Horizontal Bar Chart)
+  public plantsChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Aloe Vera', 'Manzanilla', 'Mentol', 'Arnica', 'Eucalipto', 'Muicle'],
     datasets: [
       {
-        data: [45, 25, 60, 120, 150, 100, 115],
-        label: 'Total',
-        fill: true,
-        tension: 0.5,
-        borderColor: '#3498db',
-        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-        pointBackgroundColor: '#3498db',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: '#3498db',
-      },
-      {
-        data: [40, 22, 55, 110, 140, 95, 110],
-        label: 'Exitosas',
-        fill: true,
-        tension: 0.5,
-        borderColor: '#2ecc71',
-        backgroundColor: 'rgba(46, 204, 113, 0.1)',
-        pointBackgroundColor: '#2ecc71',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: '#2ecc71',
-      }
-    ]
-  };
-
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false }, // Custom legend in HTML
-      tooltip: {
-        mode: 'index',
-        intersect: false,
-        backgroundColor: '#1f2329',
-        titleColor: '#fff',
-        bodyColor: '#8e95a2',
-        borderColor: '#333',
-        borderWidth: 1
-      }
-    },
-    scales: {
-      x: {
-        grid: { display: false, color: '#333' },
-        ticks: { color: '#8e95a2' }
-      },
-      y: {
-        grid: { color: '#1f2329' },
-        ticks: { color: '#8e95a2' },
-        beginAtZero: true
-      }
-    }
-  };
-
-  // Bar Chart (Horizontal)
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['GBIF', 'NCBI', 'PubMed', 'Kew', 'iNaturalist'],
-    datasets: [
-      {
-        data: [1200, 980, 1100, 450, 800],
+        data: [450, 380, 320, 290, 210, 180],
         label: 'Consultas',
         backgroundColor: '#2ecc71',
-        borderRadius: 4,
-        barThickness: 20
+        borderRadius: 8,
+        barThickness: 24,
+        hoverBackgroundColor: '#27ae60'
       }
     ]
   };
 
-  public barChartOptions: ChartOptions<'bar'> = {
-    indexAxis: 'y', // Horizontal
+  public plantsChartOptions: ChartOptions<'bar'> = {
+    indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1f2329',
+        padding: 12,
+        cornerRadius: 10
+      }
     },
     scales: {
       x: {
-        grid: { color: '#1f2329' },
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
         ticks: { color: '#8e95a2' }
       },
       y: {
         grid: { display: false },
-        ticks: { color: '#8e95a2', font: { weight: 'bold' } }
+        ticks: { color: '#8e95a2', font: { weight: 'bold', size: 13 } }
       }
     }
   };
 
-  // Doughnut Chart (Sources)
-  public doughnutChartData: ChartConfiguration<'doughnut'>['data'] = {
-    labels: ['Base de Datos', 'Artículos', 'IA Generado'],
+  // 2. Módulos más clickeados (Doughnut Chart)
+  public modulesChartData: ChartConfiguration<'doughnut'>['data'] = {
+    labels: ['Plantas', 'Propiedades', 'ID por Foto', 'Chat Yolotl'],
     datasets: [
       {
-        data: [45, 30, 25],
-        backgroundColor: ['#2ecc71', '#3498db', '#f1c40f'],
-        hoverBackgroundColor: ['#27ae60', '#2980b9', '#f39c12'],
+        data: [40, 25, 20, 15],
+        backgroundColor: ['#2ecc71', '#3498db', '#f1c40f', '#9b59b6'],
         borderWidth: 0,
-        hoverOffset: 4
+        hoverOffset: 12
       }
     ]
   };
 
-  public doughnutChartOptions: ChartOptions<'doughnut'> = {
+  public modulesChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'bottom',
         labels: {
           color: '#8e95a2',
           usePointStyle: true,
           pointStyle: 'circle',
-          padding: 20
+          padding: 25,
+          font: { size: 12 }
         }
       }
     },
-    cutout: '60%' // Donut thickness
+    cutout: '65%'
   };
 
-  // Vertical Bar Chart (Families)
-  public familiesChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Asteraceae', 'Fabaceae', 'Lamiaceae', 'Rosaceae', 'Poaceae'],
+  // 3. Malestares más buscados (Bar Chart)
+  public ailmentsChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Dolor de cabeza', 'Dolor de panza', 'Insomnio', 'Ansiedad', 'Tos', 'Gripe'],
     datasets: [
       {
-        data: [240, 180, 150, 130, 100],
-        backgroundColor: '#2ecc71',
-        borderRadius: 4,
+        data: [620, 540, 480, 410, 350, 310],
+        backgroundColor: '#3498db',
+        borderRadius: 6,
+        barThickness: 30
+      }
+    ]
+  };
+
+  public ailmentsChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: '#8e95a2', font: { size: 11 } }
+      },
+      y: {
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+        ticks: { color: '#8e95a2' },
+        beginAtZero: true
+      }
+    }
+  };
+
+  // 4. Propiedades más consultadas (Radar or Horizontal Bar)
+  public propertiesChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Antiinflamatorio', 'Relajante', 'Digestivo', 'Analgésico', 'Antibiótico', 'Expectorante'],
+    datasets: [
+      {
+        data: [780, 690, 640, 590, 420, 380],
+        backgroundColor: '#f1c40f',
+        borderRadius: 8,
+        barThickness: 24
+      }
+    ]
+  };
+
+  public propertiesChartOptions: ChartOptions<'bar'> = {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+        ticks: { color: '#8e95a2' }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: '#8e95a2', font: { weight: 600 } }
+      }
+    }
+  };
+
+  // 5. Métodos de preparación (Polar Area or Bar)
+  public methodsChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Infusión', 'Decocción', 'Tintura', 'Compresa', 'Cataplasma'],
+    datasets: [
+      {
+        data: [85, 45, 30, 25, 15],
+        label: 'Uso %',
+        backgroundColor: '#9b59b6',
+        borderRadius: 6,
         barThickness: 40
       }
     ]
   };
 
-  public familiesChartOptions: ChartOptions<'bar'> = {
+  public methodsChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
+      legend: { display: false }
     },
     scales: {
       x: {
@@ -162,9 +174,12 @@ export class DashboardPage {
         ticks: { color: '#8e95a2' }
       },
       y: {
-        grid: { color: '#1f2329', tickLength: 10 },
-        ticks: { color: '#8e95a2' },
-        beginAtZero: true
+        max: 100,
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+        ticks: {
+          color: '#8e95a2',
+          callback: (value) => value + '%'
+        }
       }
     }
   };
