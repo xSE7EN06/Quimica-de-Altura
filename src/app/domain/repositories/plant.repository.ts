@@ -6,4 +6,8 @@ export abstract class PlantRepository {
     abstract getPlantById(id: string): Observable<Plant | undefined>;
     abstract searchPlants(query: string): Observable<Plant[]>;
     abstract identifyPlant(imageData: string): Observable<Plant | undefined>;
+
+    abstract addPlant(plant: Plant): Observable<void>;
+    abstract updatePlant(plant: Plant): Observable<void>;
+    abstract deletePlant(id: string): Observable<void>;
 }

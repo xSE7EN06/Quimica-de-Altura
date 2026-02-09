@@ -20,8 +20,18 @@
 
     <!-- Data Table -->
     <app-data-table [data]="plants" [columns]="columns"></app-data-table>
+
+    <!-- Modals -->
     <app-add-plant-modal (plantsAdded)="onPlantsAdded($event)">
     </app-add-plant-modal>
+
+    <app-plant-modal (saved)="onSavePlant($event)"></app-plant-modal>
+
+    <app-confirmation-modal title="Eliminar Planta"
+        message="¿Estás seguro de que deseas eliminar esta planta? Esta acción no se puede deshacer."
+        confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
     <!-- Templates for Table Cells -->
     <ng-template #nameTpl let-item>
         <div class="plant-name-cell">
@@ -45,12 +55,15 @@
 
     <ng-template #actionsTpl let-item>
         <div class="actions">
-            <button class="btn-icon view" title="Ver Detalles"><mat-icon>visibility</mat-icon></button>
-            <button class="btn-icon edit" title="Editar"><mat-icon>edit</mat-icon></button>
-            <button class="btn-icon delete" title="Eliminar"><mat-icon>delete_outline</mat-icon></button>
+            <button class="btn-icon view" title="Ver Detalles" (click)="onViewPlant(item)">
+                <mat-icon>visibility</mat-icon>
+            </button>
+            <button class="btn-icon edit" title="Editar" (click)="onEditPlant(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button class="btn-icon delete" title="Eliminar" (click)="onDeletePlant(item)">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
         </div>
     </ng-template>
-
-    <!-- Modal for adding plants -->
-    <app-add-plant-modal></app-add-plant-modal>
 </div>
