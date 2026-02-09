@@ -34,6 +34,10 @@ export const WEB_ROUTES: Routes = [
             {
                 path: 'users',
                 loadComponent: () => import('./pages/users/users.page').then(m => m.UsersPage)
+            },
+            {
+                path: 'apis',
+                loadComponent: () => import('./pages/external-apis/external-apis.page').then(m => m.ExternalApisPage)
             }
         ]
     }

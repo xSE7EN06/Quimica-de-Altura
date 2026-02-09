@@ -1,0 +1,104 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="api-management-modal">
+    <ng-template>
+        <div class="modal-wrapper">
+            <div class="modal-header">
+                <div class="header-icon">
+                    <mat-icon>{{ mode === 'add' ? 'add_link' : 'settings_ethernet' }}</mat-icon>
+                </div>
+                <div class="header-text">
+                    <h2>{{ mode === 'add' ? 'Nueva API' : mode === 'edit' ? 'Editar Configuración' : 'Detalles de la
+                        API' }}</h2>
+                    <p>{{ mode === 'view' ? 'Configuración actual del servicio' : 'Define los parámetros de conexión' }}
+                    </p>
+                </div>
+                <button class="close-btn" (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Nombre del Servicio</label>
+                        <input type="text" [(ngModel)]="api.name" [disabled]="mode === 'view'"
+                            placeholder="Ej. PlantNet API">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Base URL</label>
+                        <input type="text" [(ngModel)]="api.base_url" [disabled]="mode === 'view'"
+                            placeholder="https://api.ejemplo.com/v1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de Autenticación</label>
+                        <select [(ngModel)]="api.authType" [disabled]="mode === 'view'">
+                            <option value="None">Sin Autenticación</option>
+                            <option value="API Key">API Key</option>
+                            <option value="OAuth2">OAuth 2.0</option>
+                            <option value="Basic Auth">Basic Auth</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rate Limit</label>
+                        <input type="text" [(ngModel)]="api.rateLimit" [disabled]="mode === 'view'"
+                            placeholder="Ej. 100 req/min">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Descripción</label>
+                        <textarea [(ngModel)]="api.description" [disabled]="mode === 'view'" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="endpoints-section">
+                    <div class="section-header">
+                        <h3>Endpoints Configurados</h3>
+                        <button *ngIf="mode !== 'view'" class="btn-add-mini" (click)="addEndpoint()">
+                            <mat-icon>add</mat-icon> Agregar Endpoint
+                        </button>
+                    </div>
+
+                    <div class="endpoints-list">
+                        <div *ngFor="let edp of api.endpoints; let i = index" class="endpoint-card">
+                            <div class="edp-header">
+                                <span class="method-tag" [ngClass]="edp.method.toLowerCase()">{{ edp.method }}</span>
+                                <input type="text" [(ngModel)]="edp.name" [disabled]="mode === 'view'"
+                                    class="edp-name-input" placeholder="Nombre del endpoint">
+                                <button *ngIf="mode !== 'view'" class="btn-remove" (click)="removeEndpoint(i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                            <div class="edp-body">
+                                <input type="text" [(ngModel)]="edp.path" [disabled]="mode === 'view'"
+                                    class="edp-path-input" placeholder="/ruta/del/recurso">
+                                <div class="edp-footer">
+                                    <input type="text" [(ngModel)]="edp.description" [disabled]="mode === 'view'"
+                                        class="edp-desc-input" placeholder="Descripción breve...">
+                                    <div class="toggle-box">
+                                        <span>Activo</span>
+                                        <ion-toggle [(ngModel)]="edp.isActive"
+                                            [disabled]="mode === 'view'"></ion-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="api.endpoints.length === 0" class="empty-endpoints">
+                            <mat-icon>link_off</mat-icon>
+                            <p>No hay endpoints definidos para esta API</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" *ngIf="mode !== 'view'">
+                <button class="btn-cancel" (click)="close()">Cancelar</button>
+                <button class="btn-save" (click)="onSave()">
+                    {{ mode === 'add' ? 'Crear API' : 'Guardar Cambios' }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>

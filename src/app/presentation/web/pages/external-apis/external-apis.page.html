@@ -1,0 +1,69 @@
+<div class="apis-page">
+    <header class="apis-header">
+        <div class="page-title">
+            <h1>Integración de APIs Externas</h1>
+            <p>Gestiona los servicios químicos y botánicos de terceros</p>
+        </div>
+
+        <div class="header-controls">
+            <div class="search-bar">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
+                    placeholder="Buscar servicios..." />
+            </div>
+
+            <button class="btn-primary" (click)="onAddApi()">
+                <mat-icon>add</mat-icon> Configurar API
+            </button>
+        </div>
+    </header>
+
+    <app-data-table [data]="apis" [columns]="columns"></app-data-table>
+
+    <app-api-modal [isOpen]="isModalOpen" [mode]="modalMode" [api]="selectedApi!" (closed)="isModalOpen = false"
+        (saved)="onSaveApi($event)">
+    </app-api-modal>
+
+    <!-- Templates for Table Cells -->
+    <ng-template #nameTpl let-item>
+        <div class="api-name-cell">
+            <div class="api-icon">
+                <mat-icon>settings_input_component</mat-icon>
+            </div>
+            <div class="api-info">
+                <span class="main-name">{{ item.name }}</span>
+                <span class="url-sub">{{ item.base_url }}</span>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #authTpl let-item>
+        <span class="auth-badge" [ngClass]="item.authType.toLowerCase().replace(' ', '-')">
+            {{ item.authType }}
+        </span>
+    </ng-template>
+
+    <ng-template #endpointsTpl let-item>
+        <div class="endpoints-summary">
+            <span class="count-tag">{{ item.endpoints.length }} activos</span>
+            <div class="methods-dots">
+                <span *ngFor="let e of item.endpoints" class="dot" [title]="e.name"
+                    [ngClass]="e.method.toLowerCase()"></span>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #actionsTpl let-item>
+        <div class="actions">
+            <button class="btn-icon view" title="Ver Detalles" (click)="onViewApi(item)">
+                <mat-icon>visibility</mat-icon>
+            </button>
+            <button class="btn-icon edit" title="Configurar" (click)="onEditApi(item)">
+                <mat-icon>settings</mat-icon>
+            </button>
+            <button class="btn-icon delete" title="Remover" (click)="onDeleteApi(item)">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+</div>

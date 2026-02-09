@@ -1,10 +1,10 @@
-.compounds-page {
+.apis-page {
     padding: 2rem;
     max-width: 1500px;
     margin: 0 auto;
 }
 
-.compounds-header {
+.apis-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,7 +50,7 @@
 
             &:focus-within {
                 border-color: var(--accent-color);
-                box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.1);
+                box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
             }
 
             .search-icon {
@@ -87,25 +87,25 @@
             align-items: center;
             gap: 10px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(46, 204, 113, 0.2);
+            box-shadow: 0 4px 14px rgba(46, 125, 50, 0.2);
 
             &:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+                box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
             }
         }
     }
 }
 
-.compound-name-cell {
+.api-name-cell {
     display: flex;
     align-items: center;
     gap: 12px;
 
-    .icon-thumb {
+    .api-icon {
         width: 40px;
         height: 40px;
-        background: rgba(46, 204, 113, 0.1);
+        background: rgba(46, 125, 50, 0.1);
         color: var(--accent-color);
         border-radius: 10px;
         display: flex;
@@ -113,7 +113,7 @@
         justify-content: center;
     }
 
-    .info {
+    .api-info {
         display: flex;
         flex-direction: column;
 
@@ -122,21 +122,77 @@
             color: var(--text-primary);
         }
 
-        .sub-iupac {
+        .url-sub {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            font-style: italic;
+            font-family: monospace;
         }
     }
 }
 
-.formula-tag {
-    background: var(--bg-secondary);
-    color: var(--accent-color);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-family: 'Courier New', monospace;
+.auth-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--border-color);
+    color: var(--text-secondary);
+
+    &.api-key {
+        background: rgba(52, 152, 219, 0.15);
+        color: #3498db;
+    }
+
+    &.oauth2 {
+        background: rgba(155, 89, 182, 0.15);
+        color: #9b59b6;
+    }
+
+    &.basic-auth {
+        background: rgba(241, 196, 15, 0.15);
+        color: #f1c40f;
+    }
+}
+
+.endpoints-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .count-tag {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .methods-dots {
+        display: flex;
+        gap: 4px;
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #95a5a6;
+
+            &.get {
+                background: #2ecc71;
+            }
+
+            &.post {
+                background: #f1c40f;
+            }
+
+            &.put {
+                background: #3498db;
+            }
+
+            &.delete {
+                background: #e74c3c;
+            }
+        }
+    }
 }
 
 .actions {
