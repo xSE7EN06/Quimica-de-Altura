@@ -7,6 +7,12 @@
         </div>
 
         <div class="header-controls">
+            <div class="search-bar">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
+                    placeholder="Buscar usuarios..." />
+            </div>
+
             <button class="btn-primary" (click)='onAddUser()'>
                 <mat-icon>person_add</mat-icon> Nuevo Usuario
             </button>

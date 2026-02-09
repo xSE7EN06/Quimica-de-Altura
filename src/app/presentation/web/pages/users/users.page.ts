@@ -62,6 +62,17 @@ export class UsersPage implements OnInit {
         });
     }
 
+    onSearch(query: string) {
+        if (query) {
+            this.userRepository.searchUsers(query).subscribe(data => {
+                this.users = data;
+                this.cdr.detectChanges();
+            });
+        } else {
+            this.loadUsers();
+        }
+    }
+
     onAddUser() {
         this.userModal.open('add');
     }

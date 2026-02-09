@@ -65,6 +65,17 @@ export class CompoundsPage implements OnInit {
         });
     }
 
+    onSearch(query: string) {
+        if (query) {
+            this.compoundRepository.searchCompounds(query).subscribe(data => {
+                this.compounds = data;
+                this.cdr.detectChanges();
+            });
+        } else {
+            this.loadCompounds();
+        }
+    }
+
     onAddCompound() {
         this.addModal.open();
     }

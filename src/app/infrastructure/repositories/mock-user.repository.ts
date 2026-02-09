@@ -73,4 +73,15 @@ export class MockUserRepository extends UserRepository {
         this.users = this.users.filter(u => u.id !== id);
         return of(undefined).pipe(delay(500));
     }
+
+    searchUsers(query: string): Observable<User[]> {
+        const lowerQuery = query.toLowerCase();
+        const results = this.users.filter(u =>
+            u.firstName.toLowerCase().includes(lowerQuery) ||
+            u.lastName.toLowerCase().includes(lowerQuery) ||
+            u.userName.toLowerCase().includes(lowerQuery) ||
+            u.email.toLowerCase().includes(lowerQuery)
+        );
+        return of(results);
+    }
 }

@@ -7,4 +7,5 @@ export abstract class UserRepository {
     abstract addUser(user: User): Observable<void>;
     abstract updateUser(user: User): Observable<void>;
     abstract deleteUser(id: string): Observable<void>;
+    abstract searchUsers(query: string): Observable<User[]>;
 }

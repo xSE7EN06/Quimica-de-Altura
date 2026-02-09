@@ -6,6 +6,12 @@
         </div>
 
         <div class="header-controls">
+            <div class="search-bar">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
+                    placeholder="Buscar compuestos..." />
+            </div>
+
             <button class="btn-primary" (click)="onAddCompound()">
                 <mat-icon>science</mat-icon> Alta de Compuesto
             </button>
