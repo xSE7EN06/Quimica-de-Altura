@@ -12,16 +12,20 @@
     flex-wrap: wrap;
     gap: 1rem;
 
-    .page-title h1 {
-        font-size: 1.75rem;
-        /* Larger */
-        font-weight: 600;
-        /* Less bold, more refined */
-        margin: 0;
-        color: var(--text-primary);
-        font-family: 'Playfair Display', serif;
-        /* Or just a cleaner sans if serif is not desired, but "formal" usually suggests serif or light sans. Let's try standard sans but cleaner. */
-        letter-spacing: -0.5px;
+    .page-title {
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            margin: 5px 0 0 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
     }
 
     .header-controls {
