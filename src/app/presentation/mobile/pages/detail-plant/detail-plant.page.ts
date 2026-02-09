@@ -70,7 +70,7 @@ export class DetailPlantPage implements OnInit {
             scientificName: plant.scientificName,
             image: plant.imageUrl,
             properties: plant.compounds?.map(c => ({
-                name: c.properties[0] || 'Propiedad desconocida', // Taking first property as example
+                name: c.name,
                 percentage: Math.random() // Placeholder percentage as it's not in the data model
             })) || []
         };
