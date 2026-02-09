@@ -10,4 +10,5 @@ export interface Plant {
     compounds: ChemicalCompound[];
     identifyingFeatures: string[];
     region: string;
+    category?: string;
 }
