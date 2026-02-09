@@ -19,7 +19,7 @@ export const MOBILE_ROUTES: Routes = [
         loadComponent: () => import('./pages/result/result.page').then(m => m.ResultPage)
     },
     {
-        path: 'detail-plant',
+        path: 'detail-plant/:id',
         loadComponent: () => import('./pages/detail-plant/detail-plant.page').then(m => m.DetailPlantPage)
     },
     {
@@ -31,8 +31,13 @@ export const MOBILE_ROUTES: Routes = [
         loadComponent: () => import('./pages/most-searched-plants/most-searched-plants.page').then(m => m.MostSearchedPlantsPage)
     },
     {
-        path: 'energizers',
+        path: 'category-detail/:categoryName',
         loadComponent: () => import('./pages/energizers/energizers.page').then(m => m.EnergizersPage)
+    },
+    {
+        path: 'energizers',
+        redirectTo: 'category-detail/Energizante',
+        pathMatch: 'full'
     },
     {
         path: 'account',
