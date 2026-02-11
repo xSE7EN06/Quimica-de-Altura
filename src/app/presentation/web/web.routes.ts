@@ -16,7 +16,7 @@ export const WEB_ROUTES: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'analytics',
+                redirectTo: 'plants',
                 pathMatch: 'full'
             },
             {
