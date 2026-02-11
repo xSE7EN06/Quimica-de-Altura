@@ -165,7 +165,7 @@
             gap: 8px;
             padding: 12px 24px;
             border-radius: 12px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
             border: none;
@@ -189,7 +189,7 @@
             }
 
             &.btn-save {
-                background: #48bb78;
+                background: var(--accent-color);
                 color: white;
 
                 &:hover {
