@@ -9,7 +9,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: #f8fafc;
+    background: var(--bg-primary);
     overflow: hidden;
 }
 
@@ -94,10 +94,10 @@
         h3 {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #2d3748;
+            color: var(--text-primary);
             margin: 0 0 20px 0;
             padding-bottom: 10px;
-            border-bottom: 2px solid #edf2f7;
+            border-bottom: 2px solid var(--border-color);
         }
     }
 
@@ -116,18 +116,18 @@
         label {
             font-size: 0.85rem;
             font-weight: 600;
-            color: #718096;
+            color: var(--text-secondary);
             margin-left: 4px;
         }
 
         input,
         textarea {
-            background: white;
-            border: 1.5px solid #e2e8f0;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border-color);
             border-radius: 12px;
             padding: 12px 16px;
             font-size: 1rem;
-            color: #2d3748;
+            color: var(--text-primary);
             transition: all 0.2s ease;
             outline: none;
 
@@ -150,8 +150,8 @@
 
 .modal-footer {
     padding: 20px 30px;
-    background: white;
-    border-top: 1px solid #edf2f7;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
     flex-shrink: 0;
 
     .footer-actions {
@@ -178,13 +178,13 @@
             }
 
             &.btn-edit {
-                background: #ebf8ff;
+                background: var(--bg-hover);
                 color: #3182ce;
                 width: 100%;
                 justify-content: center;
 
                 &:hover {
-                    background: #bee3f8;
+                    filter: brightness(0.9);
                 }
             }
 
@@ -205,11 +205,11 @@
             }
 
             &.btn-cancel {
-                background: #f7fafc;
-                color: #718096;
+                background: var(--bg-hover);
+                color: var(--text-secondary);
 
                 &:hover {
-                    background: #edf2f7;
+                    filter: brightness(0.9);
                 }
             }
         }
