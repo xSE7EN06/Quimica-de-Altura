@@ -22,6 +22,8 @@ export class HomePage {
     isScanning = false;
     plants: Plant[] = [];
 
+    isSearching: boolean = false;
+
     constructor(
         private cameraService: CameraService,
         private identifyPlantUseCase: IdentifyPlantUseCase,
@@ -36,8 +38,17 @@ export class HomePage {
     }
 
     onSearch(term: string) {
-        console.log('Searching for:', term);
-        // Implement search logic here
+        if (term) {
+            this.isSearching = true;
+            this.plantRepository.searchPlants(term).subscribe(results => {
+                this.plants = results;
+            });
+        } else {
+            this.isSearching = false;
+            this.plantRepository.getPlants().subscribe(plants => {
+                this.plants = plants;
+            });
+        }
     }
 
     onFilter() {
@@ -49,8 +60,12 @@ export class HomePage {
         this.router.navigate(['/detail-plant', id]);
     }
 
+    viewCategory(category: string) {
+        this.router.navigate(['/category-detail', category]);
+    }
+
     viewEnergizers() {
-        this.router.navigate(['/category-detail', 'Energizante']);
+        this.viewCategory('Energizante');
     }
 
     viewCategories() {

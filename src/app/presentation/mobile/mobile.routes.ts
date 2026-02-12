@@ -32,7 +32,7 @@ export const MOBILE_ROUTES: Routes = [
     },
     {
         path: 'category-detail/:categoryName',
-        loadComponent: () => import('./pages/energizers/energizers.page').then(m => m.EnergizersPage)
+        loadComponent: () => import('./pages/detail-category/detail-category.page').then(m => m.DetailCategoryPage)
     },
     {
         path: 'energizers',

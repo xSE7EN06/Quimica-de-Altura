@@ -13,34 +13,34 @@ import { alertCircleOutline } from 'ionicons/icons';
     templateUrl: './categories.page.html',
     styleUrls: ['./categories.page.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, HeaderComponent, SearchInputComponent, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonIcon, IonButtons]
+    imports: [CommonModule, FormsModule, HeaderComponent, SearchInputComponent, IonContent, IonGrid, IonRow, IonCol, IonIcon]
 })
 export class CategoriesPage implements OnInit {
 
     categories = [
         {
             name: 'Energizantes',
-            description: 'Plantas energizantes.',
+            description: 'Aumenta tu energía naturalmente.',
             image: 'https://img.freepik.com/premium-vector/man-running-park-morning_165429-792.jpg'
         },
         {
             name: 'Relajantes',
-            description: 'Plantas relajantes.',
+            description: 'Relájate y duerme mejor.',
             image: 'https://img.freepik.com/free-vector/meditating-concept-illustration_114360-2972.jpg'
         },
         {
             name: 'Dolencia',
-            description: 'Plantas de dolencia.',
+            description: 'Alivio natural para el dolor.',
             image: 'https://img.freepik.com/free-vector/flat-person-having-headache_23-2148924043.jpg'
         },
         {
             name: 'Antibacterianas',
-            description: 'Plantas antibacterianas.',
+            description: 'Combate infecciones y virus.',
             image: 'https://img.freepik.com/free-vector/itchy-skin-concept-illustration_114360-14330.jpg'
         },
         {
             name: 'Digestivas',
-            description: 'Plantas digestivas.',
+            description: 'Mejora tu salud digestiva.',
             image: 'https://img.freepik.com/free-vector/stomach-ache-concept-illustration_114360-1558.jpg'
         }
     ];
