@@ -47,7 +47,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Juan',
             lastName: 'López',
             email: 'j.lopez@quimicaalturas.com',
-            role: 'Colaborador',
+            role: 'Visitante',
             birthdate: '1995-02-14',
             nationality: 'Mexicana',
             address: 'Av. Revolución 101, Xalapa, México'
@@ -80,7 +80,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Sofía',
             lastName: 'Vázquez',
             email: 'sofia.v@quimicaalturas.com',
-            role: 'Editor',
+            role: 'Visitante',
             birthdate: '1996-04-25',
             nationality: 'Mexicana',
             address: 'Calle Real 88, Orizaba, México'
@@ -102,7 +102,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Patricia',
             lastName: 'Gómez',
             email: 'p.gomez@quimicaalturas.com',
-            role: 'Colaborador',
+            role: 'Visitante',
             birthdate: '1999-01-10',
             nationality: 'Mexicana',
             address: 'Calle Reforma 33, Boca del Río, México'
@@ -157,7 +157,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Héctor',
             lastName: 'Díaz',
             email: 'h.diaz@quimicaalturas.com',
-            role: 'Colaborador',
+            role: 'Visitante',
             birthdate: '1997-06-30',
             nationality: 'Mexicana',
             address: 'Av. Ruiz Cortines 900, Xalapa, México'
