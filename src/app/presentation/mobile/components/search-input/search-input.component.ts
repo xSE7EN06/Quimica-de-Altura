@@ -25,7 +25,7 @@ export class SearchInputComponent {
     }
 
     onSearchChange(event: any) {
-        this.search.emit(event.detail.value);
+        this.search.emit(event.target.value);
     }
 
     onFilterClick() {
