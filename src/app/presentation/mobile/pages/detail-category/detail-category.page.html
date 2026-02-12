@@ -1,0 +1,41 @@
+<app-header [title]="categoryTitle" [showBackButton]="true" [showMenuButton]="false" defaultHref="/home"></app-header>
+
+<ion-content class="ion-padding">
+    <div class="intro-card">
+        <div class="robot-icon">
+            <img src="/yolotl.png" alt="Yolotl">
+        </div>
+        <div class="card-content">
+            <div class="image-wrapper">
+                <img [src]="categoryImage" [alt]="categoryTitle">
+            </div>
+            <div class="text-wrapper">
+                <div class="card-header">
+                    <h3>{{ categoryTitle }}</h3>
+                    <ion-icon [name]="categoryIcon"></ion-icon>
+                </div>
+                <p>
+                    {{ description }}
+                </p>
+
+                <ul class="intro-list">
+                    <li *ngFor="let benefit of categoryBenefits">{{ benefit }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">
+        <h3>Todas las plantas {{ categoryTitle | lowercase }}</h3>
+    </div>
+
+    <app-search-input [placeholder]="'Buscar ' + (categoryTitle | lowercase)" [showCamera]="false"
+        (search)="onSearch($event)" (filter)="onFilter()" (camera)="scanPlant()">
+    </app-search-input>
+
+    <div class="cards-container">
+        <app-most-searched-card *ngFor="let plant of plants" [name]="plant.name" [scientificName]="plant.scientificName"
+            [imageUrl]="plant.imageUrl" [properties]="plant.properties" (action)="viewDetail(plant.id)">
+        </app-most-searched-card>
+    </div>
+</ion-content>
