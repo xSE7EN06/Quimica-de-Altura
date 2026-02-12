@@ -37,6 +37,17 @@ body {
 
 /* Global CSS */
 
+:root {
+  --primary-color: #5E794B;
+  --accent-color: #C4964A;
+  --text-color: #333;
+  --bg-color: #f8faf7;
+}
+
+body {
+  background-color: var(--bg-color);
+}
+
 /* Make modal background transparent so we can use rounded corners on the content */
 ion-modal.auto-height-modal {
   --background: transparent;
