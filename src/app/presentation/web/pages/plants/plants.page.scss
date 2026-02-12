@@ -118,7 +118,6 @@
     color: #777;
     font-size: 0.75rem;
     height: 250px;
-    /* Align with chart height */
 }
 
 .bar-chart {
@@ -170,7 +169,6 @@
 .bar {
     width: 100%;
     background-color: #56774f;
-    /* Muted Green */
     transition: height 0.3s ease;
 }
 
@@ -212,7 +210,6 @@
     padding: 2rem;
     border-radius: 20px;
     border: 2px solid #8FA888;
-    /* Light green border */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -243,7 +240,6 @@
     height: 64px;
 }
 
-/* Styles used in projected content (Templates) */
 .text-primary {
     color: var(--accent-color);
     font-weight: 500;
@@ -323,14 +319,54 @@
     transition: opacity 0.2s;
     color: #56774f;
     padding: 4px;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
 }
 
-.btn-icon:hover {
-    opacity: 1;
-}
+/* Filter Controls in Projected Content */
+.filter-controls {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    padding: 0.5rem 0;
 
-.btn-icon mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 180px;
+
+        label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:focus {
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+            }
+        }
+    }
 }

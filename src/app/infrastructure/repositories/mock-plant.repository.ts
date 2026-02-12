@@ -229,6 +229,267 @@ export class MockPlantRepository extends PlantRepository {
                     description: 'Lactona terpénica con potente acción antiinflamatoria.'
                 }
             ]
+        },
+        {
+            id: '7',
+            commonName: 'Hierba de San Juan',
+            scientificName: 'Hypericum perforatum',
+            description: 'Planta herbácea con flores amarillas, conocida por sus propiedades antidepresivas.',
+            properties: ['Antidepresivo', 'Cicatrizante', 'Ansiolítico'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Hypericum_perforatum.jpg/800px-Hypericum_perforatum.jpg',
+            region: 'Zonas Templadas',
+            category: 'Neurológico',
+            identifyingFeatures: [
+                'Flores amarillas con puntos negros',
+                'Hojas con glándulas translúcidas',
+                'Tallo con dos líneas salientes'
+            ],
+            compounds: [
+                {
+                    id: 'c11',
+                    name: 'Hypericin',
+                    iupacName: '1,3,4,6,8,13-hexahydroxy-10,11-dimethylphenanthro[1,10,9,8-opqra]perylene-7,14-dione',
+                    molecularFormula: 'C30H16O8',
+                    molecularWeight: '504.45 g/mol',
+                    pubchemCid: '3663',
+                    smiles: 'CC1=C2C(=C3C(=C1O)C(=O)C4=C(C=C(C5=C4C3=C(C=C5)O)O)O)C6=C(C=C(C7=C6C2=C(C=C7)O)O)C(=O)C8=C(C=C(C3=C8O)O)O',
+                    inchi: 'InChI=1S/C30H16O8/c1-15-17(31)9-11-13-21(34)25-24-22(35)14-12-10-18(32)16(2)20(12)28(38)26(24)30(40)29-23(36)19(33)8-7-27(37)29/h7-10,31-36H,1-2H3',
+                    inchiKey: 'XMGQYMWWDOXLRX-UHFFFAOYSA-N',
+                    description: 'Compuesto activo principal con actividad antiviral y antidepresiva.'
+                }
+            ]
+        },
+        {
+            id: '8',
+            commonName: 'Ruda',
+            scientificName: 'Ruta graveolens',
+            description: 'Arbusto perenne de olor fuerte, utilizado en medicina tradicional y rituales.',
+            properties: ['Emenagogo', 'Antiespasmódico', 'Vermífugo'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Ruta_graveolens_1.jpg/800px-Ruta_graveolens_1.jpg',
+            region: 'Jardines y Huertos Familiares',
+            category: 'Ginecológico',
+            identifyingFeatures: [
+                'Hojas verde azulado',
+                'Flores amarillas con 4 pétalos',
+                'Olor muy penetrante y desagradable para algunos'
+            ],
+            compounds: [
+                {
+                    id: 'c12',
+                    name: 'Rutin',
+                    iupacName: '2-(3,4-dihydroxyphenyl)-5,7-dihydroxy-3-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-( hydroxymethyl)oxan-2-yl]oxychromen-4-one',
+                    molecularFormula: 'C27H30O16',
+                    molecularWeight: '610.52 g/mol',
+                    pubchemCid: '5280805',
+                    smiles: 'C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O[C@H]4[C@@H]([C@H]([C@@H]([C@H](O4)CO)O)O)O[C@H]5[C@@H]([C@H]([C@@H]([C@H](O5)C)O)O)O',
+                    inchi: 'InChI=1S/C27H30O16/c1-8-17(32)20(35)22(37)26(40-8)39-15-18(33)21(36)23(38)27(42-15)43-25-19(34)13-10(29)6-11(30)12(13)24(31)28-25-9-2-5-14(31)16(28)7-9/h2-7,15,17-18,20-23,26-27,29-30,32-38H,1H3',
+                    inchiKey: 'XMGQYMWWDOXLRX-UHFFFAOYSA-N',
+                    description: 'Flavonoide glucósido con potentes propiedades antioxidantes.'
+                }
+            ]
+        },
+        {
+            id: '9',
+            commonName: 'Bugambilia',
+            scientificName: 'Bougainvillea glabra',
+            description: 'Planta trepadora con brácteas coloridas, muy usada para la tos.',
+            properties: ['Antitusivo', 'Expectorante', 'Febrífugo'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Bougainvillea_glabra.jpg/800px-Bougainvillea_glabra.jpg',
+            region: 'Zonas Tropicales y Subtropicales',
+            category: 'Respiratorio',
+            identifyingFeatures: [
+                'Brácteas (hojas modificadas) de colores intensos (rosa, morado, rojo)',
+                'Flores verdaderas pequeñas y blancas',
+                'Tallos con espinas'
+            ],
+            compounds: [
+                {
+                    id: 'c13',
+                    name: 'Pinitol',
+                    iupacName: '(1S,2S,4S,5R)-6-methoxycyclohexane-1,2,3,4,5-pentol',
+                    molecularFormula: 'C7H14O6',
+                    molecularWeight: '194.18 g/mol',
+                    pubchemCid: '13019092',
+                    smiles: 'CO[C@@H]1[C@H]([C@H]([C@@H]([C@H]([C@H]1O)O)O)O)O',
+                    inchi: 'InChI=1S/C7H14O6/c1-13-7-4(10)2(8)3(9)5(11)6(7)12/h2-12H,1H3/t2-,3-,4+,5-,6+,7-',
+                    inchiKey: 'XMGQYMWWDOXLRX-UHFFFAOYSA-N',
+                    description: 'Compuesto tipo inositol con efectos similares a la insulina.'
+                }
+            ]
+        },
+        {
+            id: '10',
+            commonName: 'Cempasúchil',
+            scientificName: 'Tagetes erecta',
+            description: 'La flor de muertos, utilizada también para problemas digestivos y cólicos.',
+            properties: ['Carminativo', 'Digestivo', 'Antibacteriano'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Tagetes_erecta_Macro.jpg/800px-Tagetes_erecta_Macro.jpg',
+            region: 'Valles Centrales y Altiplano',
+            category: 'Digestivo',
+            identifyingFeatures: [
+                'Flores naranjas o amarillas muy pomposas',
+                'Olor muy característico',
+                'Hojas plumosas'
+            ],
+            compounds: [
+                {
+                    id: 'c10',
+                    name: 'Lutein',
+                    iupacName: 'beta,epsilon-carotene-3,3\'-diol',
+                    molecularFormula: 'C40H56O2',
+                    molecularWeight: '568.87 g/mol',
+                    pubchemCid: '5281243',
+                    smiles: 'CC1=C(C(CC(C1)O)C)C=CC(=CC=CC(=CC=CC=C(C)C=CC=C(C)C=CC2C(=CC(CC2)O)C)C)C',
+                    inchi: 'InChI=1S/C40H56O2/c1-31(19-13-21-33(3)25-27-37-35(5)23-15-29-39(37,7)8)17-11-12-18-32(2)20-14-22-34(4)26-28-38-36(6)24-16-30-40(38,9)10/h11-14,17-22,25-28,37-38,41-42H,15-16,23-24,29-30H2,1-10H3/b12-11+,17-12+,18-11+,21-13+,22-14+,27-25+,28-26+,31-19+,32-20+,33-21+,34-22+/t37-,38+,41+,42-/m0/s1',
+                    inchiKey: 'KBPHJBAIARWVSC-GGERISQZSA-N',
+                    description: 'Carotenoide responsable del color naranja.'
+                }
+            ]
+        },
+        {
+            id: '11',
+            commonName: 'Valeriana',
+            scientificName: 'Valeriana officinalis',
+            description: 'Raíz utilizada como sedante suave y para combatir el insomnio.',
+            properties: ['Sedante', 'Ansiolítico', 'Relajante Muscular'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Valeriana_officinalis_-_Köhler–s_Medizinal-Pflanzen-143.jpg/800px-Valeriana_officinalis_-_Köhler–s_Medizinal-Pflanzen-143.jpg',
+            region: 'Bosques Húmedos',
+            category: 'Nervioso',
+            identifyingFeatures: [
+                'Flores pequeñas de color rosa pálido o blanco',
+                'Raíces con olor fuerte y desagradable al secarse',
+                'Hojas compuestas pinnadas'
+            ],
+            compounds: [
+                {
+                    id: 'c14',
+                    name: 'Valerenic Acid',
+                    iupacName: '(2E)-3-[(4R,7R)-3,7-dimethyl-2,4,5,6,7,7a-hexahydro-1H-inden-4-yl]-2-methylprop-2-enoic acid',
+                    molecularFormula: 'C15H22O2',
+                    molecularWeight: '234.33 g/mol',
+                    pubchemCid: '6441221',
+                    smiles: 'CC1CCC2C(C1)CC=C2C=C(C)C(=O)O',
+                    inchi: 'InChI=1S/C15H22O2/c1-9(15(16)17)8-12-13-6-4-10(2)5-7-14(13)11(3)12/h8,10,12-14H,4-7H2,1-3H3,(H,16,17)/b9-8+/t10-,12+,13+,14+/m1/s1',
+                    inchiKey: 'AELCINSCMGFUCI-UHFFFAOYSA-N',
+                    description: 'Sesquiterpeno responsable de la actividad sedante.'
+                }
+            ]
+        },
+        {
+            id: '12',
+            commonName: 'Manzanilla',
+            scientificName: 'Matricaria chamomilla',
+            description: 'Una de las plantas medicinales más antiguas y utilizadas para calmar el estómago.',
+            properties: ['Digestivo', 'Antiinflamatorio', 'Calmante'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Kamille_Matricaria_chamomilla.jpg/800px-Kamille_Matricaria_chamomilla.jpg',
+            region: 'Climas Templados',
+            category: 'Digestivo',
+            identifyingFeatures: [
+                'Flores blancas con centro amarillo cónico',
+                'Aroma dulce a manzana',
+                'Hojas muy finamente divididas'
+            ],
+            compounds: [
+                {
+                    id: 'c15',
+                    name: 'Apigenin',
+                    iupacName: '5,7-dihydroxy-2-(4-hydroxyphenyl)chromen-4-one',
+                    molecularFormula: 'C15H10O5',
+                    molecularWeight: '270.24 g/mol',
+                    pubchemCid: '5280443',
+                    smiles: 'C1=CC(=CC=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O',
+                    inchi: 'InChI=1S/C15H10O5/c16-9-3-1-8(2-4-9)15-7-12(18)14-11(17)5-10(17)6-13(14)20-15/h1-7,16-18H',
+                    inchiKey: 'KKEYFWRCBNTPAC-UHFFFAOYSA-N',
+                    description: 'Flavona con propiedades ansiolíticas y antiinflamatorias.'
+                }
+            ]
+        },
+        {
+            id: '13',
+            commonName: 'Estafiate',
+            scientificName: 'Artemisia ludoviciana',
+            description: 'Hierba amarga usada para dolores de estómago y parásitos.',
+            properties: ['Antiparasitario', 'Digestivo', 'Colerético'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Artemisia_ludoviciana.jpg/800px-Artemisia_ludoviciana.jpg',
+            region: 'Zonas Semiáridas',
+            category: 'Digestivo',
+            identifyingFeatures: [
+                'Hojas color verde grisáceo/blanquecino',
+                'Sabor muy amargo',
+                'Olor fuerte y aromático'
+            ],
+            compounds: [
+                {
+                    id: 'c16',
+                    name: 'Thujone',
+                    iupacName: '1-isopropyl-4-methylbicyclo[3.1.0]hexan-3-one',
+                    molecularFormula: 'C10H16O',
+                    molecularWeight: '152.23 g/mol',
+                    pubchemCid: '261491',
+                    smiles: 'CC(C)C1C2CC(C2)C(=O)C1C',
+                    inchi: 'InChI=1S/C10H16O/c1-6(2)10-4-8-5-9(8)7(3)11-10/h6,8-9H,4-5H2,1-3H3',
+                    inchiKey: 'JGSARLDLIJGVTE-UHFFFAOYSA-N',
+                    description: 'Cetona monoterpénica con olor mentolado.'
+                }
+            ]
+        },
+        {
+            id: '14',
+            commonName: 'Salvia',
+            scientificName: 'Salvia officinalis',
+            description: 'Planta sagrada usada para limpiar energías y tratar infecciones.',
+            properties: ['Antiséptico', 'Astringente', 'Antisudorífico'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Salvia_officinalis_002.JPG/800px-Salvia_officinalis_002.JPG',
+            region: 'Regiones Mediterráneas / Adaptada en México',
+            category: 'Infeccioso',
+            identifyingFeatures: [
+                'Hojas rugosas de color verde grisáceo',
+                'Flores violetas o azules',
+                'Textura aterciopelada'
+            ],
+            compounds: [
+                {
+                    id: 'c3',
+                    name: 'Rosmarinic acid',
+                    iupacName: '(2R)-3-(3,4-dihydroxyphenyl)-2-[(E)-3-(3,4-dihydroxyphenyl)prop-2-enoyl]oxypropanoic acid',
+                    molecularFormula: 'C18H16O8',
+                    molecularWeight: '360.31 g/mol',
+                    pubchemCid: '5281792',
+                    smiles: 'C1=CC(=C(C=C1C=CC(=O)OC(CC2=CC(=C(C=C2)O)O)C(=O)O)O)O',
+                    inchi: 'InChI=1S/C18H16O8/c19-12-4-1-10(7-14(12)21)3-6-17(24)26-16(18(25)26)9-11-2-5-13(20)15(22)8-11/h1-8,16,19-22H,9H2,(H,25,26)',
+                    inchiKey: 'DOUMSIUAVSJWRE-UHFFFAOYSA-N',
+                    description: 'Polifenol antioxidante.'
+                }
+            ]
+        },
+        {
+            id: '15',
+            commonName: 'Menta',
+            scientificName: 'Mentha piperita',
+            description: 'Hierba muy refrescante usada para problemas respiratorios y digestivos.',
+            properties: ['Carminativo', 'Descongestionante', 'Refrescante'],
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Mentha_piperita_-_Köhler–s_Medizinal-Pflanzen-095.jpg/800px-Mentha_piperita_-_Köhler–s_Medizinal-Pflanzen-095.jpg',
+            region: 'Zonas Húmedas',
+            category: 'Digestivo',
+            identifyingFeatures: [
+                'Tallo cuadrado rojizo',
+                'Olor a mentol muy intenso',
+                'Hojas dentadas verde oscuro'
+            ],
+            compounds: [
+                {
+                    id: 'c1',
+                    name: 'Menthol',
+                    iupacName: '(1R,2S,5R)-2-isopropyl-5-methylcyclohexanol',
+                    molecularFormula: 'C10H20O',
+                    molecularWeight: '156.27 g/mol',
+                    pubchemCid: '1254',
+                    smiles: 'CC(C)C1CCC(CC1O)C',
+                    inchi: 'InChI=1S/C10H20O/c1-7(2)9-5-4-8(3)6-10(9)11/h7-11H,4-6H2,1-3H3',
+                    inchiKey: 'CQEVNEHBBNORPU-UHFFFAOYSA-N',
+                    description: 'Alcohol terpénico responsable del frescor.'
+                }
+            ]
         }
     ];
 

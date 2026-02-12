@@ -1,89 +1,89 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="plant-modal">
     <ng-template>
-        <div class="modal-wrapper">
-            <!-- Header with Image -->
+        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+            <!-- Navigation Arrows (Positioned inside to avoid clipping) -->
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <!-- Restored Banner Design -->
             <div class="modal-header-image"
-                [style.backgroundImage]="'url(' + (plantForm.get('imageUrl')?.value || 'assets/images/placeholder.jpg') + ')'">
+                [style.backgroundImage]="'url(' + (plantForm.get('imageUrl')?.value || 'assets/placeholder-plant.jpg') + ')'">
                 <div class="header-overlay">
                     <button class="close-btn" (click)="close()">
                         <mat-icon>close</mat-icon>
                     </button>
                     <div class="header-content">
-                        <span class="category-badge">{{ plantForm.get('region')?.value || 'Botánica' }}</span>
-                        <h1 *ngIf="isReadOnly">{{ plantForm.get('commonName')?.value }}</h1>
-                        <p *ngIf="isReadOnly" class="scientific-name-header">{{ plantForm.get('scientificName')?.value
-                            }}</p>
+                        <span class="category-badge">Planta Medicinal</span>
+                        <h1>{{ mode === 'add' ? 'Nueva Planta' : (plantForm.get('commonName')?.value) }}</h1>
+                        <p class="scientific-name-header">{{ plantForm.get('scientificName')?.value }}</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Content -->
             <div class="modal-scroll-content">
                 <form [formGroup]="plantForm" class="plant-form">
-
                     <div class="form-section">
                         <h3>Información General</h3>
-
                         <div class="form-grid">
                             <div class="form-field">
                                 <label>Nombre Común</label>
                                 <input type="text" formControlName="commonName" [readOnly]="isReadOnly"
-                                    placeholder="Ej. Acuyo">
+                                    placeholder="Ej. Toronjil Morado">
                             </div>
                             <div class="form-field">
                                 <label>Nombre Científico</label>
                                 <input type="text" formControlName="scientificName" [readOnly]="isReadOnly"
-                                    placeholder="Ej. Piper auritum">
+                                    placeholder="Ej. Agastache mexicana">
                             </div>
-                        </div>
-
-                        <div class="form-field">
-                            <label>Región</label>
-                            <input type="text" formControlName="region" [readOnly]="isReadOnly"
-                                placeholder="Región de origen">
-                        </div>
-
-                        <div class="form-field">
-                            <label>Descripción</label>
-                            <textarea formControlName="description" [readOnly]="isReadOnly" rows="4"
-                                placeholder="Describe las características de la planta..."></textarea>
                         </div>
                     </div>
 
                     <div class="form-section">
-                        <h3>Detalles Botánicos</h3>
+                        <h3>Localización y Uso</h3>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Región de Origen</label>
+                                <input type="text" formControlName="region" [readOnly]="isReadOnly"
+                                    placeholder="Ej. Sierras frías">
+                            </div>
+                            <div class="form-field" *ngIf="!isReadOnly">
+                                <label>URL de Imagen</label>
+                                <input type="text" formControlName="imageUrl" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="form-section">
+                        <h3>Detalles Técnicos</h3>
                         <div class="form-field">
-                            <label>Propiedades (separadas por comas)</label>
+                            <label>Propiedades (separadas por coma)</label>
                             <input type="text" formControlName="properties" [readOnly]="isReadOnly"
-                                placeholder="Ej. Antiinflamatorio, Digestivo">
+                                placeholder="Relajante, Digestivo...">
                         </div>
-
-                        <div class="form-field" *ngIf="!isReadOnly">
-                            <label>URL de la Imagen</label>
-                            <input type="text" formControlName="imageUrl" placeholder="Ruta de la imagen">
-                        </div>
-
                         <div class="form-field">
-                            <label>Características de Identificación</label>
+                            <label>Descripción General</label>
+                            <textarea formControlName="description" [readOnly]="isReadOnly" rows="3"
+                                placeholder="Descripción detallada de la planta..."></textarea>
+                        </div>
+                        <div class="form-field">
+                            <label>Características Identificativas</label>
                             <textarea formControlName="identifyingFeatures" [readOnly]="isReadOnly" rows="3"
-                                placeholder="Ej. Hojas grandes, Aroma a anís"></textarea>
+                                placeholder="Tallo cuadrado, flores moradas..."></textarea>
                         </div>
                     </div>
                 </form>
             </div>
 
-            <!-- Footer -->
             <div class="modal-footer">
                 <div class="footer-actions">
                     <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
                         <mat-icon>edit</mat-icon> Editar Información
                     </button>
-
-                    <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">
-                        Cancelar
-                    </button>
-
+                    <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
                     <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()" [disabled]="plantForm.invalid">
                         <mat-icon>save</mat-icon> Guardar Cambios
                     </button>
@@ -94,7 +94,7 @@
 </ion-modal>
 
 <app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
-    message="¿Estás seguro de que deseas guardar los cambios realizados en este registro?" icon="save"
+    message="¿Estás seguro de que deseas actualizar la información de esta planta medicinal?" icon="save"
     confirmColor="var(--accent-color)" confirmText="Guardar" (confirmed)="executeSave()"
     (cancelled)="showConfirmModal = false">
 </app-confirmation-modal>

@@ -1,6 +1,14 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="compound-modal">
     <ng-template>
-        <div class="modal-wrapper">
+        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+            <!-- Navigation Arrows -->
+            <button class="nav-arrow prev" *ngIf="hasPrevious" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
             <!-- Header Banner -->
             <div class="modal-banner">
                 <div class="banner-overlay">

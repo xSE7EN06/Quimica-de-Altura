@@ -51,6 +51,116 @@ export class MockCompoundRepository extends CompoundRepository {
             smiles: 'CC1=CC(=C(C=C1)C(C)C)O',
             inchi: 'InChI=1S/C10H14O/c1-7(2)10-5-4-8(3)6-9(10)11/h4-7,11H,1-3H3',
             inchiKey: 'MGNIMBSQLORROK-UHFFFAOYSA-N'
+        },
+        {
+            id: '5',
+            name: 'Eugenol',
+            iupacName: '4-allyl-2-methoxyphenol',
+            molecularFormula: 'C10H12O2',
+            molecularWeight: '164.20 g/mol',
+            pubchemCid: '3314',
+            smiles: 'COC1=C(C=CC(=C1)CC=C)O',
+            inchi: 'InChI=1S/C10H12O2/c1-3-4-8-5-6-9(11)10(7-8)12-2/h3,5-7,11H,1,4H2,2H3',
+            inchiKey: 'RRAFCDWBNXTKKO-UHFFFAOYSA-N'
+        },
+        {
+            id: '6',
+            name: 'Caffeine',
+            iupacName: '1,3,7-trimethylpurine-2,6-dione',
+            molecularFormula: 'C8H10N4O2',
+            molecularWeight: '194.19 g/mol',
+            pubchemCid: '2519',
+            smiles: 'CN1C=NC2=C1C(=O)N(C(=O)N2C)C',
+            inchi: 'InChI=1S/C8H10N4O2/c1-10-4-9-6-5(10)7(13)12(3)8(14)11(6)2/h4H,1-3H3',
+            inchiKey: 'RYYVLZVUVIJVGH-UHFFFAOYSA-N'
+        },
+        {
+            id: '7',
+            name: 'Capsaicin',
+            iupacName: '(E)-N-(4-hydroxy-3-methoxybenzyl)-8-methylnon-6-enamide',
+            molecularFormula: 'C18H27NO3',
+            molecularWeight: '305.41 g/mol',
+            pubchemCid: '1548943',
+            smiles: 'CC(C)C=CCCCC(=O)NCC1=CC(=C(C=C1)O)OC',
+            inchi: 'InChI=1S/C18H27NO3/c1-14(2)8-6-4-5-7-9-18(21)19-13-15-10-11-16(20)17(12-15)22-3/h6,8,10-12,14,20H,4-5,7,9,13H2,1-3H3,(H,19,21)/b8-6+',
+            inchiKey: 'YKJMSFGAABHHOQ-FSRGNKNGSA-N'
+        },
+        {
+            id: '8',
+            name: 'Atropine',
+            iupacName: '(1R,3r,5S)-8-methyl-8-azabicyclo[3.2.1]octan-3-yl 3-hydroxy-2-phenylpropanoate',
+            molecularFormula: 'C17H23NO3',
+            molecularWeight: '289.37 g/mol',
+            pubchemCid: '174174',
+            smiles: 'CN1C2CCC1CC(C2)OC(=O)C(CO)C3=CC=CC=C3',
+            inchi: 'InChI=1S/C17H23NO3/c1-18-12-7-8-13(18)10-14(9-12)21-17(20)16(11-19)15-5-3-2-4-6-15/h2-6,12-14,16,19H,7-11H2,1H3/t12?,13?,14-,16?',
+            inchiKey: 'RKUNLFJZGGFXQJ-UHFFFAOYSA-N'
+        },
+        {
+            id: '9',
+            name: 'Vanillin',
+            iupacName: '4-hydroxy-3-methoxybenzaldehyde',
+            molecularFormula: 'C8H8O3',
+            molecularWeight: '152.15 g/mol',
+            pubchemCid: '1183',
+            smiles: 'COC1=C(C=CC(=C1)C=O)O',
+            inchi: 'InChI=1S/C8H8O3/c1-11-8-4-6(5-9)2-3-7(8)10/h2-5,10H,1H3',
+            inchiKey: 'MWOOGOJHIENMIC-UHFFFAOYSA-N'
+        },
+        {
+            id: '10',
+            name: 'Lutein',
+            iupacName: 'beta,epsilon-carotene-3,3\'-diol',
+            molecularFormula: 'C40H56O2',
+            molecularWeight: '568.87 g/mol',
+            pubchemCid: '5281243',
+            smiles: 'CC1=C(C(CC(C1)O)C)C=CC(=CC=CC(=CC=CC=C(C)C=CC=C(C)C=CC2C(=CC(CC2)O)C)C)C',
+            inchi: 'InChI=1S/C40H56O2/c1-31(19-13-21-33(3)25-27-37-35(5)23-15-29-39(37,7)8)17-11-12-18-32(2)20-14-22-34(4)26-28-38-36(6)24-16-30-40(38,9)10/h11-14,17-22,25-28,37-38,41-42H,15-16,23-24,29-30H2,1-10H3/b12-11+,17-12+,18-11+,21-13+,22-14+,27-25+,28-26+,31-19+,32-20+,33-21+,34-22+/t37-,38+,41+,42-/m0/s1',
+            inchiKey: 'KBPHJBAIARWVSC-GGERISQZSA-N'
+        },
+        {
+            id: '11',
+            name: 'Resveratrol',
+            iupacName: '5-[(E)-2-(4-hydroxyphenyl)ethenyl]benzene-1,3-diol',
+            molecularFormula: 'C14H12O3',
+            molecularWeight: '228.24 g/mol',
+            pubchemCid: '445154',
+            smiles: 'C1=CC(=CC=C1C=CC2=CC(=CC(=C2)O)O)O',
+            inchi: 'InChI=1S/C14H12O3/c15-12-5-3-10(4-6-12)1-2-11-7-13(16)9-14(17)8-11/h1-9,15-17H/b2-1+',
+            inchiKey: 'LUKBXSAWLPMMSZ-OWOJBTEDSA-N'
+        },
+        {
+            id: '12',
+            name: 'Beta-Carotene',
+            iupacName: '1,1\'-(3,7,12,16-tetramethyl-1,3,5,7,9,11,13,15,17-octadecanonaene-1,18-diyl)bis(2,6,6-trimethylcyclohexene)',
+            molecularFormula: 'C40H56',
+            molecularWeight: '536.87 g/mol',
+            pubchemCid: '5280489',
+            smiles: 'CC1=C(C(CCC1)(C)C)C=CC(=CC=CC(=CC=CC=C(C)C=CC=C(C)C=CC2=C(CCCC2(C)C)C)C)C',
+            inchi: 'InChI=1S/C40H56/c1-33(19-13-21-35(3)25-27-37-31(17)23-15-29-39(37,7)8)11-12-38-40(9,10)30-16-24-32(38)18-34(2)20-14-22-36(4)26-28-38/h11-14,17-22,25-28H,15-16,23-24,29-30H2,1-10H3/b12-11+,19-13+,20-14+,21-13+,22-14+,25-11+,26-12+,27-25+,28-26+,33-19+,34-20+,35-21+,36-22+',
+            inchiKey: 'OENHQHLEOONYIE-JLTXGRSLSA-N'
+        },
+        {
+            id: '13',
+            name: 'Morphine',
+            iupacName: '(4R,4aR,7S,7aR,12bS)-3-methyl-2,3,4,4a,7,7a-hexahydro-1H-4,12-methanobenzofuro[3,2-e]isoquinoline-7,9-diol',
+            molecularFormula: 'C17H19NO3',
+            molecularWeight: '285.34 g/mol',
+            pubchemCid: '5288826',
+            smiles: 'CN1CCC23C4C1CC5=C2C(=C(C=C5)O)OC3C(C=C4)O',
+            inchi: 'InChI=1S/C17H19NO3/c1-18-7-6-17-10-3-5-13(20)16(17)21-15-12(19)4-2-9(14(15)17)8-11(10)18/h2-5,10-11,13,16,19-20H,6-8H2,1H3/t10-,11+,13-,16-,17-/m0/s1',
+            inchiKey: 'BQJCRHHNABKAKU-KBQPJGBKSA-N'
+        },
+        {
+            id: '14',
+            name: 'Strychnine',
+            iupacName: 'Strychnidin-10-one',
+            molecularFormula: 'C21H22N2O2',
+            molecularWeight: '334.41 g/mol',
+            pubchemCid: '441071',
+            smiles: 'C1CN2C3C4(CC2C5=CC=CC=C5N4C(=O)C3)CC6C7=C1COC7=CC6',
+            inchi: 'InChI=1S/C21H22N2O2/c24-18-10-16-19-13-9-17-21(6-7-22(17)11-12(19)5-8-25-16)14-3-1-2-4-15(14)23(18)20(13)21/h1-5,13,16-17,19-20H,6-11H2/t13-,16-,17-,19-,20-,21+/m0/s1',
+            inchiKey: 'QMGVPVSNSZLJIA-BSRZMSEKSA-N'
         }
     ];
 

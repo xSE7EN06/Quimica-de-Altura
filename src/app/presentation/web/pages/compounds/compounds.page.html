@@ -4,28 +4,29 @@
             <h1>Gestión de Compuestos Químicos</h1>
             <p>Administración de fitocompuestos y moléculas aisladas</p>
         </div>
-
-        <div class="header-controls">
-            <div class="search-bar">
-                <mat-icon class="search-icon">search</mat-icon>
-                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
-                    placeholder="Buscar compuestos..." />
-            </div>
-
-            <button class="btn-primary" (click)="onAddCompound()">
-                <mat-icon>science</mat-icon> Alta de Compuesto
-            </button>
-        </div>
     </header>
 
-    <app-data-table [data]="compounds" [columns]="columns"></app-data-table>
+    <app-data-table [data]="compounds" [columns]="columns" (rowClick)="onViewCompound($event)"
+        (editAction)="onEditCompound($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar compuestos..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddCompound()">
+            <mat-icon>science</mat-icon> Alta de Compuesto
+        </button>
+    </app-data-table>
 
     <!-- Modals -->
     <app-add-compound-modal (compoundsAdded)="onCompoundsAdded($event)"></app-add-compound-modal>
-    <app-compound-modal (saved)="onSaveCompound($event)"></app-compound-modal>
+    <app-compound-modal [compound]="selectedCompound" [hasPrevious]="hasPrevious" [hasNext]="hasNext"
+        (prev)="onPrevCompound()" (next)="onNextCompound()" (saved)="onSaveCompound($event)">
+    </app-compound-modal>
 
-    <app-confirmation-modal title="Eliminar Compuesto"
-        message="¿Estás seguro de que deseas eliminar este compuesto del repositorio? Esta acción no se puede deshacer."
+    <app-confirmation-modal title="Eliminar Registro"
+        message="¿Estás seguro de que deseas eliminar este registro del repositorio? Esta acción no se puede deshacer."
         confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
     </app-confirmation-modal>
 
@@ -44,19 +45,5 @@
 
     <ng-template #formulaTpl let-item>
         <code class="formula-tag">{{ item.molecularFormula }}</code>
-    </ng-template>
-
-    <ng-template #actionsTpl let-item>
-        <div class="actions">
-            <button class="btn-icon view" (click)="onViewCompound(item)">
-                <mat-icon>visibility</mat-icon>
-            </button>
-            <button class="btn-icon edit" (click)="onEditCompound(item)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button class="btn-icon delete" (click)="onDeleteCompound(item)">
-                <mat-icon>delete_outline</mat-icon>
-            </button>
-        </div>
     </ng-template>
 </div>

@@ -1,7 +1,6 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { ActionBarComponent } from '../../components/action-bar/action-bar.component';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
 
 interface Disease {
@@ -15,7 +14,7 @@ interface Disease {
 @Component({
     selector: 'app-diseases',
     standalone: true,
-    imports: [CommonModule, MatIconModule, ActionBarComponent, DataTableComponent],
+    imports: [CommonModule, MatIconModule, DataTableComponent],
     templateUrl: './diseases.page.html',
     styleUrls: ['./diseases.page.scss']
 })
@@ -46,8 +45,7 @@ export class DiseasesPage implements OnInit {
             { key: 'name', header: 'Nombre', cellTemplate: this.nameTpl },
             { key: 'icdCode', header: 'Código ICD', cellTemplate: this.viewFileTpl },
             { key: 'category', header: 'Categoría', cellTemplate: this.viewFileTpl },
-            { key: 'severity', header: 'Gravedad', cellTemplate: this.viewFileTpl },
-            { key: 'actions', header: 'Acciones', cellTemplate: this.actionsTpl }
+            { key: 'severity', header: 'Gravedad', cellTemplate: this.viewFileTpl }
         ];
     }
 
@@ -57,5 +55,17 @@ export class DiseasesPage implements OnInit {
 
     onAddDisease() {
         console.log('Add disease');
+    }
+
+    onViewDisease(item: any) {
+        console.log('View disease:', item);
+    }
+
+    onEditDisease(item: any) {
+        console.log('Edit disease:', item);
+    }
+
+    onBulkDelete(items: any[]) {
+        console.log('Bulk delete diseases:', items);
     }
 }

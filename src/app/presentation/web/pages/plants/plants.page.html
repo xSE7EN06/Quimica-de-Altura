@@ -6,36 +6,52 @@
             <h1>Gestión de Plantas Medicinales</h1>
             <p>Administra las plantas medicinales del sistema</p>
         </div>
-
-        <div class="header-controls">
-            <div class="search-bar">
-                <mat-icon class="search-icon">search</mat-icon>
-                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar plantas..." />
-            </div>
-
-            <button class="btn-primary" (click)="onAddPlant()">
-                <mat-icon>add</mat-icon> Alta de Planta
-            </button>
-        </div>
     </header>
 
     <!-- Data Table -->
-    <app-data-table [data]="plants" [columns]="columns"></app-data-table>
+    <app-data-table [data]="plants" [columns]="columns" (rowClick)="onViewPlant($event)"
+        (editAction)="onEditPlant($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar plantas..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddPlant()">
+            <mat-icon>add</mat-icon> Alta de Planta
+        </button>
+
+        <!-- Dynamic Filter Menu -->
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Propiedades</label>
+                <select [ngModel]="activeFilters.property" (ngModelChange)="onFilterChange('property', $event)">
+                    <option value="">Todas las propiedades</option>
+                    <option value="Antioxidante">Antioxidante</option>
+                    <option value="Antiinflamatorio">Antiinflamatorio</option>
+                    <option value="Antiséptico">Antiséptico</option>
+                    <option value="Sedante">Sedante</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
 
     <!-- Modals -->
     <app-add-plant-modal (plantsAdded)="onPlantsAdded($event)">
     </app-add-plant-modal>
 
-    <app-plant-modal (saved)="onSavePlant($event)"></app-plant-modal>
+    <app-plant-modal [plant]="selectedPlant" [hasPrevious]="hasPrevious" [hasNext]="hasNext" (prev)="onPrevPlant()"
+        (next)="onNextPlant()" (saved)="onSavePlant($event)">
+    </app-plant-modal>
 
-    <app-confirmation-modal title="Eliminar Planta"
-        message="¿Estás seguro de que deseas eliminar esta planta? Esta acción no se puede deshacer."
+    <app-confirmation-modal title="Eliminar Registro"
+        message="¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
         confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
     </app-confirmation-modal>
 
     <!-- Templates for Table Cells -->
     <ng-template #nameTpl let-item>
-        <div class="plant-name-cell">
+        <div class="plant-name-cell" (click)="$event.stopPropagation()">
             <div class="plant-thumb">
                 <img [src]="item.imageUrl" [alt]="item.commonName">
             </div>
@@ -51,20 +67,6 @@
             <span *ngFor="let prop of item.properties" class="property-tag">
                 {{ prop }}
             </span>
-        </div>
-    </ng-template>
-
-    <ng-template #actionsTpl let-item>
-        <div class="actions">
-            <button class="btn-icon view" title="Ver Detalles" (click)="onViewPlant(item)">
-                <mat-icon>visibility</mat-icon>
-            </button>
-            <button class="btn-icon edit" title="Editar" (click)="onEditPlant(item)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button class="btn-icon delete" title="Eliminar" (click)="onDeletePlant(item)">
-                <mat-icon>delete_outline</mat-icon>
-            </button>
         </div>
     </ng-template>
 </div>

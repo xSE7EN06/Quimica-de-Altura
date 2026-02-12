@@ -40,6 +40,138 @@ export class MockUserRepository extends UserRepository {
             birthdate: '1992-11-20',
             nationality: 'Mexicana',
             address: 'Calle Benito Juárez 789, Orizaba, México'
+        },
+        {
+            id: '4',
+            userName: 'jlopez',
+            firstName: 'Juan',
+            lastName: 'López',
+            email: 'j.lopez@quimicaalturas.com',
+            role: 'Colaborador',
+            birthdate: '1995-02-14',
+            nationality: 'Mexicana',
+            address: 'Av. Revolución 101, Xalapa, México'
+        },
+        {
+            id: '5',
+            userName: 'ana.martinez',
+            firstName: 'Ana',
+            lastName: 'Martínez',
+            email: 'ana.mtz@quimicaalturas.com',
+            role: 'Investigador',
+            birthdate: '1988-08-30',
+            nationality: 'Mexicana',
+            address: 'Calle 5 de Mayo 22, Coatepec, México'
+        },
+        {
+            id: '6',
+            userName: 'carlos.s',
+            firstName: 'Carlos',
+            lastName: 'Sánchez',
+            email: 'c.sanchez@quimicaalturas.com',
+            role: 'Administrador',
+            birthdate: '1982-12-12',
+            nationality: 'Mexicana',
+            address: 'Blvd. Córdoba-Fortín 55, Fortín, México'
+        },
+        {
+            id: '7',
+            userName: 'sofia.v',
+            firstName: 'Sofía',
+            lastName: 'Vázquez',
+            email: 'sofia.v@quimicaalturas.com',
+            role: 'Editor',
+            birthdate: '1996-04-25',
+            nationality: 'Mexicana',
+            address: 'Calle Real 88, Orizaba, México'
+        },
+        {
+            id: '8',
+            userName: 'rhernandez',
+            firstName: 'Roberto',
+            lastName: 'Hernández',
+            email: 'r.hernandez@quimicaalturas.com',
+            role: 'Investigador',
+            birthdate: '1980-07-19',
+            nationality: 'Mexicana',
+            address: 'Av. Independencia 404, Veracruz, México'
+        },
+        {
+            id: '9',
+            userName: 'paty.g',
+            firstName: 'Patricia',
+            lastName: 'Gómez',
+            email: 'p.gomez@quimicaalturas.com',
+            role: 'Colaborador',
+            birthdate: '1999-01-10',
+            nationality: 'Mexicana',
+            address: 'Calle Reforma 33, Boca del Río, México'
+        },
+        {
+            id: '10',
+            userName: 'd.torres',
+            firstName: 'Daniel',
+            lastName: 'Torres',
+            email: 'd.torres@quimicaalturas.com',
+            role: 'Visitante',
+            birthdate: '2000-05-05',
+            nationality: 'Mexicana',
+            address: 'Av. Xalapa 77, Xalapa, México'
+        },
+        {
+            id: '11',
+            userName: 'e.ramirez',
+            firstName: 'Elena',
+            lastName: 'Ramírez',
+            email: 'e.ramirez@quimicaalturas.com',
+            role: 'Investigador',
+            birthdate: '1987-03-22',
+            nationality: 'Mexicana',
+            address: 'Calle Madero 12, Zongolica, México'
+        },
+        {
+            id: '12',
+            userName: 'fer.c',
+            firstName: 'Fernando',
+            lastName: 'Castillo',
+            email: 'f.castillo@quimicaalturas.com',
+            role: 'Editor',
+            birthdate: '1993-09-15',
+            nationality: 'Mexicana',
+            address: 'Av. 1 505, Córdoba, México'
+        },
+        {
+            id: '13',
+            userName: 'g.jimenez',
+            firstName: 'Gabriela',
+            lastName: 'Jiménez',
+            email: 'g.jimenez@quimicaalturas.com',
+            role: 'Administrador',
+            birthdate: '1984-11-08',
+            nationality: 'Mexicana',
+            address: 'Calle Sur 10 202, Orizaba, México'
+        },
+        {
+            id: '14',
+            userName: 'h.diaz',
+            firstName: 'Héctor',
+            lastName: 'Díaz',
+            email: 'h.diaz@quimicaalturas.com',
+            role: 'Colaborador',
+            birthdate: '1997-06-30',
+            nationality: 'Mexicana',
+            address: 'Av. Ruiz Cortines 900, Xalapa, México'
+        },
+        {
+            id: '15',
+            userName: 'i.morales',
+            firstName: 'Isabel',
+            lastName: 'Morales',
+            email: 'i.morales@quimicaalturas.com',
+            role: 'Investigador',
+            birthdate: '1990-02-18',
+            nationality: 'Mexicana',
+            address: 'Calle Hidalgo 45, Huatusco, México'
         }
     ];
 

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,13 +19,17 @@ import { Article } from '../../../../domain/models/article.entity';
     templateUrl: './article-modal.component.html',
     styleUrls: ['./article-modal.component.scss']
 })
-export class ArticleModalComponent {
+export class ArticleModalComponent implements OnChanges {
     @Input() isOpen = false;
     @Input() mode: 'add' | 'edit' | 'view' = 'view';
     @Input() article: Article = this.createEmptyArticle();
+    @Input() hasPrevious = false;
+    @Input() hasNext = false;
 
     @Output() saved = new EventEmitter<Article>();
     @Output() closed = new EventEmitter<void>();
+    @Output() prev = new EventEmitter<void>();
+    @Output() next = new EventEmitter<void>();
 
     // Temporary storage for authors and keywords strings
     authorsList = '';
@@ -58,7 +62,7 @@ export class ArticleModalComponent {
     }
 
     onSave() {
-        if (this.article.title && this.article.doi) {
+        if (this.article.title && (this.article.doi || this.mode === 'add')) {
             if (this.mode === 'edit') {
                 this.showConfirmModal = true;
             } else {
@@ -68,7 +72,6 @@ export class ArticleModalComponent {
     }
 
     executeSave() {
-        // Process authors and keywords
         this.article.authors = this.authorsList.split(',').map(a => a.trim()).filter(a => a !== '');
         this.article.keywords = this.keywordsList.split(',').map(k => k.trim()).filter(k => k !== '');
 
@@ -102,10 +105,7 @@ export class ArticleModalComponent {
     }
 
     private handleFile(file: File) {
-        // Simulating file data extraction
         console.log('Archivo recibido:', file.name);
-        // You could use a library to parse PDF/Text here
-        // For now, we just notify the user
         alert(`Archivo "${file.name}" cargado. En una integración real, aquí extraeríamos la metadata.`);
     }
 }

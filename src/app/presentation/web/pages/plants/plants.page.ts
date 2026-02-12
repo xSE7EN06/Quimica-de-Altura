@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
@@ -11,12 +11,15 @@ import { ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, trash, alertCircle } from 'ionicons/icons';
 
+import { FormsModule } from '@angular/forms';
+
 @Component({
     selector: 'app-plants',
     standalone: true,
     imports: [
         CommonModule,
         MatIconModule,
+        FormsModule,
         DataTableComponent,
         AddPlantModalComponent,
         PlantModalComponent,
@@ -27,7 +30,11 @@ import { checkmarkCircle, trash, alertCircle } from 'ionicons/icons';
 })
 export class PlantsPage implements OnInit {
     plants: Plant[] = [];
+    private originalPlants: Plant[] = [];
     columns: ColumnConfig[] = [];
+    activeFilters = {
+        property: ''
+    };
 
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('propertiesTpl', { static: true }) propertiesTpl!: TemplateRef<any>;
@@ -37,8 +44,17 @@ export class PlantsPage implements OnInit {
     @ViewChild(ConfirmationModalComponent) confirmModal!: ConfirmationModalComponent;
 
     private selectedPlantId?: string;
+    currentIndex = -1;
+    selectedPlant?: Plant;
 
-    constructor(private plantRepository: PlantRepository, private toastController: ToastController) {
+    get hasPrevious(): boolean { return this.currentIndex > 0; }
+    get hasNext(): boolean { return this.currentIndex < this.plants.length - 1; }
+
+    constructor(
+        private plantRepository: PlantRepository,
+        private toastController: ToastController,
+        private cdr: ChangeDetectorRef
+    ) {
         addIcons({ checkmarkCircle, trash, alertCircle });
     }
 
@@ -47,15 +63,26 @@ export class PlantsPage implements OnInit {
         this.columns = [
             { key: 'commonName', header: 'Planta', cellTemplate: this.nameTpl },
             { key: 'properties', header: 'Propiedades', cellTemplate: this.propertiesTpl },
-            { key: 'region', header: 'Región' },
-            { key: 'actions', header: 'Acciones', cellTemplate: this.actionsTpl }
+            { key: 'region', header: 'Región' }
         ];
     }
 
     private loadPlants() {
         this.plantRepository.getPlants().subscribe(data => {
-            this.plants = data;
+            this.originalPlants = data;
+            this.applyFilters();
+            this.cdr.detectChanges();
         });
+    }
+
+    private applyFilters() {
+        let filtered = [...this.originalPlants];
+
+        if (this.activeFilters.property) {
+            filtered = filtered.filter(p => p.properties.includes(this.activeFilters.property));
+        }
+
+        this.plants = filtered;
     }
 
     onSearch(term: string) {
@@ -71,11 +98,29 @@ export class PlantsPage implements OnInit {
     }
 
     onViewPlant(plant: Plant) {
+        this.selectedPlant = plant;
+        this.currentIndex = this.plants.indexOf(plant);
         this.plantModal.open('view', plant);
     }
 
     onEditPlant(plant: Plant) {
+        this.selectedPlant = plant;
+        this.currentIndex = this.plants.indexOf(plant);
         this.plantModal.open('edit', plant);
+    }
+
+    onPrevPlant() {
+        if (this.hasPrevious) {
+            this.currentIndex--;
+            this.selectedPlant = this.plants[this.currentIndex];
+        }
+    }
+
+    onNextPlant() {
+        if (this.hasNext) {
+            this.currentIndex++;
+            this.selectedPlant = this.plants[this.currentIndex];
+        }
     }
 
     onDeletePlant(plant: Plant) {
@@ -83,13 +128,27 @@ export class PlantsPage implements OnInit {
         this.confirmModal.open();
     }
 
+    onBulkDelete(items: Plant[]) {
+        // For now, let's just confirm for the first one or a generic message
+        this.confirmModal.title = `Eliminar ${items.length} plantas`;
+        this.confirmModal.message = `¿Estás seguro de que deseas eliminar las ${items.length} plantas seleccionadas?`;
+        // We might need a better bulk delete logic, but for simplicity:
+        this.selectedPlantId = items.map(i => i.id).join(','); // Hacky for this demo
+        this.confirmModal.open();
+    }
+
     onConfirmDelete() {
         if (this.selectedPlantId) {
-            this.plantRepository.deletePlant(this.selectedPlantId).subscribe(() => {
-                this.loadPlants();
-                this.showToast('Planta eliminada correctamente', 'trash', 'danger');
-                this.selectedPlantId = undefined;
+            const ids = this.selectedPlantId.split(',');
+            // If multiple, normally we'd call a bulk delete API. 
+            // For now, let's just do one by one or the first one.
+            ids.forEach(id => {
+                this.plantRepository.deletePlant(id).subscribe(() => {
+                    this.loadPlants();
+                });
             });
+            this.showToast(`${ids.length} planta(s) eliminada(s) correctamente`, 'trash', 'danger');
+            this.selectedPlantId = undefined;
         }
         this.loadPlants();
     }
@@ -128,6 +187,16 @@ export class PlantsPage implements OnInit {
         });
 
         this.showToast(`${newPlants.length} planta(s) agregada(s) correctamente.`, 'checkmark-circle');
+    }
+
+    onFilterChange(type: string, value: any) {
+        this.activeFilters.property = value;
+        this.applyFilters();
+    }
+
+    onResetFilters() {
+        this.activeFilters.property = '';
+        this.applyFilters();
     }
 
     private async showToast(message: string, icon: string, color: string = 'dark') {

@@ -1,6 +1,14 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="article-management-modal">
     <ng-template>
-        <div class="modal-wrapper">
+        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+            <!-- Navigation Arrows -->
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
             <div class="modal-header">
                 <div class="header-icon">
                     <mat-icon>{{ mode === 'add' ? 'library_add' : 'menu_book' }}</mat-icon>

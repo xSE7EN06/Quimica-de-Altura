@@ -47,6 +47,106 @@ export class MockArticleRepository extends ArticleRepository {
             doi: 'https://doi.org/10.1002/pca.3456',
             country: 'México',
             abstract: 'A través de técnicas de cromatografía de gases acoplada a masas, se identificaron nuevos alcaloides en las hojas de muicle con potencial actividad antimicrobiana.'
+        },
+        {
+            id: '5',
+            title: 'Efecto del cambio climático en la producción de terpenos en bosques de coníferas',
+            year: 2023,
+            authors: ['Müller, K.', 'Schmidt, F.'],
+            keywords: ['Cambio Climático', 'Terpenos', 'Coníferas', 'Estrés Ambiental'],
+            doi: 'https://doi.org/10.1038/s41558-023-01654-z',
+            country: 'Alemania',
+            abstract: 'Investigación sobre cómo el aumento de temperaturas afecta la biosíntesis de terpenos en pinos, impactando en la defensa natural contra plagas.'
+        },
+        {
+            id: '6',
+            title: 'Valorización de residuos agroindustriales de piña para la extracción de bromelina',
+            year: 2022,
+            authors: ['López, S.', 'Martínez, A.', 'Ruiz, C.'],
+            keywords: ['Piña', 'Bromelina', 'Residuos Agroindustriales', 'Economía Circular'],
+            doi: 'https://doi.org/10.1016/j.biortech.2022.126789',
+            country: 'Costa Rica',
+            abstract: 'Propuesta de un método sustentable para obtener bromelina de alta pureza a partir de cáscaras y tallos de piña.'
+        },
+        {
+            id: '7',
+            title: 'Actividad antimicrobiana de extractos de orégano mexicano contra bacterias resistentes',
+            year: 2023,
+            authors: ['Pérez, L.', 'Gómez, D.'],
+            keywords: ['Orégano', 'Lippia graveolens', 'Resistencia Antibiótica', 'Aceites Esenciales'],
+            doi: 'https://doi.org/10.3390/antibiotics12040678',
+            country: 'México',
+            abstract: 'Evaluación in vitro de la eficacia del aceite esencial de orégano contra cepas de Staphylococcus aureus meticilino-resistente.'
+        },
+        {
+            id: '8',
+            title: 'Conservación ex situ de orquídeas endémicas de Veracruz',
+            year: 2021,
+            authors: ['Vázquez, M.', 'Ortiz, R.'],
+            keywords: ['Orquídeas', 'Conservación', 'Veracruz', 'Banco de Germoplasma'],
+            doi: 'https://doi.org/10.17129/botsci.2890',
+            country: 'México',
+            abstract: 'Estrategias para la preservación de especies de orquídeas en peligro de extinción mediante cultivo de tejidos.'
+        },
+        {
+            id: '9',
+            title: 'Potencial nutracéutico del maíz morado andino',
+            year: 2020,
+            authors: ['Chávez, J.', 'Flores, I.'],
+            keywords: ['Maíz Morado', 'Antocianinas', 'Nutracéuticos', 'Salud Cardiovascular'],
+            doi: 'https://doi.org/10.1021/acs.jafc.0c01234',
+            country: 'Perú',
+            abstract: 'Revisión sistemática de los beneficios de las antocianinas del maíz morado en la reducción de la presión arterial y el colesterol.'
+        },
+        {
+            id: '10',
+            title: 'Bioensayos de toxicidad de plantas medicinales usadas en la selva amazónica',
+            year: 2022,
+            authors: ['Silva, B.', 'Santos, P.', 'Oliveira, M.'],
+            keywords: ['Toxicidad', 'Plantas Medicinales', 'Amazonas', 'Artemia salina'],
+            doi: 'https://doi.org/10.1590/s0102-695x2022005000023',
+            country: 'Brasil',
+            abstract: 'Evaluación de la seguridad de uso de 20 especies vegetales amazónicas mediante el ensayo de letalidad con Artemia salina.'
+        },
+        {
+            id: '11',
+            title: 'Síntesis verde de nanopartículas de plata usando extracto de nopal',
+            year: 2024,
+            authors: ['Ramírez, O.', 'Sánchez, K.'],
+            keywords: ['Nanotecnología', 'Síntesis Verde', 'Nopal', 'Opuntia ficus-indica'],
+            doi: 'https://doi.org/10.1016/j.jclepro.2023.139876',
+            country: 'México',
+            abstract: 'Desarrollo de un método ecológico para sintetizar nanopartículas metálicas utilizando mucílago de nopal como agente reductor.'
+        },
+        {
+            id: '12',
+            title: 'Impacto de la luz UV en la producción de alcaloides en Catharanthus roseus',
+            year: 2021,
+            authors: ['Chen, Y.', 'Li, W.'],
+            keywords: ['Catharanthus roseus', 'Vincristina', 'Luz UV', 'Metabolismo Secundario'],
+            doi: 'https://doi.org/10.1093/pcp/pcab045',
+            country: 'China',
+            abstract: 'Estudio sobre cómo la radiación ultravioleta estimula la producción de alcaloides anticancerígenos en la vinca de Madagascar.'
+        },
+        {
+            id: '13',
+            title: 'Uso tradicional del toloache en rituales del norte de México',
+            year: 2019,
+            authors: ['Moreno, F.', 'Salazar, T.'],
+            keywords: ['Datura', 'Toloache', 'Etnobotánica', 'Rituales'],
+            doi: 'https://doi.org/10.29043/ucr.v0i0.789',
+            country: 'México',
+            abstract: 'Documentación antropológica y botánica sobre el uso ceremonial y medicinal de datura en comunidades indígenas del norte.'
+        },
+        {
+            id: '14',
+            title: 'Quimiotaxonomía del género Agave en Mesoamérica',
+            year: 2023,
+            authors: ['Jiménez, A.', 'Castillo, D.'],
+            keywords: ['Agave', 'Quimiotaxonomía', 'Saponinas', 'Mesoamérica'],
+            doi: 'https://doi.org/10.1007/s12229-023-09287-x',
+            country: 'México',
+            abstract: 'Clasificación de especies de Agave basada en sus perfiles de saponinas esteroidales, proponiendo nuevas relaciones filogenéticas.'
         }
     ];
 

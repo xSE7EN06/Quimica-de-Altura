@@ -4,28 +4,42 @@
             <h1>Integración de APIs Externas</h1>
             <p>Gestiona los servicios químicos y botánicos de terceros</p>
         </div>
-
-        <div class="header-controls">
-            <div class="search-bar">
-                <mat-icon class="search-icon">search</mat-icon>
-                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
-                    placeholder="Buscar servicios..." />
-            </div>
-
-            <button class="btn-primary" (click)="onAddApi()">
-                <mat-icon>add</mat-icon> Configurar API
-            </button>
-        </div>
     </header>
 
-    <app-data-table [data]="apis" [columns]="columns"></app-data-table>
+    <app-data-table [data]="apis" [columns]="columns" (rowClick)="onViewApi($event)" (editAction)="onEditApi($event)"
+        (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
-    <app-api-modal [isOpen]="isModalOpen" [mode]="modalMode" [api]="selectedApi!" (closed)="isModalOpen = false"
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar servicios..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddApi()">
+            <mat-icon>add</mat-icon> Configurar API
+        </button>
+
+        <!-- Dynamic Filter Menu -->
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Método de Autenticación</label>
+                <select [ngModel]="activeFilters.authType" (ngModelChange)="onFilterChange('authType', $event)">
+                    <option value="">Todos los métodos</option>
+                    <option value="None">Sin Autenticación</option>
+                    <option value="API Key">API Key</option>
+                    <option value="OAuth2">OAuth 2.0</option>
+                    <option value="Basic Auth">Basic Auth</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-api-modal [isOpen]="isModalOpen" [mode]="modalMode" [api]="selectedApi!" [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext" (prev)="onPrevApi()" (next)="onNextApi()" (closed)="isModalOpen = false"
         (saved)="onSaveApi($event)">
     </app-api-modal>
 
-    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar API"
-        [message]="'¿Estás seguro de que deseas eliminar la configuración de ' + apiToDelete?.name + '?'"
+    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar Registro"
+        [message]="'¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.'"
         confirmText="Eliminar" (confirmed)="onConfirmDelete()" (cancelled)="isConfirmModalOpen = false">
     </app-confirmation-modal>
 
@@ -55,20 +69,6 @@
                 <span *ngFor="let e of item.endpoints" class="dot" [title]="e.name"
                     [ngClass]="e.method.toLowerCase()"></span>
             </div>
-        </div>
-    </ng-template>
-
-    <ng-template #actionsTpl let-item>
-        <div class="actions">
-            <button class="btn-icon view" title="Ver Detalles" (click)="onViewApi(item)">
-                <mat-icon>visibility</mat-icon>
-            </button>
-            <button class="btn-icon edit" title="Configurar" (click)="onEditApi(item)">
-                <mat-icon>settings</mat-icon>
-            </button>
-            <button class="btn-icon delete" title="Remover" (click)="onDeleteApi(item)">
-                <mat-icon>delete_outline</mat-icon>
-            </button>
         </div>
     </ng-template>
 </div>

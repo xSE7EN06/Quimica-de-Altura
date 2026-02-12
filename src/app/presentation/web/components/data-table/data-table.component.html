@@ -1,36 +1,143 @@
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th *ngFor="let col of displayedColumns">{{ col.header }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of data">
-                <td *ngFor="let col of displayedColumns">
-                    <!-- Check if a custom template is provided for this column -->
-                    <ng-container *ngIf="col.cellTemplate; else defaultCell">
-                        <ng-container *ngTemplateOutlet="col.cellTemplate; context: { $implicit: item }"></ng-container>
-                    </ng-container>
-                    <!-- Default text rendering -->
-                    <ng-template #defaultCell>
-                        {{ item[col.key] }}
-                    </ng-template>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="data-table-layout">
+    <!-- Main Content Area (Header + Table) -->
+    <div class="main-content">
+        <!-- Action Bar -->
+        <div class="table-actions-bar">
+            <div class="left-actions">
+                <div class="custom-controls">
+                    <ng-content select="[add-button]"></ng-content>
 
-    <div class="pagination">
-        <button class="page-btn"><mat-icon>navigate_before</mat-icon> Anterior</button>
-        <div class="page-numbers">
-            <!-- Mock Pagination logic for UI, can be improved later -->
-            <button class="page-num active">04</button>
-            <button class="page-num">05</button>
-            <button class="page-num">06</button>
-            <span class="dots">...</span>
-            <button class="page-num">13</button>
+                    <div class="selected-actions" [class.visible]="selectedItems.size > 0">
+                        <span class="selection-count">{{ selectedItems.size }} seleccionados</span>
+                        <button class="btn-action-edit" [disabled]="selectedItems.size !== 1" (click)="onEdit()">
+                            <mat-icon>edit</mat-icon> Editar
+                        </button>
+                        <button class="btn-action-delete" (click)="onDelete()">
+                            <mat-icon>delete</mat-icon> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-actions">
+                <button class="btn-filter" [class.active]="showFilterMenu" (click)="onFilter()"
+                    title="Filtrar y Ordenar">
+                    <mat-icon>{{ showFilterMenu ? 'close' : 'filter_list' }}</mat-icon>
+                    <span>Filtros</span>
+                </button>
+                <div class="custom-controls">
+                    <ng-content select="[search-bar]"></ng-content>
+                </div>
+            </div>
         </div>
-        <button class="page-btn">Siguiente <mat-icon>navigate_next</mat-icon></button>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="selection-col">
+                            <div class="custom-checkbox header-checkbox" (click)="toggleSelectAll()"
+                                [class.checked]="paginatedData.length > 0 && paginatedData.every(isItemSelected.bind(this))">
+                                <mat-icon
+                                    *ngIf="paginatedData.length > 0 && paginatedData.every(isItemSelected.bind(this))">check</mat-icon>
+                            </div>
+                        </th>
+                        <th *ngFor="let col of displayedColumns">{{ col.header }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of paginatedData" (click)="onRowClick(item)"
+                        [class.selected]="isItemSelected(item)" class="clickable">
+                        <td class="selection-col" (click)="onRowSelection($event, item)">
+                            <div class="custom-checkbox" [class.checked]="isItemSelected(item)">
+                                <mat-icon *ngIf="isItemSelected(item)">check</mat-icon>
+                            </div>
+                        </td>
+                        <td *ngFor="let col of displayedColumns">
+                            <ng-container *ngIf="col.cellTemplate; else defaultCell">
+                                <ng-container
+                                    *ngTemplateOutlet="col.cellTemplate; context: { $implicit: item }"></ng-container>
+                            </ng-container>
+                            <ng-template #defaultCell>
+                                {{ item[col.key] }}
+                            </ng-template>
+                        </td>
+                    </tr>
+                    <tr *ngIf="data.length === 0">
+                        <td [attr.colspan]="displayedColumns.length + 1" class="empty-state">
+                            <mat-icon>inventory_2</mat-icon>
+                            <p>No se encontraron registros</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Page Paginator -->
+            <div class="pagination" *ngIf="data.length > 0">
+                <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+                    <mat-icon>navigate_before</mat-icon> Anterior
+                </button>
+                <div class="page-numbers">
+                    <button *ngFor="let page of pageNumbers" class="page-num" [class.active]="page === currentPage"
+                        (click)="setPage(page)">
+                        {{ page < 10 ? '0' + page : page }} </button>
+                </div>
+                <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+                    Siguiente <mat-icon>navigate_next</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Sidebar Drawer (Right Side) -->
+    <div class="filter-sidebar" [class.open]="showFilterMenu">
+        <div class="sidebar-overlay" (click)="showFilterMenu = false"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h2>Filtros y Orden</h2>
+                <button class="btn-close-sidebar" (click)="showFilterMenu = false">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <div class="sidebar-scroll">
+                <!-- Generic Sorting Section -->
+                <section class="sidebar-section">
+                    <h3 class="section-title">Ordenamiento</h3>
+                    <div class="filter-group">
+                        <label>Ordenar por</label>
+                        <select [ngModel]="sortColumn" (ngModelChange)="onSortChange($event)">
+                            <option *ngFor="let col of columns" [value]="col.key">{{ col.header }}</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Dirección</label>
+                        <select [ngModel]="sortDirection" (ngModelChange)="onDirectionChange($event)">
+                            <option value="asc">Ascendente (A-Z / 0-9)</option>
+                            <option value="desc">Descendente (Z-A / 9-0)</option>
+                        </select>
+                    </div>
+                </section>
+
+                <div class="sidebar-divider"></div>
+
+                <!-- Custom Filters Section -->
+                <section class="sidebar-section">
+                    <h3 class="section-title">Filtros Específicos</h3>
+                    <ng-content select="[filter-menu]"></ng-content>
+                </section>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn-reset-filters" (click)="onResetFilters()">
+                    Reiniciar Filtros
+                </button>
+                <button class="btn-apply-filters" (click)="showFilterMenu = false">
+                    Aplicar
+                </button>
+            </div>
+        </div>
     </div>
 </div>

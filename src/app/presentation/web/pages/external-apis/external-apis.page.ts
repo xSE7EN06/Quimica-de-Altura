@@ -9,6 +9,7 @@ import { ExternalApiRepository } from '../../../../domain/repositories/external-
 import { ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { globe, code, timer, toggle, checkmarkCircle, trash, alertCircle, add } from 'ionicons/icons';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-external-apis',
@@ -16,6 +17,7 @@ import { globe, code, timer, toggle, checkmarkCircle, trash, alertCircle, add } 
     imports: [
         CommonModule,
         MatIconModule,
+        FormsModule,
         DataTableComponent,
         ApiModalComponent,
         ConfirmationModalComponent
@@ -25,12 +27,20 @@ import { globe, code, timer, toggle, checkmarkCircle, trash, alertCircle, add } 
 })
 export class ExternalApisPage implements OnInit {
     apis: ExternalApi[] = [];
+    private originalApis: ExternalApi[] = [];
     columns: ColumnConfig[] = [];
+    activeFilters = {
+        authType: ''
+    };
 
     // Modal state
     isModalOpen = false;
     modalMode: 'add' | 'edit' | 'view' = 'view';
     selectedApi?: ExternalApi;
+    currentIndex = -1;
+
+    get hasPrevious(): boolean { return this.currentIndex > 0; }
+    get hasNext(): boolean { return this.currentIndex < this.apis.length - 1; }
 
     // Confirmation modal state
     isConfirmModalOpen = false;
@@ -55,16 +65,26 @@ export class ExternalApisPage implements OnInit {
             { key: 'name', header: 'Servicio API', cellTemplate: this.nameTpl },
             { key: 'authType', header: 'Autenticación', cellTemplate: this.authTpl },
             { key: 'rateLimit', header: 'Límite' },
-            { key: 'endpoints', header: 'Endpoints Activos', cellTemplate: this.endpointsTpl },
-            { key: 'actions', header: 'Acciones', cellTemplate: this.actionsTpl }
+            { key: 'endpoints', header: 'Endpoints Activos', cellTemplate: this.endpointsTpl }
         ];
     }
 
     private loadApis() {
         this.apiRepository.getApis().subscribe(data => {
-            this.apis = data;
+            this.originalApis = data;
+            this.applyFilters();
             this.cdr.detectChanges();
         });
+    }
+
+    private applyFilters() {
+        let filtered = [...this.originalApis];
+
+        if (this.activeFilters.authType) {
+            filtered = filtered.filter(api => api.authType === this.activeFilters.authType);
+        }
+
+        this.apis = filtered;
     }
 
     onAddApi() {
@@ -84,18 +104,43 @@ export class ExternalApisPage implements OnInit {
     onViewApi(api: ExternalApi) {
         this.modalMode = 'view';
         this.selectedApi = { ...api, endpoints: [...api.endpoints] };
+        this.currentIndex = this.apis.indexOf(api);
         this.isModalOpen = true;
     }
 
     onEditApi(api: ExternalApi) {
         this.modalMode = 'edit';
         this.selectedApi = { ...api, endpoints: [...api.endpoints] };
+        this.currentIndex = this.apis.indexOf(api);
         this.isModalOpen = true;
+    }
+
+    onPrevApi() {
+        if (this.hasPrevious) {
+            this.currentIndex--;
+            const api = this.apis[this.currentIndex];
+            this.selectedApi = { ...api, endpoints: [...api.endpoints] };
+        }
+    }
+
+    onNextApi() {
+        if (this.hasNext) {
+            this.currentIndex++;
+            const api = this.apis[this.currentIndex];
+            this.selectedApi = { ...api, endpoints: [...api.endpoints] };
+        }
     }
 
     onDeleteApi(api: ExternalApi) {
         this.apiToDelete = api;
         this.isConfirmModalOpen = true;
+    }
+
+    onBulkDelete(items: ExternalApi[]) {
+        if (items.length > 0) {
+            this.apiToDelete = items[0]; // Simplified
+            this.isConfirmModalOpen = true;
+        }
     }
 
     onConfirmDelete() {
@@ -142,5 +187,15 @@ export class ExternalApisPage implements OnInit {
             a.name.toLowerCase().includes(lowerQuery) ||
             a.base_url.toLowerCase().includes(lowerQuery)
         );
+    }
+
+    onFilterChange(type: string, value: any) {
+        this.activeFilters.authType = value;
+        this.applyFilters();
+    }
+
+    onResetFilters() {
+        this.activeFilters.authType = '';
+        this.applyFilters();
     }
 }

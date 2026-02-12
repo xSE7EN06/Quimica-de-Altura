@@ -24,9 +24,14 @@ export class ApiModalComponent {
     @Input() isOpen = false;
     @Input() mode: 'add' | 'edit' | 'view' = 'view';
     @Input() api: ExternalApi = this.createEmptyApi();
+    @Input() hasPrevious = false;
+    @Input() hasNext = false;
 
     @Output() saved = new EventEmitter<ExternalApi>();
     @Output() closed = new EventEmitter<void>();
+    @Output() prev = new EventEmitter<void>();
+    @Output() next = new EventEmitter<void>();
+
     showConfirmModal = false;
 
     constructor() { }

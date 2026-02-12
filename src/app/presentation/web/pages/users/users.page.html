@@ -5,35 +5,50 @@
             <h1>Gestión de Usuarios</h1>
             <p>Administra los accesos y perfiles del sistema</p>
         </div>
-
-        <div class="header-controls">
-            <div class="search-bar">
-                <mat-icon class="search-icon">search</mat-icon>
-                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
-                    placeholder="Buscar usuarios..." />
-            </div>
-
-            <button class="btn-primary" (click)='onAddUser()'>
-                <mat-icon>person_add</mat-icon> Nuevo Usuario
-            </button>
-        </div>
     </header>
 
     <!-- Data Table -->
-    <app-data-table [data]="users" [columns]="columns"></app-data-table>
+    <app-data-table [data]="users" [columns]="columns" (rowClick)="onViewUser($event)" (editAction)="onEditUser($event)"
+        (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar usuarios..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)='onAddUser()'>
+            <mat-icon>person_add</mat-icon> Nuevo Usuario
+        </button>
+
+        <!-- Dynamic Filter Menu -->
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Rol del Sistema</label>
+                <select [ngModel]="activeFilters.role" (ngModelChange)="onFilterChange('role', $event)">
+                    <option value="">Todos los roles</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Investigador">Investigador</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Visualizador">Visualizador</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
 
     <!-- Modals -->
-    <app-user-modal (saved)="onSaveUser($event)"></app-user-modal>
+    <app-user-modal [user]="selectedUser" [hasPrevious]="hasPrevious" [hasNext]="hasNext" (prev)="onPrevUser()"
+        (next)="onNextUser()" (saved)="onSaveUser($event)">
+    </app-user-modal>
 
-    <app-confirmation-modal title="Eliminar Usuario"
-        message="¿Estás seguro de que deseas eliminar este usuario? Esta acción revocará todos sus accesos."
+    <app-confirmation-modal title="Eliminar Registro"
+        message="¿Estás seguro de que deseas eliminar este registro? Esta acción revocará todos sus accesos."
         confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
     </app-confirmation-modal>
 
     <!-- Templates for Table Cells -->
     <ng-template #userTpl let-item>
         <div class="user-cell">
-            <div class="user-avatar">
+            <div class="user-avatar" (click)="$event.stopPropagation()">
                 {{ item.firstName[0] }}{{ item.lastName[0] }}
             </div>
             <div class="user-info">
@@ -47,19 +62,5 @@
         <span class="role-badge" [ngClass]="item.role.toLowerCase()">
             {{ item.role }}
         </span>
-    </ng-template>
-
-    <ng-template #actionsTpl let-item>
-        <div class="actions">
-            <button class="btn-icon view" title="Ver Detalles" (click)="onViewUser(item)">
-                <mat-icon>visibility</mat-icon>
-            </button>
-            <button class="btn-icon edit" title="Editar" (click)="onEditUser(item)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button class="btn-icon delete" title="Eliminar" (click)="onDeleteUser(item)">
-                <mat-icon>delete_outline</mat-icon>
-            </button>
-        </div>
     </ng-template>
 </div>

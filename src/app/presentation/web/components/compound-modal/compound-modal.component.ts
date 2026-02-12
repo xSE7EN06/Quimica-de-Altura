@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,13 +15,17 @@ export type CompoundModalMode = 'view' | 'edit';
     templateUrl: './compound-modal.component.html',
     styleUrls: ['./compound-modal.component.scss']
 })
-export class CompoundModalComponent implements OnInit {
+export class CompoundModalComponent implements OnInit, OnChanges {
     @Input() isOpen = false;
     @Input() mode: CompoundModalMode = 'view';
     @Input() compound?: ChemicalCompound;
+    @Input() hasPrevious = false;
+    @Input() hasNext = false;
 
     @Output() saved = new EventEmitter<ChemicalCompound>();
     @Output() closed = new EventEmitter<void>();
+    @Output() prev = new EventEmitter<void>();
+    @Output() next = new EventEmitter<void>();
 
     compoundForm!: FormGroup;
     showConfirmModal = false;
@@ -30,6 +34,12 @@ export class CompoundModalComponent implements OnInit {
 
     ngOnInit() {
         this.initForm();
+    }
+
+    ngOnChanges() {
+        if (this.compound && this.compoundForm) {
+            this.compoundForm.patchValue(this.compound);
+        }
     }
 
     private initForm() {

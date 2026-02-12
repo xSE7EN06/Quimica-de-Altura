@@ -20,7 +20,6 @@
                         <div class="line"></div>
                     </div>
                     <div class="bars-area">
-                        <!-- Custom colors for bars based on screenshot -->
                         <div class="bar-group">
                             <div class="bar" style="height: 100%; background-color: #56774f;"></div>
                             <span class="label">Producto A</span>
@@ -48,9 +47,7 @@
             <div class="section-title">Categoría de enfermedades predominantes</div>
 
             <div *ngFor="let stat of diseaseStats" class="category-bar-container" [ngClass]="stat.class">
-                <!-- Bind width dynamically -->
                 <div class="progress-fill" [style.width.%]="stat.percentage"></div>
-                <!-- Bind text dynamically -->
                 <div class="category-text" [ngClass]="stat.textClass">
                     {{ stat.label }}: {{ stat.percentage }}%
                 </div>
@@ -58,13 +55,19 @@
         </div>
     </div>
 
-    <!-- Action Bar -->
-    <app-action-bar searchPlaceholder="Buscar" addButtonText="Agregar enfermedades" (search)="onSearch($event)"
-        (add)="onAddDisease()">
-    </app-action-bar>
-
     <!-- Data Table -->
-    <app-data-table [data]="diseases" [columns]="columns"></app-data-table>
+    <app-data-table [data]="diseases" [columns]="columns" (rowClick)="onViewDisease($event)"
+        (editAction)="onEditDisease($event)" (deleteAction)="onBulkDelete($event)">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddDisease()">
+            <mat-icon>add</mat-icon> Agregar Enfermedad
+        </button>
+    </app-data-table>
 
     <!-- Templates -->
     <ng-template #nameTpl let-item>
@@ -72,15 +75,7 @@
     </ng-template>
 
     <ng-template #viewFileTpl let-item>
-        <a href="#" class="view-link">View file <mat-icon
+        <a href="#" class="view-link" (click)="$event.stopPropagation()">View file <mat-icon
                 style="font-size: 14px; width:14px; height:14px; margin-left: 2px;">check_circle_outline</mat-icon></a>
-    </ng-template>
-
-    <ng-template #actionsTpl let-item>
-        <div class="actions">
-            <!-- Trash and Edit icons -->
-            <button class="btn-icon"><mat-icon>delete_outline</mat-icon></button>
-            <button class="btn-icon"><mat-icon>edit</mat-icon></button>
-        </div>
     </ng-template>
 </div>

@@ -1,6 +1,6 @@
 .plant-modal {
     --height: 90%;
-    --width: 600px;
+    --width: 650px;
     --border-radius: 24px;
     --box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
@@ -10,7 +10,68 @@
     display: flex;
     flex-direction: column;
     background: var(--bg-primary);
+    position: relative;
     overflow: hidden;
+    /* Arrows are now inside */
+
+    &.is-viewing {
+        .modal-scroll-content {
+            animation: slideIn 0.4s ease-out;
+        }
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Navigation Arrows (Positioned inside to avoid clipping) */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    &.prev {
+        left: 15px;
+    }
+
+    &.next {
+        right: 15px;
+    }
+
+    mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+    }
 }
 
 .modal-header-image {
@@ -53,7 +114,7 @@
 
     .header-content {
         .category-badge {
-            background: #48bb78;
+            background: var(--accent-color);
             color: white;
             padding: 4px 12px;
             border-radius: 20px;
@@ -132,8 +193,8 @@
             outline: none;
 
             &:focus {
-                border-color: #48bb78;
-                box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
             }
 
             &[readonly] {
@@ -165,7 +226,7 @@
             gap: 8px;
             padding: 12px 24px;
             border-radius: 12px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             border: none;
@@ -178,13 +239,14 @@
             }
 
             &.btn-edit {
-                background: var(--bg-hover);
-                color: #3182ce;
+                background: var(--accent-color);
+                color: white;
                 width: 100%;
                 justify-content: center;
 
                 &:hover {
-                    filter: brightness(0.9);
+                    filter: brightness(1.1);
+                    transform: translateY(-2px);
                 }
             }
 
@@ -193,7 +255,7 @@
                 color: white;
 
                 &:hover {
-                    background: #38a169;
+                    filter: brightness(1.1);
                     transform: translateY(-2px);
                 }
 

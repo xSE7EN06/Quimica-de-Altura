@@ -38,6 +38,11 @@ export class CompoundsPage implements OnInit {
     @ViewChild(ConfirmationModalComponent) confirmModal!: ConfirmationModalComponent;
 
     private selectedId?: string;
+    currentIndex = -1;
+    selectedCompound?: ChemicalCompound;
+
+    get hasPrevious(): boolean { return this.currentIndex > 0; }
+    get hasNext(): boolean { return this.currentIndex < this.compounds.length - 1; }
 
     constructor(
         private compoundRepository: CompoundRepository,
@@ -53,8 +58,7 @@ export class CompoundsPage implements OnInit {
             { key: 'name', header: 'Compuesto', cellTemplate: this.nameTpl },
             { key: 'molecularFormula', header: 'Fórmula', cellTemplate: this.formulaTpl },
             { key: 'molecularWeight', header: 'Peso' },
-            { key: 'pubchemCid', header: 'PubChem CID' },
-            { key: 'actions', header: 'Acciones', cellTemplate: this.actionsTpl }
+            { key: 'pubchemCid', header: 'PubChem CID' }
         ];
     }
 
@@ -94,11 +98,29 @@ export class CompoundsPage implements OnInit {
     }
 
     onViewCompound(compound: ChemicalCompound) {
+        this.selectedCompound = compound;
+        this.currentIndex = this.compounds.indexOf(compound);
         this.compoundModal.open('view', compound);
     }
 
     onEditCompound(compound: ChemicalCompound) {
+        this.selectedCompound = compound;
+        this.currentIndex = this.compounds.indexOf(compound);
         this.compoundModal.open('edit', compound);
+    }
+
+    onPrevCompound() {
+        if (this.hasPrevious) {
+            this.currentIndex--;
+            this.selectedCompound = this.compounds[this.currentIndex];
+        }
+    }
+
+    onNextCompound() {
+        if (this.hasNext) {
+            this.currentIndex++;
+            this.selectedCompound = this.compounds[this.currentIndex];
+        }
     }
 
     onSaveCompound(compound: ChemicalCompound) {
@@ -113,14 +135,30 @@ export class CompoundsPage implements OnInit {
         this.confirmModal.open();
     }
 
+    onBulkDelete(items: ChemicalCompound[]) {
+        if (items.length > 0) {
+            this.selectedId = items.map(i => i.id).join(',');
+            this.confirmModal.title = `Eliminar ${items.length} Compuestos`;
+            this.confirmModal.message = `¿Estás seguro de que deseas eliminar permanentemente los ${items.length} compuestos seleccionados?`;
+            this.confirmModal.open();
+        }
+    }
+
     onConfirmDelete() {
         if (this.selectedId) {
-            this.compoundRepository.deleteCompound(this.selectedId).subscribe(() => {
-                this.loadCompounds();
-                this.showToast('Compuesto eliminado correctamente', 'trash', 'danger');
-                this.selectedId = undefined;
+            const ids = this.selectedId.split(',');
+            ids.forEach(id => {
+                this.compoundRepository.deleteCompound(id).subscribe(() => {
+                    this.loadCompounds();
+                });
             });
+            this.showToast(`${ids.length} compuesto(s) eliminado(s) correctamente`, 'trash', 'danger');
+            this.selectedId = undefined;
         }
+    }
+
+    onResetFilters() {
+        this.loadCompounds();
     }
 
     private async showToast(message: string, icon: string, color: string = 'dark') {

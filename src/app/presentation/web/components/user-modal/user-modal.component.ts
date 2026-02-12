@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,13 +22,17 @@ export type UserModalMode = 'view' | 'edit' | 'add';
     templateUrl: './user-modal.component.html',
     styleUrls: ['./user-modal.component.scss']
 })
-export class UserModalComponent implements OnInit {
+export class UserModalComponent implements OnInit, OnChanges {
     @Input() isOpen = false;
     @Input() mode: UserModalMode = 'view';
     @Input() user?: User;
+    @Input() hasPrevious = false;
+    @Input() hasNext = false;
 
     @Output() saved = new EventEmitter<User>();
     @Output() closed = new EventEmitter<void>();
+    @Output() prev = new EventEmitter<void>();
+    @Output() next = new EventEmitter<void>();
 
     userForm!: FormGroup;
     showConfirmModal = false;
@@ -37,6 +41,12 @@ export class UserModalComponent implements OnInit {
 
     ngOnInit() {
         this.initForm();
+    }
+
+    ngOnChanges() {
+        if (this.user && this.userForm) {
+            this.userForm.patchValue(this.user);
+        }
     }
 
     private initForm() {

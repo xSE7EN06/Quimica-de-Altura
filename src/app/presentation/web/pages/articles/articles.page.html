@@ -4,28 +4,54 @@
             <h1>Repositorio de Artículos</h1>
             <p>Base de conocimientos científica y académica del proyecto</p>
         </div>
-
-        <div class="header-controls">
-            <div class="search-bar">
-                <mat-icon class="search-icon">search</mat-icon>
-                <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
-                    placeholder="Buscar por título, autor o palabras clave..." />
-            </div>
-
-            <button class="btn-primary" (click)="onAddArticle()">
-                <mat-icon>library_add</mat-icon> Subir Artículo
-            </button>
-        </div>
     </header>
 
-    <app-data-table [data]="articles" [columns]="columns"></app-data-table>
+    <app-data-table [data]="articles" [columns]="columns" (rowClick)="onViewArticle($event)"
+        (editAction)="onEditArticle($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
+                placeholder="Buscar por título, autor o palabras clave..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddArticle()">
+            <mat-icon>library_add</mat-icon> Subir Artículo
+        </button>
+
+        <!-- Dynamic Filter Menu -->
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Año de Publicación</label>
+                <select [ngModel]="activeFilters.year" (ngModelChange)="onFilterChange('year', $event)">
+                    <option value="">Todos los años</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="old">Anteriores</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>País de Origen</label>
+                <select [ngModel]="activeFilters.country" (ngModelChange)="onFilterChange('country', $event)">
+                    <option value="">Todos los países</option>
+                    <option value="México">México</option>
+                    <option value="Perú">Perú</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="Bolivia">Bolivia</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
 
     <app-article-modal [isOpen]="isModalOpen" [mode]="modalMode" [article]="selectedArticle!"
+        [hasPrevious]="hasPrevious" [hasNext]="hasNext" (prev)="onPrevArticle()" (next)="onNextArticle()"
         (closed)="isModalOpen = false" (saved)="onSaveArticle($event)">
     </app-article-modal>
 
-    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar Artículo"
-        [message]="'¿Estás seguro de que deseas eliminar el artículo ' + articleToDelete?.title + '?'"
+    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar Registro"
+        [message]="'¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.'"
         confirmText="Eliminar" (confirmed)="onConfirmDelete()" (cancelled)="isConfirmModalOpen = false">
     </app-confirmation-modal>
 
@@ -53,23 +79,9 @@
     </ng-template>
 
     <ng-template #doiTpl let-item>
-        <a [href]="item.doi" target="_blank" class="doi-link">
+        <a [href]="item.doi" target="_blank" class="doi-link" (click)="$event.stopPropagation()">
             <mat-icon>link</mat-icon>
             Ver Fuente
         </a>
-    </ng-template>
-
-    <ng-template #actionsTpl let-item>
-        <div class="actions">
-            <button class="btn-icon view" title="Ver Resumen" (click)="onViewArticle(item)">
-                <mat-icon>visibility</mat-icon>
-            </button>
-            <button class="btn-icon edit" title="Editar" (click)="onEditArticle(item)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button class="btn-icon delete" title="Remover" (click)="onDeleteArticle(item)">
-                <mat-icon>delete_outline</mat-icon>
-            </button>
-        </div>
     </ng-template>
 </div>
