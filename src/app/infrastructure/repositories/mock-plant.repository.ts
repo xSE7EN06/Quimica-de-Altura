@@ -511,7 +511,10 @@ export class MockPlantRepository extends PlantRepository {
         const lowerQuery = query.toLowerCase();
         const results = this.plants.filter(p =>
             p.commonName.toLowerCase().includes(lowerQuery) ||
-            p.scientificName.toLowerCase().includes(lowerQuery)
+            p.scientificName.toLowerCase().includes(lowerQuery) ||
+            p.description.toLowerCase().includes(lowerQuery) ||
+            p.properties.some(prop => prop.toLowerCase().includes(lowerQuery)) ||
+            p.category?.toLowerCase().includes(lowerQuery)
         );
         return of(results);
     }
