@@ -157,3 +157,24 @@
     /* Extra space at bottom */
   }
 }
+
+.vertical-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 0 5px;
+  margin-bottom: 30px;
+
+  app-plant-card {
+    --card-width: 100%;
+    --card-margin-right: 0;
+  }
+
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 0;
+    color: #666;
+    font-size: 1rem;
+  }
+}
