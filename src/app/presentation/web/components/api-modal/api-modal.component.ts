@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { IonModal, IonToggle } from '@ionic/angular/standalone';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { ExternalApi, ExternalApiEndpoint } from '../../../../domain/models/external-api.entity';
 
 @Component({
@@ -13,7 +14,8 @@ import { ExternalApi, ExternalApiEndpoint } from '../../../../domain/models/exte
         FormsModule,
         MatIconModule,
         IonModal,
-        IonToggle
+        IonToggle,
+        ConfirmationModalComponent
     ],
     templateUrl: './api-modal.component.html',
     styleUrls: ['./api-modal.component.scss']
@@ -25,6 +27,7 @@ export class ApiModalComponent {
 
     @Output() saved = new EventEmitter<ExternalApi>();
     @Output() closed = new EventEmitter<void>();
+    showConfirmModal = false;
 
     constructor() { }
 
@@ -47,9 +50,18 @@ export class ApiModalComponent {
 
     onSave() {
         if (this.api.name && this.api.base_url) {
-            this.saved.emit(this.api);
-            this.close();
+            if (this.mode === 'edit') {
+                this.showConfirmModal = true;
+            } else {
+                this.executeSave();
+            }
         }
+    }
+
+    executeSave() {
+        this.saved.emit(this.api);
+        this.showConfirmModal = false;
+        this.close();
     }
 
     addEndpoint() {

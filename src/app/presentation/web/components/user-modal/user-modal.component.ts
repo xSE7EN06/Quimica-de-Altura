@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { IonModal } from '@ionic/angular/standalone';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { User } from '../../../../domain/models/user.entity';
 
 export type UserModalMode = 'view' | 'edit' | 'add';
@@ -15,7 +16,8 @@ export type UserModalMode = 'view' | 'edit' | 'add';
         FormsModule,
         ReactiveFormsModule,
         MatIconModule,
-        IonModal
+        IonModal,
+        ConfirmationModalComponent
     ],
     templateUrl: './user-modal.component.html',
     styleUrls: ['./user-modal.component.scss']
@@ -29,6 +31,7 @@ export class UserModalComponent implements OnInit {
     @Output() closed = new EventEmitter<void>();
 
     userForm!: FormGroup;
+    showConfirmModal = false;
 
     constructor(private fb: FormBuilder) { }
 
@@ -82,9 +85,18 @@ export class UserModalComponent implements OnInit {
 
     onSave() {
         if (this.userForm.valid) {
-            this.saved.emit(this.userForm.value);
-            this.close();
+            if (this.mode === 'edit') {
+                this.showConfirmModal = true;
+            } else {
+                this.executeSave();
+            }
         }
+    }
+
+    executeSave() {
+        this.saved.emit(this.userForm.value);
+        this.showConfirmModal = false;
+        this.close();
     }
 
     toggleEdit() {

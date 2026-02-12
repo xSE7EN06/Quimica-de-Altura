@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { IonModal } from '@ionic/angular/standalone';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { Article } from '../../../../domain/models/article.entity';
 
 @Component({
@@ -12,7 +13,8 @@ import { Article } from '../../../../domain/models/article.entity';
         CommonModule,
         FormsModule,
         MatIconModule,
-        IonModal
+        IonModal,
+        ConfirmationModalComponent
     ],
     templateUrl: './article-modal.component.html',
     styleUrls: ['./article-modal.component.scss']
@@ -28,6 +30,7 @@ export class ArticleModalComponent {
     // Temporary storage for authors and keywords strings
     authorsList = '';
     keywordsList = '';
+    showConfirmModal = false;
 
     ngOnChanges() {
         if (this.article) {
@@ -56,13 +59,22 @@ export class ArticleModalComponent {
 
     onSave() {
         if (this.article.title && this.article.doi) {
-            // Process authors and keywords
-            this.article.authors = this.authorsList.split(',').map(a => a.trim()).filter(a => a !== '');
-            this.article.keywords = this.keywordsList.split(',').map(k => k.trim()).filter(k => k !== '');
-
-            this.saved.emit(this.article);
-            this.close();
+            if (this.mode === 'edit') {
+                this.showConfirmModal = true;
+            } else {
+                this.executeSave();
+            }
         }
+    }
+
+    executeSave() {
+        // Process authors and keywords
+        this.article.authors = this.authorsList.split(',').map(a => a.trim()).filter(a => a !== '');
+        this.article.keywords = this.keywordsList.split(',').map(k => k.trim()).filter(k => k !== '');
+
+        this.saved.emit(this.article);
+        this.showConfirmModal = false;
+        this.close();
     }
 
     setMode(newMode: 'add' | 'edit' | 'view') {

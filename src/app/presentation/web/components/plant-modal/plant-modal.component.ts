@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { IonModal } from '@ionic/angular/standalone';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { Plant } from '../../../../domain/models/plant.entity';
 
 export type PlantModalMode = 'view' | 'edit' | 'add';
@@ -15,7 +16,8 @@ export type PlantModalMode = 'view' | 'edit' | 'add';
         FormsModule,
         ReactiveFormsModule,
         MatIconModule,
-        IonModal
+        IonModal,
+        ConfirmationModalComponent
     ],
     templateUrl: './plant-modal.component.html',
     styleUrls: ['./plant-modal.component.scss']
@@ -29,6 +31,7 @@ export class PlantModalComponent implements OnInit {
     @Output() closed = new EventEmitter<void>();
 
     plantForm!: FormGroup;
+    showConfirmModal = false;
 
     constructor(private fb: FormBuilder) { }
 
@@ -87,17 +90,25 @@ export class PlantModalComponent implements OnInit {
 
     onSave() {
         if (this.plantForm.valid) {
-            const formValue = this.plantForm.value;
-            // Merge form value with existing plant data (like compounds if they aren't in form yet)
-            const updatedPlant: Plant = {
-                ...this.plant,
-                ...formValue,
-                properties: Array.isArray(formValue.properties) ? formValue.properties : (formValue.properties as string).split(',').map(s => s.trim()),
-                identifyingFeatures: Array.isArray(formValue.identifyingFeatures) ? formValue.identifyingFeatures : (formValue.identifyingFeatures as string).split(',').map(s => s.trim())
-            };
-            this.saved.emit(updatedPlant);
-            this.close();
+            if (this.mode === 'edit') {
+                this.showConfirmModal = true;
+            } else {
+                this.executeSave();
+            }
         }
+    }
+
+    executeSave() {
+        const formValue = this.plantForm.value;
+        const updatedPlant: Plant = {
+            ...this.plant,
+            ...formValue,
+            properties: Array.isArray(formValue.properties) ? formValue.properties : (formValue.properties as string).split(',').map(s => s.trim()),
+            identifyingFeatures: Array.isArray(formValue.identifyingFeatures) ? formValue.identifyingFeatures : (formValue.identifyingFeatures as string).split(',').map(s => s.trim())
+        };
+        this.saved.emit(updatedPlant);
+        this.showConfirmModal = false;
+        this.close();
     }
 
     toggleEdit() {

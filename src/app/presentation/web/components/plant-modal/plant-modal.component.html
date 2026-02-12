@@ -92,3 +92,9 @@
         </div>
     </ng-template>
 </ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+    message="¿Estás seguro de que deseas guardar los cambios realizados en este registro?" icon="save"
+    confirmColor="var(--accent-color)" confirmText="Guardar" (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

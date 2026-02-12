@@ -125,3 +125,9 @@
         </div>
     </ng-template>
 </ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Actualización"
+    message="¿Estás seguro de que deseas guardar los cambios en el perfil de este usuario?" icon="manage_accounts"
+    confirmColor="var(--accent-color)" confirmText="Actualizar" (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>
