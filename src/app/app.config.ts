@@ -15,11 +15,14 @@ import { MockExternalApiRepository } from './infrastructure/repositories/mock-ex
 import { ArticleRepository } from './domain/repositories/article.repository';
 import { MockArticleRepository } from './infrastructure/repositories/mock-article.repository';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { loadingInterceptor } from './infrastructure/interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([loadingInterceptor])),
     provideIonicAngular({}),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

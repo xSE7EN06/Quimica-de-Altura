@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, of, delay, finalize } from 'rxjs';
 import { User } from '../../domain/models/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
+import { LoadingService } from '../../application/services/loading.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MockUserRepository extends UserRepository {
+    private loadingService = inject(LoadingService);
     private users: User[] = [
         {
             id: '1',
@@ -176,12 +178,18 @@ export class MockUserRepository extends UserRepository {
     ];
 
     getUsers(): Observable<User[]> {
-        return of([...this.users]).pipe(delay(0));
+        this.loadingService.show();
+        return of([...this.users]).pipe(delay(5000), finalize(() =>
+            this.loadingService.hide()));
     }
 
     getUserById(id: string): Observable<User | undefined> {
+        this.loadingService.show();
         const user = this.users.find(u => u.id === id);
-        return of(user).pipe(delay(300));
+        return of(user).pipe(
+            delay(9500),
+            finalize(() => this.loadingService.hide())
+        );
     }
 
     addUser(user: User): Observable<void> {
