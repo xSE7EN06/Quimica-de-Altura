@@ -59,7 +59,16 @@ export class UserModalComponent implements OnInit, OnChanges {
             role: ['Editor', Validators.required],
             birthdate: ['', Validators.required],
             nationality: ['', Validators.required],
-            address: ['', Validators.required],
+            address: this.fb.group({
+                street: ['', Validators.required],
+                externalNumber: ['', Validators.required],
+                internalNumber: [''],
+                colony: ['', Validators.required],
+                city: ['', Validators.required],
+                state: ['', Validators.required],
+                zipCode: ['', Validators.required],
+                country: ['', Validators.required]
+            }),
             password: ['']
         });
     }
