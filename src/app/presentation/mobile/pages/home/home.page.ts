@@ -31,10 +31,19 @@ export class HomePage {
         private plantRepository: PlantRepository
     ) { }
 
+    plantsOfDay: Plant[] = [];
+
     ngOnInit() {
         this.plantRepository.getPlants().subscribe(plants => {
             this.plants = plants;
+            this.setPlantsOfDay();
         });
+    }
+
+    private setPlantsOfDay() {
+        // Shuffle the array and pick the first 5 (or less if fewer exist)
+        const shuffled = [...this.plants].sort(() => 0.5 - Math.random());
+        this.plantsOfDay = shuffled.slice(0, 5);
     }
 
     onSearch(term: string) {

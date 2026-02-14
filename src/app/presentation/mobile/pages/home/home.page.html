@@ -20,15 +20,18 @@
       <h3>Planta del día</h3>
     </div>
 
-    <div class="plant-of-day-card" (click)="viewDetail('2')">
-      <div class="image-overlay"></div>
-      <img src="https://cdn.britannica.com/28/140628-050-169547E0/Arnica.jpg" alt="Arnica">
-      <div class="content">
-        <div class="header-row">
-          <h4>Árnica mexicana</h4>
-          <span class="details-link" (click)="$event.stopPropagation(); viewDetail('2')">Ver detalles</span>
+    <div class="plants-of-day-carousel">
+      <div class="plant-of-day-card" *ngFor="let dailyPlant of plantsOfDay" (click)="viewDetail(dailyPlant.id)">
+        <div class="image-overlay"></div>
+        <img [src]="dailyPlant.imageUrl" [alt]="dailyPlant.commonName">
+        <div class="content">
+          <div class="header-row">
+            <h4>{{ dailyPlant.commonName }}</h4>
+            <span class="details-link" (click)="$event.stopPropagation(); viewDetail(dailyPlant.id)">Ver
+              detalles</span>
+          </div>
+          <p>{{ dailyPlant.description }}</p>
         </div>
-        <p>Usado en la medicina tradicional para aliviar problemas digestivos.</p>
       </div>
     </div>
 
