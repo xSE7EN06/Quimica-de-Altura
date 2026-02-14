@@ -7,6 +7,7 @@ import { IdentifyPlantUseCase } from '../../../../application/use-cases/identify
 import { Router } from '@angular/router';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { PlantCardComponent } from '../../components/plant-card/plant-card.component';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
 
 import { Plant } from '../../../../domain/models/plant.entity';
 import { PlantRepository } from '../../../../domain/repositories/plant.repository';
@@ -24,19 +25,27 @@ export class HomePage {
 
     isSearching: boolean = false;
 
+    plantsOfDay: Plant[] = [];
+    userName: string = 'Usuario';
+
     constructor(
         private cameraService: CameraService,
         private identifyPlantUseCase: IdentifyPlantUseCase,
         private router: Router,
-        private plantRepository: PlantRepository
+        private plantRepository: PlantRepository,
+        private authService: AuthService
     ) { }
-
-    plantsOfDay: Plant[] = [];
 
     ngOnInit() {
         this.plantRepository.getPlants().subscribe(plants => {
             this.plants = plants;
             this.setPlantsOfDay();
+        });
+
+        this.authService.currentUser.subscribe(user => {
+            if (user) {
+                this.userName = user.firstName;
+            }
         });
     }
 
