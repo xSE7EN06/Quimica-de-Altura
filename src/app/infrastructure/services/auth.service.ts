@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError, delay } from 'rxjs';
 import { finalize, map, tap } from 'rxjs/operators';
 import { AuthRepository } from '../../domain/repositories/auth.repository';
 import { User } from '../../domain/models/user.entity';
@@ -35,6 +35,7 @@ export class AuthService extends AuthRepository {
         if (user) {
             // Simulate API delay
             return of(user).pipe(
+                delay(2000),
                 tap(u => {
                     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(u));
                     this.currentUserSubject.next(u);
