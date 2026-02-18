@@ -18,6 +18,7 @@ import { LoadingService } from '../../../../application/services/loading.service
 })
 export class LoaderComponent implements OnDestroy {
     loadingService = inject(LoadingService);
+    uid = Math.random().toString(36).substring(2, 9);
 
     /** 'fullscreen' = full-page overlay (login/dashboard), 'inline' = embedded in a container */
     mode = input<'fullscreen' | 'inline'>('fullscreen');

@@ -589,13 +589,15 @@
     min-height: 400px;
 }
 
-/* Table body wrapper — fades in when loading completes */
+/* Table body wrapper — hidden while loading to keep container height stable */
 .table-body {
+    display: none;
     opacity: 0;
     transform: translateY(6px);
     transition: opacity 0.45s ease, transform 0.45s ease;
 
     &.loaded {
+        display: block;
         opacity: 1;
         transform: translateY(0);
     }

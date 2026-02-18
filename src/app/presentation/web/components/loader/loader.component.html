@@ -2,7 +2,7 @@
     [class.inline]="mode() === 'inline'">
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="loading-svg">
         <defs>
-            <filter id="sunGlow">
+            <filter [id]="'sunGlow-' + uid">
                 <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
                 <feMerge>
                     <feMergeNode in="blur"></feMergeNode>
@@ -15,7 +15,7 @@
         <ellipse cx="200" cy="365" rx="100" ry="12" fill="#5E794B" opacity="0.12" />
 
         <!-- Sun group -->
-        <g filter="url(#sunGlow)" #sun>
+        <g [attr.filter]="'url(#sunGlow-' + uid + ')'" #sun>
             <g opacity="0.45" #rays>
                 <line x1="0" y1="-28" x2="0" y2="-40" stroke="#C4964A" stroke-width="3" stroke-linecap="round" />
                 <line x1="0" y1="-28" x2="0" y2="-40" stroke="#C4964A" stroke-width="2.5" stroke-linecap="round"
@@ -88,9 +88,9 @@
         </g>
 
         <!-- Loading text with animated dots -->
-        <text x="185" y="395" text-anchor="middle" fill="#5E794B" font-family="'Outfit', sans-serif" font-size="29"
+        <text x="185" y="395" text-anchor="middle" fill="#5E794B" font-family="'Outfit', sans-serif" font-size="16"
             font-weight="600" opacity="0.8">Cargando</text>
-        <text x="214" y="395" fill="#5E794B" font-family="'Outfit', sans-serif" font-size="29" font-weight="600"
+        <text x="214" y="395" fill="#5E794B" font-family="'Outfit', sans-serif" font-size="16" font-weight="600"
             opacity="0.8">
             <tspan class="dot dot1">.</tspan>
             <tspan class="dot dot2">.</tspan>
