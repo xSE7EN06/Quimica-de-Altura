@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
@@ -10,8 +10,12 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
-  isDarkTheme = true; // Default to dark
+export class SidebarComponent implements OnInit {
+  isDarkTheme = false;
+
+  ngOnInit() {
+    document.body.setAttribute('data-theme', 'light');
+  }
 
   toggleTheme() {
     this.isDarkTheme = !this.isDarkTheme;
