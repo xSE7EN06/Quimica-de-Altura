@@ -48,7 +48,7 @@
     <!-- Templates for Table Cells -->
     <ng-template #userTpl let-item>
         <div class="user-cell">
-            <div class="user-avatar" (click)="$event.stopPropagation()">
+            <div class="user-avatar">
                 {{ item.firstName[0] }}{{ item.lastName[0] }}
             </div>
             <div class="user-info">

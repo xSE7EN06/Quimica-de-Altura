@@ -50,7 +50,7 @@
 
     <!-- Templates for Table Cells -->
     <ng-template #nameTpl let-item>
-        <div class="plant-name-cell" (click)="$event.stopPropagation()">
+        <div class="plant-name-cell">
             <div class="plant-thumb">
                 <img [src]="item.imageUrl" [alt]="item.commonName">
             </div>
