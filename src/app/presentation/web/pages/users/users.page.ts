@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
 import { UserModalComponent } from '../../components/user-modal/user-modal.component';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
+import { LoaderComponent } from '../../components/loader/loader.component';
 import { User } from '../../../../domain/models/user.entity';
 import { UserRepository } from '../../../../domain/repositories/user.repository';
 import { ToastController } from '@ionic/angular/standalone';
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
         FormsModule,
         DataTableComponent,
         UserModalComponent,
-        ConfirmationModalComponent
+        ConfirmationModalComponent,
+        LoaderComponent
     ],
     templateUrl: './users.page.html',
     styleUrls: ['./users.page.scss']
@@ -33,6 +35,7 @@ export class UsersPage implements OnInit {
     activeFilters = {
         role: ''
     };
+    tableLoading = true;
 
     @ViewChild('userTpl', { static: true }) userTpl!: TemplateRef<any>;
     @ViewChild('roleTpl', { static: true }) roleTpl!: TemplateRef<any>;
@@ -67,10 +70,15 @@ export class UsersPage implements OnInit {
     }
 
     private loadUsers() {
+        this.tableLoading = true;
         this.userRepository.getUsers().subscribe(data => {
             this.originalUsers = data;
             this.applyFilters();
-            this.cdr.detectChanges();
+            // Simulate loading delay
+            setTimeout(() => {
+                this.tableLoading = false;
+                this.cdr.detectChanges();
+            }, 2000);
         });
     }
 

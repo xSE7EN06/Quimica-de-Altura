@@ -4,6 +4,28 @@
     margin: 0 auto;
 }
 
+/* Container for inline loader + table */
+.table-zone {
+    position: relative;
+    min-height: 500px;
+
+    &.is-loading {
+        /* Subtle skeleton pulse on the zone while loading */
+        border-radius: 12px;
+    }
+}
+
+.table-content {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+
+    &.loaded {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .users-header {
     display: flex;
     justify-content: space-between;
