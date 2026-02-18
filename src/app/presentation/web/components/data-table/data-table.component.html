@@ -2,7 +2,7 @@
     <!-- Main Content Area (Header + Table) -->
     <div class="main-content">
         <!-- Action Bar -->
-        <div class="table-actions-bar">
+        <div class="table-actions-bar animate-entrance">
             <div class="left-actions">
                 <div class="custom-controls">
                     <ng-content select="[add-button]"></ng-content>
@@ -38,7 +38,7 @@
         </div>
 
         <!-- Table Container -->
-        <div class="table-container">
+        <div class="table-container animate-entrance delay-1">
             <table>
                 <thead>
                     <tr>
@@ -53,8 +53,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of paginatedData" (click)="onRowClick(item)"
-                        [class.selected]="isItemSelected(item)" class="clickable">
+                    <tr *ngFor="let item of paginatedData; let i = index" (click)="onRowClick(item)"
+                        [class.selected]="isItemSelected(item)" class="clickable row-animate" [style.--row-i]="i">
                         <td class="selection-col" (click)="onRowSelection($event, item)">
                             <div class="custom-checkbox" [class.checked]="isItemSelected(item)">
                                 <mat-icon *ngIf="isItemSelected(item)">check</mat-icon>
@@ -80,7 +80,7 @@
             </table>
 
             <!-- Page Paginator -->
-            <div class="pagination" *ngIf="data.length > 0">
+            <div class="pagination animate-entrance delay-2" *ngIf="data.length > 0">
                 <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">
                     <mat-icon>navigate_before</mat-icon> Anterior
                 </button>
