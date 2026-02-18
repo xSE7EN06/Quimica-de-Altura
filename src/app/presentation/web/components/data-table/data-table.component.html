@@ -7,14 +7,20 @@
                 <div class="custom-controls">
                     <ng-content select="[add-button]"></ng-content>
 
-                    <div class="selected-actions" [class.visible]="selectedItems.size > 0">
-                        <span class="selection-count">{{ selectedItems.size }} seleccionados</span>
-                        <button class="btn-action-edit" [disabled]="selectedItems.size !== 1" (click)="onEdit()">
-                            <mat-icon>edit</mat-icon> Editar
-                        </button>
-                        <button class="btn-action-delete" (click)="onDelete()">
-                            <mat-icon>delete</mat-icon> Eliminar
-                        </button>
+                    <div class="crud-actions" [class.active]="selectedItems.size > 0">
+                        <span class="selection-count" [class.visible]="selectedItems.size > 0">
+                            {{ selectedItems.size }} seleccionados
+                        </span>
+                        <div class="crud-buttons">
+                            <button class="btn-action-edit" [class.active]="selectedItems.size === 1"
+                                [disabled]="selectedItems.size !== 1" (click)="onEdit()">
+                                <mat-icon>edit</mat-icon> Editar
+                            </button>
+                            <button class="btn-action-delete" [class.active]="selectedItems.size > 0"
+                                [disabled]="selectedItems.size === 0" (click)="onDelete()">
+                                <mat-icon>delete</mat-icon> Eliminar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
