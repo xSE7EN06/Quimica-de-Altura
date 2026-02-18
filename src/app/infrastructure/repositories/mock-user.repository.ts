@@ -38,7 +38,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Miguel',
             lastName: 'García',
             email: 'm.garcia@quimicaalturas.com',
-            role: 'Editor',
+            role: 'Administrador',
             birthdate: '1992-11-20',
             nationality: 'Mexicana',
             address: 'Calle Benito Juárez 789, Orizaba, México'
@@ -49,7 +49,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Juan',
             lastName: 'López',
             email: 'j.lopez@quimicaalturas.com',
-            role: 'Visitante',
+            role: 'Usuario',
             birthdate: '1995-02-14',
             nationality: 'Mexicana',
             address: 'Av. Revolución 101, Xalapa, México'
@@ -82,7 +82,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Sofía',
             lastName: 'Vázquez',
             email: 'sofia.v@quimicaalturas.com',
-            role: 'Visitante',
+            role: 'Usuario',
             birthdate: '1996-04-25',
             nationality: 'Mexicana',
             address: 'Calle Real 88, Orizaba, México'
@@ -104,7 +104,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Patricia',
             lastName: 'Gómez',
             email: 'p.gomez@quimicaalturas.com',
-            role: 'Visitante',
+            role: 'Usuario',
             birthdate: '1999-01-10',
             nationality: 'Mexicana',
             address: 'Calle Reforma 33, Boca del Río, México'
@@ -115,7 +115,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Daniel',
             lastName: 'Torres',
             email: 'd.torres@quimicaalturas.com',
-            role: 'Visitante',
+            role: 'Usuario',
             birthdate: '2000-05-05',
             nationality: 'Mexicana',
             address: 'Av. Xalapa 77, Xalapa, México'
@@ -137,7 +137,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Fernando',
             lastName: 'Castillo',
             email: 'f.castillo@quimicaalturas.com',
-            role: 'Editor',
+            role: 'Administrador',
             birthdate: '1993-09-15',
             nationality: 'Mexicana',
             address: 'Av. 1 505, Córdoba, México'
@@ -159,7 +159,7 @@ export class MockUserRepository extends UserRepository {
             firstName: 'Héctor',
             lastName: 'Díaz',
             email: 'h.diaz@quimicaalturas.com',
-            role: 'Visitante',
+            role: 'Usuario',
             birthdate: '1997-06-30',
             nationality: 'Mexicana',
             address: 'Av. Ruiz Cortines 900, Xalapa, México'
