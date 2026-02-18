@@ -39,59 +39,65 @@
 
         <!-- Table Container -->
         <div class="table-container animate-entrance delay-1">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="selection-col">
-                            <div class="custom-checkbox header-checkbox" (click)="toggleSelectAll()"
-                                [class.checked]="paginatedData.length > 0 && paginatedData.every(isItemSelected.bind(this))">
-                                <mat-icon
-                                    *ngIf="paginatedData.length > 0 && paginatedData.every(isItemSelected.bind(this))">check</mat-icon>
-                            </div>
-                        </th>
-                        <th *ngFor="let col of displayedColumns">{{ col.header }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of paginatedData; let i = index" (click)="onRowClick(item)"
-                        [class.selected]="isItemSelected(item)" class="clickable row-animate" [style.--row-i]="i">
-                        <td class="selection-col" (click)="onRowSelection($event, item)">
-                            <div class="custom-checkbox" [class.checked]="isItemSelected(item)">
-                                <mat-icon *ngIf="isItemSelected(item)">check</mat-icon>
-                            </div>
-                        </td>
-                        <td *ngFor="let col of displayedColumns">
-                            <ng-container *ngIf="col.cellTemplate; else defaultCell">
-                                <ng-container
-                                    *ngTemplateOutlet="col.cellTemplate; context: { $implicit: item }"></ng-container>
-                            </ng-container>
-                            <ng-template #defaultCell>
-                                {{ item[col.key] }}
-                            </ng-template>
-                        </td>
-                    </tr>
-                    <tr *ngIf="data.length === 0">
-                        <td [attr.colspan]="displayedColumns.length + 1" class="empty-state">
-                            <mat-icon>inventory_2</mat-icon>
-                            <p>No se encontraron registros</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Inline loader (overlays only the table area) -->
+            <app-loader *ngIf="loading" mode="inline" [loading]="loading"></app-loader>
 
-            <!-- Page Paginator -->
-            <div class="pagination animate-entrance delay-2" *ngIf="data.length > 0">
-                <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">
-                    <mat-icon>navigate_before</mat-icon> Anterior
-                </button>
-                <div class="page-numbers">
-                    <button *ngFor="let page of pageNumbers" class="page-num" [class.active]="page === currentPage"
-                        (click)="setPage(page)">
-                        {{ page < 10 ? '0' + page : page }} </button>
+            <!-- Table content (hidden while loading) -->
+            <div class="table-body" [class.loaded]="!loading">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="selection-col">
+                                <div class="custom-checkbox header-checkbox" (click)="toggleSelectAll()"
+                                    [class.checked]="paginatedData.length > 0 && paginatedData.every(isItemSelected.bind(this))">
+                                    <mat-icon
+                                        *ngIf="paginatedData.length > 0 && paginatedData.every(isItemSelected.bind(this))">check</mat-icon>
+                                </div>
+                            </th>
+                            <th *ngFor="let col of displayedColumns">{{ col.header }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of paginatedData; let i = index" (click)="onRowClick(item)"
+                            [class.selected]="isItemSelected(item)" class="clickable row-animate" [style.--row-i]="i">
+                            <td class="selection-col" (click)="onRowSelection($event, item)">
+                                <div class="custom-checkbox" [class.checked]="isItemSelected(item)">
+                                    <mat-icon *ngIf="isItemSelected(item)">check</mat-icon>
+                                </div>
+                            </td>
+                            <td *ngFor="let col of displayedColumns">
+                                <ng-container *ngIf="col.cellTemplate; else defaultCell">
+                                    <ng-container
+                                        *ngTemplateOutlet="col.cellTemplate; context: { $implicit: item }"></ng-container>
+                                </ng-container>
+                                <ng-template #defaultCell>
+                                    {{ item[col.key] }}
+                                </ng-template>
+                            </td>
+                        </tr>
+                        <tr *ngIf="data.length === 0 && !loading">
+                            <td [attr.colspan]="displayedColumns.length + 1" class="empty-state">
+                                <mat-icon>inventory_2</mat-icon>
+                                <p>No se encontraron registros</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Page Paginator -->
+                <div class="pagination animate-entrance delay-2" *ngIf="data.length > 0">
+                    <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+                        <mat-icon>navigate_before</mat-icon> Anterior
+                    </button>
+                    <div class="page-numbers">
+                        <button *ngFor="let page of pageNumbers" class="page-num" [class.active]="page === currentPage"
+                            (click)="setPage(page)">
+                            {{ page < 10 ? '0' + page : page }} </button>
+                    </div>
+                    <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+                        Siguiente <mat-icon>navigate_next</mat-icon>
+                    </button>
                 </div>
-                <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
-                    Siguiente <mat-icon>navigate_next</mat-icon>
-                </button>
             </div>
         </div>
     </div>

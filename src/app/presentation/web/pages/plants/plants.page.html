@@ -8,8 +8,7 @@
         </div>
     </header>
 
-    <!-- Data Table -->
-    <app-data-table [data]="plants" [columns]="columns" (rowClick)="onViewPlant($event)"
+    <app-data-table [data]="plants" [columns]="columns" [loading]="tableLoading" (rowClick)="onViewPlant($event)"
         (editAction)="onEditPlant($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
         <div search-bar class="search-bar">

@@ -28,6 +28,7 @@ import { flask, checkmarkCircle, trash, create, eye } from 'ionicons/icons';
 export class CompoundsPage implements OnInit {
     compounds: ChemicalCompound[] = [];
     columns: ColumnConfig[] = [];
+    tableLoading = true;
 
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('formulaTpl', { static: true }) formulaTpl!: TemplateRef<any>;
@@ -63,9 +64,13 @@ export class CompoundsPage implements OnInit {
     }
 
     private loadCompounds() {
+        this.tableLoading = true;
         this.compoundRepository.getCompounds().subscribe(data => {
             this.compounds = data;
-            this.cdr.detectChanges();
+            setTimeout(() => {
+                this.tableLoading = false;
+                this.cdr.detectChanges();
+            }, 2000);
         });
     }
 

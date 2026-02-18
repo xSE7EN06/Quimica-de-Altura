@@ -6,8 +6,8 @@
         </div>
     </header>
 
-    <app-data-table [data]="apis" [columns]="columns" (rowClick)="onViewApi($event)" (editAction)="onEditApi($event)"
-        (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+    <app-data-table [data]="apis" [columns]="columns" [loading]="tableLoading" (rowClick)="onViewApi($event)"
+        (editAction)="onEditApi($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
         <div search-bar class="search-bar">
             <mat-icon class="search-icon">search</mat-icon>

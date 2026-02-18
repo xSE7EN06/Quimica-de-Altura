@@ -6,7 +6,7 @@
         </div>
     </header>
 
-    <app-data-table [data]="articles" [columns]="columns" (rowClick)="onViewArticle($event)"
+    <app-data-table [data]="articles" [columns]="columns" [loading]="tableLoading" (rowClick)="onViewArticle($event)"
         (editAction)="onEditArticle($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
         <div search-bar class="search-bar">

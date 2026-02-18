@@ -32,6 +32,7 @@ export class ExternalApisPage implements OnInit {
     activeFilters = {
         authType: ''
     };
+    tableLoading = true;
 
     // Modal state
     isModalOpen = false;
@@ -70,10 +71,14 @@ export class ExternalApisPage implements OnInit {
     }
 
     private loadApis() {
+        this.tableLoading = true;
         this.apiRepository.getApis().subscribe(data => {
             this.originalApis = data;
             this.applyFilters();
-            this.cdr.detectChanges();
+            setTimeout(() => {
+                this.tableLoading = false;
+                this.cdr.detectChanges();
+            }, 2000);
         });
     }
 

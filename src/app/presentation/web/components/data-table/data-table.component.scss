@@ -585,6 +585,20 @@
     border-radius: 12px;
     border: 1px solid var(--border-color);
     overflow: hidden;
+    position: relative;
+    min-height: 400px;
+}
+
+/* Table body wrapper — fades in when loading completes */
+.table-body {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+
+    &.loaded {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 table {

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, TemplateRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { LoaderComponent } from '../loader/loader.component';
 
 export interface ColumnConfig {
     key: string;
@@ -13,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'app-data-table',
     standalone: true,
-    imports: [CommonModule, MatIconModule, FormsModule],
+    imports: [CommonModule, MatIconModule, FormsModule, LoaderComponent],
     templateUrl: './data-table.component.html',
     styleUrls: ['./data-table.component.scss']
 })
@@ -21,6 +22,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     @Input() data: any[] = [];
     @Input() columns: ColumnConfig[] = [];
     @Input() itemsPerPage = 7;
+    @Input() loading = false;
     @Output() rowClick = new EventEmitter<any>();
     @Output() editAction = new EventEmitter<any>();
     @Output() deleteAction = new EventEmitter<any[]>();
