@@ -1,0 +1,85 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="add-plant-modal">
+    <ng-template>
+        <div class="modal-wrapper">
+            <!-- Header -->
+            <div class="modal-header">
+                <div class="header-icon-box">
+                    <mat-icon>eco</mat-icon>
+                </div>
+                <div class="header-text">
+                    <h2>Agregar Planta</h2>
+                    <p>Busca en la base de datos botánica</p>
+                </div>
+                <button class="close-btn" (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="modal-body">
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <mat-icon class="s-icon">search</mat-icon>
+                        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+                            placeholder="Buscar por nombre común o científico..." [disabled]="isLoading">
+                        <button class="btn-search" (click)="onSearch()" [disabled]="isLoading || !searchQuery">
+                            <span *ngIf="!isLoading">Buscar</span>
+                            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results-container">
+                    <!-- Loading State -->
+                    <div *ngIf="isLoading" class="state-container">
+                        <ion-spinner name="bubbles"></ion-spinner>
+                        <p>Analizando bases de datos botánicas...</p>
+                    </div>
+
+                    <!-- Initial State -->
+                    <div *ngIf="!hasSearched && !isLoading" class="state-container">
+                        <mat-icon class="big-icon">travel_explore</mat-icon>
+                        <p>Ingresa el nombre de una planta para comenzar la búsqueda</p>
+                    </div>
+
+                    <!-- No Results -->
+                    <div *ngIf="hasSearched && !isLoading && searchResults.length === 0" class="state-container">
+                        <mat-icon class="big-icon">search_off</mat-icon>
+                        <p>No se encontraron resultados para "{{ searchQuery }}"</p>
+                    </div>
+
+                    <!-- Results List -->
+                    <div *ngIf="hasSearched && !isLoading && searchResults.length > 0" class="results-grid">
+                        <div *ngFor="let res of searchResults" class="result-card" [class.selected]="isSelected(res)"
+                            (click)="onSelect(res)">
+                            <div class="card-header">
+                                <span class="region-badge">{{ res.region }}</span>
+                                <mat-icon *ngIf="isSelected(res)" class="check">check_circle</mat-icon>
+                            </div>
+                            <h3>{{ res.commonName }}</h3>
+                            <p class="scientific">{{ res.scientificName }}</p>
+                            <div class="properties-box">
+                                <span *ngFor="let prop of res.properties.slice(0, 2)" class="prop-tag">
+                                    {{ prop }}
+                                </span>
+                                <span *ngIf="res.properties.length > 2" class="more-tag">+{{ res.properties.length - 2
+                                    }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button class="btn-text" (click)="close()">Cancelar</button>
+                <button class="btn-confirm" [disabled]="selectedCount === 0" (click)="onConfirm()">
+                    Agregar {{ selectedCount }} Planta{{ selectedCount !== 1 ? 's' : '' }}
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>

@@ -1,0 +1,9 @@
+<div class="actions-bar">
+    <div class="search-box">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" [placeholder]="searchPlaceholder" (input)="onSearch($event)" />
+    </div>
+    <button class="btn-add" (click)="onAdd()">
+        <mat-icon>add</mat-icon> {{ addButtonText }}
+    </button>
+</div>

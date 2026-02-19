@@ -1,0 +1,81 @@
+<aside class="sidebar-container">
+    <!-- Header / Logo -->
+    <div class="logo-section">
+        <img src="assets/shared/images/logo.png" alt="Logo" />
+    </div>
+
+    <!-- Scrollable Navigation Area -->
+    <div class="scrollable-content">
+
+        <!-- Section: PRINCIPAL -->
+        <div class="nav-section">
+            <h3 class="section-title">PRINCIPAL</h3>
+
+            <a routerLink="/dashboard/users" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">people</mat-icon>
+                <span class="nav-label">Usuarios</span>
+            </a>
+
+            <a routerLink="/dashboard/plants" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">eco</mat-icon>
+                <span class="nav-label">Plantas</span>
+            </a>
+
+            <a routerLink="/dashboard/compounds" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">science</mat-icon>
+                <span class="nav-label">Compuestos</span>
+            </a>
+        </div>
+
+        <!-- Section: FUENTES DE DATOS -->
+        <div class="nav-section">
+            <h3 class="section-title">FUENTES DE DATOS</h3>
+
+
+            <a routerLink="/dashboard/articles" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">description</mat-icon>
+                <span class="nav-label">Artículos</span>
+            </a>
+
+            <a routerLink="/dashboard/apis" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">ssid_chart</mat-icon>
+                <span class="nav-label">APIs Externas</span>
+            </a>
+        </div>
+
+        <!-- Section: ANÁLISIS -->
+        <div class="nav-section">
+            <h3 class="section-title">ANÁLISIS</h3>
+
+            <a routerLink="/dashboard/analytics" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">auto_awesome</mat-icon>
+                <span class="nav-label">Análisis</span>
+            </a>
+        </div>
+
+    </div> <!-- End Scrollable -->
+
+    <!-- Footer / Config -->
+    <div class="sidebar-footer">
+        <div class="user-profile">
+            <div class="avatar">
+                <img src="assets/avatar-placeholder.png" alt="User"
+                    onerror="this.src='https://ui-avatars.com/api/?name=Admin+User&background=random'" />
+            </div>
+            <div class="user-info">
+                <span class="user-name">Admin User</span>
+                <span class="user-role">Administrador</span>
+            </div>
+        </div>
+
+        <a routerLink="/dashboard/settings" routerLinkActive="active" class="nav-item">
+            <mat-icon class="nav-icon">settings</mat-icon>
+            <span class="nav-label">Configuración</span>
+        </a>
+
+        <button class="nav-item theme-toggle" (click)="toggleTheme()">
+            <mat-icon class="nav-icon">{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+            <span class="nav-label">{{ isDarkTheme ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+        </button>
+    </div>
+</aside>

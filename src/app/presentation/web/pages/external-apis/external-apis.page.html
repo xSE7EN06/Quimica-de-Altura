@@ -1,0 +1,74 @@
+<div class="apis-page">
+    <header class="apis-header">
+        <div class="page-title">
+            <h1>Integración de APIs Externas</h1>
+            <p>Gestiona los servicios químicos y botánicos de terceros</p>
+        </div>
+    </header>
+
+    <app-data-table [data]="apis" [columns]="columns" [loading]="tableLoading" (rowClick)="onViewApi($event)"
+        (editAction)="onEditApi($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar servicios..." />
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddApi()">
+            <mat-icon>add</mat-icon> Configurar API
+        </button>
+
+        <!-- Dynamic Filter Menu -->
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Método de Autenticación</label>
+                <select [ngModel]="activeFilters.authType" (ngModelChange)="onFilterChange('authType', $event)">
+                    <option value="">Todos los métodos</option>
+                    <option value="None">Sin Autenticación</option>
+                    <option value="API Key">API Key</option>
+                    <option value="OAuth2">OAuth 2.0</option>
+                    <option value="Basic Auth">Basic Auth</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-api-modal [isOpen]="isModalOpen" [mode]="modalMode" [api]="selectedApi!" [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext" (prev)="onPrevApi()" (next)="onNextApi()" (closed)="isModalOpen = false"
+        (saved)="onSaveApi($event)">
+    </app-api-modal>
+
+    <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar Registro"
+        [message]="'¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.'"
+        confirmText="Eliminar" (confirmed)="onConfirmDelete()" (cancelled)="isConfirmModalOpen = false">
+    </app-confirmation-modal>
+
+    <!-- Templates for Table Cells -->
+    <ng-template #nameTpl let-item>
+        <div class="api-name-cell">
+            <div class="api-icon">
+                <mat-icon>settings_input_component</mat-icon>
+            </div>
+            <div class="api-info">
+                <span class="main-name">{{ item.name }}</span>
+                <span class="url-sub">{{ item.base_url }}</span>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #authTpl let-item>
+        <span class="auth-badge" [ngClass]="item.authType.toLowerCase().replace(' ', '-')">
+            {{ item.authType }}
+        </span>
+    </ng-template>
+
+    <ng-template #endpointsTpl let-item>
+        <div class="endpoints-summary">
+            <span class="count-tag">{{ item.endpoints.length }} activos</span>
+            <div class="methods-dots">
+                <span *ngFor="let e of item.endpoints" class="dot" [title]="e.name"
+                    [ngClass]="e.method.toLowerCase()"></span>
+            </div>
+        </div>
+    </ng-template>
+</div>

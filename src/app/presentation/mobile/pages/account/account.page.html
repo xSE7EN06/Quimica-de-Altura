@@ -1,0 +1,64 @@
+<app-header title="Cuenta" [showBackButton]="false" defaultHref="/home"></app-header>
+
+<ion-content class="ion-padding">
+    <div class="profile-section">
+        <div class="avatar-container">
+            <div class="avatar-wrapper">
+                <!-- Using a placeholder if specific image isn't available, or bind to user.imageUrl -->
+                <img [src]="user.imageUrl" alt="Profile Avatar"
+                    onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                <div class="edit-button" (click)="onEditProfile()">
+                    <ion-icon name="create-outline"></ion-icon>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-names">
+            <h2 class="main-name">{{ user.name }}</h2>
+            <h3 class="sub-name">{{ user.subtitle }}</h3>
+        </div>
+    </div>
+
+    <div class="personal-data-card">
+        <h3 class="card-title">Datos personales</h3>
+        <div class="data-rows">
+            <div class="data-row">
+                <span class="label">Nombre:</span> <span class="value">{{ user.fullName }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Edad:</span> <span class="value">{{ user.age }} años</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Fecha de Nacimiento:</span> <span class="value">{{ user.dob }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Nacionalidad:</span> <span class="value">{{ user.nationality }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Dirección:</span> <span class="value">{{ user.address }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="categories-section">
+        <h3 class="section-title" style="color: #5b7c55;">Plantas guardadas por categoría</h3>
+        <div class="chips-container">
+            <div class="chip" *ngFor="let cat of categories" [class.active]="cat.active"
+                (click)="selectCategory(cat.name)">
+                {{ cat.name }}
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" *ngIf="savedPlants.length === 0">
+        <ion-icon name="leaf-outline" style="color: #5b7c55;"></ion-icon>
+        <p>No hay plantas guardadas en {{ selectedCategory }}</p>
+    </div>
+
+    <div class="plants-list">
+        <app-most-searched-card *ngFor="let plant of savedPlants" [name]="plant.name"
+            [scientificName]="plant.scientificName" [imageUrl]="plant.imageUrl" [properties]="plant.properties"
+            (action)="onViewDetail(plant)">
+        </app-most-searched-card>
+    </div>
+</ion-content>

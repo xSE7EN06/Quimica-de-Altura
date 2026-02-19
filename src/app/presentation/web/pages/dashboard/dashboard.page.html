@@ -1,0 +1,151 @@
+<div class="dashboard-container">
+
+    <!-- Top Bar -->
+    <header class="dashboard-header">
+        <div class="page-title">
+            <h1>Panel de Análisis y Estadísticas</h1>
+            <p>Monitoreo global de interacciones y puntos de mejora</p>
+        </div>
+
+        <div class="header-actions">
+            <div class="time-filter">
+                <mat-icon>calendar_today</mat-icon>
+                <span>Últimos 30 días</span>
+                <mat-icon>expand_more</mat-icon>
+            </div>
+            <button class="btn-refresh">
+                <mat-icon>sync</mat-icon> Actualizar
+            </button>
+        </div>
+    </header>
+
+    <!-- Global Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="card-header">
+                <span class="card-title">Interacciones Totales</span>
+                <mat-icon class="card-icon blue">analytics</mat-icon>
+            </div>
+            <div class="card-value">24,592 <span class="trend positive">+18.2%</span></div>
+            <div class="card-subtitle">Consultas en todos los módulos</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="card-header">
+                <span class="card-title">Usuarios Activos</span>
+                <mat-icon class="card-icon green">people</mat-icon>
+            </div>
+            <div class="card-value">1,840 <span class="trend positive">+5.4%</span></div>
+            <div class="card-subtitle">En la última semana</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="card-header">
+                <span class="card-title">Tasa de Conversión</span>
+                <mat-icon class="card-icon yellow">auto_awesome</mat-icon>
+            </div>
+            <div class="card-value">92.5% <span class="trend positive">+2.1%</span></div>
+            <div class="card-subtitle">Búsquedas con resultados</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="card-header">
+                <span class="card-title">Consultas Yolotl</span>
+                <mat-icon class="card-icon purple">forum</mat-icon>
+            </div>
+            <div class="card-value">4,120 <span class="trend positive">+32.0%</span></div>
+            <div class="card-subtitle">Chats finalizados con éxito</div>
+        </div>
+    </div>
+
+    <!-- Main Charts Section -->
+    <div class="charts-grid horizontal">
+        <!-- Plantas más consultadas -->
+        <div class="chart-card large">
+            <div class="chart-header">
+                <div class="header-icon-box green">
+                    <mat-icon>eco</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Plantas Más Consultadas</h3>
+                    <p>Top 6 especies con mayor interés por parte de los usuarios</p>
+                </div>
+            </div>
+            <div class="chart-content">
+                <canvas baseChart [data]="plantsChartData" [options]="plantsChartOptions" [type]="'bar'">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Módulos más clickeados -->
+        <div class="chart-card small">
+            <div class="chart-header">
+                <div class="header-icon-box blue">
+                    <mat-icon>touch_app</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Módulos de la App</h3>
+                    <p>Distribución de clicks por sección</p>
+                </div>
+            </div>
+            <div class="chart-content doughnut-box">
+                <canvas baseChart [data]="modulesChartData" [options]="modulesChartOptions" [type]="'doughnut'">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Charts Section -->
+    <div class="charts-grid-three">
+        <!-- Malestares -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="header-icon-box yellow">
+                    <mat-icon>healing</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Malestares Buscados</h3>
+                    <p>Puntos de dolor más frecuentes</p>
+                </div>
+            </div>
+            <div class="chart-content">
+                <canvas baseChart [data]="ailmentsChartData" [options]="ailmentsChartOptions" [type]="'bar'">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Propiedades -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="header-icon-box green">
+                    <mat-icon>science</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Propiedades de Interés</h3>
+                    <p>Fito-propiedades más valoradas</p>
+                </div>
+            </div>
+            <div class="chart-content">
+                <canvas baseChart [data]="propertiesChartData" [options]="propertiesChartOptions" [type]="'bar'">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Métodos de Preparación -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="header-icon-box purple">
+                    <mat-icon>coffee_maker</mat-icon>
+                </div>
+                <div class="header-info">
+                    <h3>Métodos de Preparación</h3>
+                    <p>Uso relativo por técnica aplicada</p>
+                </div>
+            </div>
+            <div class="chart-content">
+                <canvas baseChart [data]="methodsChartData" [options]="methodsChartOptions" [type]="'bar'">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="compound-modal">
+    <ng-template>
+        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+            <!-- Navigation Arrows -->
+            <button class="nav-arrow prev" *ngIf="hasPrevious" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <!-- Header Banner -->
+            <div class="modal-banner">
+                <div class="banner-overlay">
+                    <button class="close-btn" (click)="close()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <div class="banner-content">
+                        <div class="compound-icon-box">
+                            <mat-icon>biotech</mat-icon>
+                        </div>
+                        <div class="header-info">
+                            <span class="cid-label">PUBCHEM CID: {{ compoundForm.get('pubchemCid')?.value }}</span>
+                            <h1>{{ compoundForm.get('name')?.value }}</h1>
+                            <p class="formula-subtitle">{{ compoundForm.get('molecularFormula')?.value }} • {{
+                                compoundForm.get('molecularWeight')?.value }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="modal-scroll-content">
+                <form [formGroup]="compoundForm" class="compound-form">
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <mat-icon>description</mat-icon>
+                            <h3>Identificación y Nomenclatura</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Nombre del Compuesto</label>
+                                <input type="text" formControlName="name" [readOnly]="isReadOnly">
+                            </div>
+                            <div class="form-field">
+                                <label>Nombre IUPAC</label>
+                                <input type="text" formControlName="iupacName" [readOnly]="isReadOnly">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <mat-icon>straighten</mat-icon>
+                            <h3>Propiedades Moleculares</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Fórmula Molecular</label>
+                                <input type="text" formControlName="molecularFormula" [readOnly]="isReadOnly">
+                            </div>
+                            <div class="form-field">
+                                <label>Peso Molecular</label>
+                                <input type="text" formControlName="molecularWeight" [readOnly]="isReadOnly">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <mat-icon>terminal</mat-icon>
+                            <h3>Identificadores Químicos (Estructura)</h3>
+                        </div>
+                        <div class="form-field full-width">
+                            <label>SMILES</label>
+                            <input type="text" formControlName="smiles" [readOnly]="isReadOnly">
+                        </div>
+                        <div class="form-field full-width">
+                            <label>InChI</label>
+                            <textarea formControlName="inchi" [readOnly]="isReadOnly" rows="2"></textarea>
+                        </div>
+                        <div class="form-field full-width">
+                            <label>InChI Key</label>
+                            <input type="text" formControlName="inchiKey" [readOnly]="isReadOnly">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <div class="footer-actions">
+                    <button *ngIf="isReadOnly" class="btn-edit-mode" (click)="toggleEdit()">
+                        <mat-icon>edit</mat-icon> Editar Datos
+                    </button>
+
+                    <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">
+                        Cancelar
+                    </button>
+
+                    <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()" [disabled]="compoundForm.invalid">
+                        <mat-icon>check_circle</mat-icon> Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Edición"
+    message="¿Estás seguro de que deseas guardar los cambios realizados en este compuesto?" icon="science"
+    confirmColor="var(--accent-color)" confirmText="Actualizar" (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

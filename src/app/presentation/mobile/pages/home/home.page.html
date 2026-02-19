@@ -1,27 +1,87 @@
-<app-header title="Planta Vision"></app-header>
+<app-header title="Inicio"></app-header>
 
-<ion-content [fullscreen]="true" class="ion-padding main-content">
-  <div class="background-image"></div>
-  <div class="center-container">
-    <div class="glass-card">
-      <ion-icon name="leaf" class="logo-icon"></ion-icon>
-      <ion-text>
-        <h1>Identifica tu Planta</h1>
-        <p>Captura una foto para analizar sus propiedades medicinales.</p>
-      </ion-text>
+<ion-content class="ion-padding">
+  <div class="welcome-section" *ngIf="!isSearching">
+    <div class="robot-container">
+      <!-- Placeholder for the robot image -->
+      <img src="/yolotl.png" alt="Yolotl Robot" />
+    </div>
+    <div class="text-container">
+      <h2>¡Bienvenido, {{ userName }}!</h2>
+      <p>Descubre plantas, aprende sus propiedades y conecta con su historia.</p>
+    </div>
+  </div>
 
-      <div class="action-area">
-        <ion-button *ngIf="!isScanning" (click)="scanPlant()" expand="block" shape="round" size="large"
-          class="scan-button">
-          <ion-icon slot="start" name="scan"></ion-icon>
-          Escanear Ahora
-        </ion-button>
+  <app-search-input (search)="onSearch($event)" (filter)="onFilter()" (camera)="scanPlant()">
+  </app-search-input>
 
-        <div *ngIf="isScanning" class="scanning-loader">
-          <ion-spinner name="crescent"></ion-spinner>
-          <p>Analizando...</p>
+  <div *ngIf="!isSearching">
+    <div class="section-title-row">
+      <h3>Planta del día</h3>
+    </div>
+
+    <div class="plants-of-day-carousel">
+      <div class="plant-of-day-card" *ngFor="let dailyPlant of plantsOfDay" (click)="viewDetail(dailyPlant.id)">
+        <div class="image-overlay"></div>
+        <img [src]="dailyPlant.imageUrl" [alt]="dailyPlant.commonName">
+        <div class="content">
+          <div class="header-row">
+            <h4>{{ dailyPlant.commonName }}</h4>
+            <span class="details-link" (click)="$event.stopPropagation(); viewDetail(dailyPlant.id)">Ver
+              detalles</span>
+          </div>
+          <p>{{ dailyPlant.description }}</p>
         </div>
       </div>
     </div>
+
+    <div class="section-title-row">
+      <h3>Plantas medicinales más buscadas</h3>
+      <span class="see-more" (click)="viewMostSearchedPlants()">Ver más</span>
+    </div>
+
+    <div class="horizontal-scroll-container">
+      <app-plant-card *ngFor="let plant of plants" [name]="plant.commonName" [subtitle]="plant.scientificName"
+        [imageUrl]="plant.imageUrl" (action)="viewDetail(plant.id)">
+      </app-plant-card>
+    </div>
+
+    <div class="section-title-row">
+      <h3>Explora plantas por categoría</h3>
+      <span class="see-more" (click)="viewCategories()">Ver más</span>
+    </div>
+
+    <div class="horizontal-scroll-container last-section">
+      <app-plant-card name="Energizantes" subtitle="Plantas energizantes."
+        imageUrl="https://img.freepik.com/premium-vector/man-running-park-morning_165429-792.jpg"
+        buttonText="Ver plantas" (action)="viewCategory('Energizante')">
+      </app-plant-card>
+
+      <app-plant-card name="Relajantes" subtitle="Plantas relajantes."
+        imageUrl="https://img.freepik.com/free-vector/meditating-concept-illustration_114360-2972.jpg"
+        buttonText="Ver plantas" (action)="viewCategory('Relajante')">
+      </app-plant-card>
+
+      <app-plant-card name="Dolor" subtitle="Plantas para dolor."
+        imageUrl="https://img.freepik.com/free-vector/flat-person-having-headache_23-2148924043.jpg"
+        buttonText="Ver plantas" (action)="viewCategory('Dolor')">
+      </app-plant-card>
+    </div>
   </div>
+
+  <div *ngIf="isSearching" class="search-results">
+    <div class="section-title-row">
+      <h3>Resultados de búsqueda</h3>
+    </div>
+
+    <div class="vertical-list">
+      <app-plant-card *ngFor="let plant of plants" [name]="plant.commonName" [subtitle]="plant.scientificName"
+        [imageUrl]="plant.imageUrl" (action)="viewDetail(plant.id)">
+      </app-plant-card>
+      <div *ngIf="plants.length === 0" class="no-results">
+        <p>No se encontraron plantas.</p>
+      </div>
+    </div>
+  </div>
+
 </ion-content>

@@ -1,0 +1,97 @@
+.users-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .page-title {
+        flex: 1;
+        min-width: 300px;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            margin: 5px 0 0 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+    }
+}
+
+/* User Cell Template */
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+
+        .full-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    }
+}
+
+/* Role Badges */
+.role-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.administrador {
+        background: rgba(155, 89, 182, 0.15);
+        color: #9b59b6;
+        border: 1px solid rgba(155, 89, 182, 0.2);
+    }
+
+    &.investigador {
+        background: rgba(52, 152, 219, 0.15);
+        color: #3498db;
+        border: 1px solid rgba(52, 152, 219, 0.2);
+    }
+
+    &.usuario {
+        background: rgba(241, 196, 15, 0.15);
+        color: #ee5b07;
+        border: 1px solid rgba(241, 196, 15, 0.2);
+    }
+}

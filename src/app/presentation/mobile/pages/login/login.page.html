@@ -1,18 +1,19 @@
 <ion-header class="ion-no-border">
     <ion-toolbar>
-        <ion-title class="ion-text-center">Inicio de sesión</ion-title>
+        <ion-title class="ion-text-center">{{ segmentValue === 'login' ? 'Inicio de sesión' : 'Crear cuenta'
+            }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="login-content">
-    <div class="logo-container">
+    <div class="logo-container" [class.shrink]="segmentValue === 'register'">
         <!-- Using a generic plant icon if specific image not available yet, styled to match the mock -->
         <div class="logo-placeholder">
-            <img src="/logo.jpg" alt="Logo" />
+            <img src="/assets/shared/images/logo.png" alt="Logo" />
         </div>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" [class.expand]="segmentValue === 'register'">
         <div class="segment-container">
             <ion-segment [value]="segmentValue" (ionChange)="onSegmentChanged($event)" mode="ios">
                 <ion-segment-button value="login">
@@ -39,14 +40,49 @@
 
             <div class="button-container">
                 <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn"
-                    [disabled]="!loginForm.valid">
+                    [disabled]="!loginForm.valid" mode="ios">
                     Iniciar Sesión
                 </ion-button>
             </div>
         </form>
 
-        <div *ngIf="segmentValue === 'register'" class="ion-text-center ion-padding">
-            <p>Funcionalidad de registro próximamente...</p>
+        <div *ngIf="segmentValue === 'register'" class="register-form">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="input-group">
+                    <ion-item lines="none" class="custom-input">
+                        <ion-icon slot="start" name="person" color="medium"></ion-icon>
+                        <ion-input formControlName="firstName" type="text" placeholder="Nombre(s)"></ion-input>
+                    </ion-item>
+
+                    <ion-item lines="none" class="custom-input">
+                        <ion-icon slot="start" name="person" color="medium"></ion-icon>
+                        <ion-input formControlName="lastName" type="text" placeholder="Apellidos"></ion-input>
+                    </ion-item>
+
+                    <ion-item lines="none" class="custom-input">
+                        <ion-icon slot="start" name="mail" color="medium"></ion-icon>
+                        <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
+                    </ion-item>
+
+                    <ion-item lines="none" class="custom-input">
+                        <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
+                        <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+                    </ion-item>
+
+                    <ion-item lines="none" class="custom-input">
+                        <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
+                        <ion-input formControlName="confirmPassword" type="password"
+                            placeholder="Confirmar contraseña"></ion-input>
+                    </ion-item>
+                </div>
+
+                <div class="button-container">
+                    <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn"
+                        [disabled]="!registerForm.valid" mode="ios">
+                        Registrarse
+                    </ion-button>
+                </div>
+            </form>
         </div>
 
     </div>

@@ -1,0 +1,106 @@
+.cards-container {
+    margin-top: 16px;
+}
+
+.section-title h3 {
+    color: #5b7c55;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.intro-card {
+    border: 2px solid #5b7c55;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 14px;
+    margin-bottom: 24px;
+    position: relative;
+    background: white;
+
+    .robot-icon {
+        position: absolute;
+        top: -20px;
+        left: -10px;
+        width: 40px;
+        height: 40px;
+        z-index: 10;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .card-content {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        /* Center alignment requested */
+
+        .image-wrapper {
+            width: 110px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #5b7c55;
+                /* Green border for image */
+            }
+        }
+
+        .text-wrapper {
+            flex: 1;
+
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+
+                h3 {
+                    margin: 0;
+                    color: #5b7c55;
+                    font-size: 18px;
+                    /* Slightly larger title */
+                    font-weight: 700;
+                }
+
+                ion-icon {
+                    color: #5b7c55;
+                    font-size: 22px;
+                }
+            }
+
+            p {
+                margin: 0;
+                font-size: 11px;
+                line-height: 1.4;
+                color: #333;
+                text-align: left;
+                /* Better readability */
+                font-weight: 400;
+            }
+
+            .intro-list {
+                list-style: none;
+                padding: 0;
+                margin: 8px 0 0 0;
+
+                li {
+                    font-size: 11px;
+                    color: #555;
+                    margin-bottom: 4px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}

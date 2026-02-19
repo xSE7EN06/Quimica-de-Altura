@@ -1,0 +1,39 @@
+<app-header title="Chat" [showBackButton]="false" defaultHref="/home"></app-header>
+
+<div class="chat-subheader">
+    <div class="avatar">
+        <img src="/yolotl.png" alt="Yolotl" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'">
+    </div>
+    <div class="info">
+        <h2>Yolotl</h2>
+        <span class="status">● En linea</span>
+    </div>
+</div>
+
+<ion-content> <!-- Trying to scroll to bottom roughly -->
+    <div class="chat-container">
+        <div *ngFor="let msg of messages" class="message-wrapper" [class.user]="msg.sender === 'user'"
+            [class.bot]="msg.sender === 'bot'">
+
+            <div class="avatar-small" *ngIf="msg.sender === 'bot'">
+                <img src="/yolotl.png" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'">
+            </div>
+
+            <div class="message-bubble">
+                <p [innerHTML]="msg.text"></p>
+                <!-- Creating a pipe would be better but keeping simple for now, using css white-space for newlines -->
+            </div>
+
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <div class="input-area">
+        <div class="input-wrapper">
+            <input type="text" placeholder="Escribe un mensaje" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+            <ion-icon name="mic-outline" class="mic-icon"></ion-icon>
+            <ion-icon name="send" class="send-icon" (click)="sendMessage()"></ion-icon>
+        </div>
+    </div>
+</ion-footer>

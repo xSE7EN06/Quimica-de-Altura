@@ -5,8 +5,10 @@ export interface Plant {
     commonName: string;
     scientificName: string;
     description: string;
+    properties: string[];
     imageUrl: string;
     compounds: ChemicalCompound[];
-    habitat?: string;
     identifyingFeatures: string[];
+    region: string;
+    category?: string;
 }

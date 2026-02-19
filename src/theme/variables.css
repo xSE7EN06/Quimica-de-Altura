@@ -15,13 +15,13 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-primary-shade: #536a42;
     --ion-color-primary-tint: #6e865d;
 
-    /** secondary **/
-    --ion-color-secondary: #3dc2ff;
-    --ion-color-secondary-rgb: 61, 194, 255;
-    --ion-color-secondary-contrast: #ffffff;
-    --ion-color-secondary-contrast-rgb: 255, 255, 255;
-    --ion-color-secondary-shade: #36abe0;
-    --ion-color-secondary-tint: #50c8ff;
+    /** secondary #C4964A **/
+    --ion-color-secondary: #C4964A;
+    --ion-color-secondary-rgb: 196, 150, 74;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade: #ac8441;
+    --ion-color-secondary-tint: #caal5c;
 
     /** tertiary **/
     --ion-color-tertiary: #5260ff;
@@ -88,13 +88,16 @@ http://ionicframework.com/docs/theming/ */
    We can customize the Primary color for Dark Mode if we want it to look different. */
 @media (prefers-color-scheme: dark) {
     :root {
-        /* Keeping the Green as Primary in Dark mode too, but maybe slightly brighter if needed. */
+        /* Keeping the Green as Primary in Dark mode too */
         --ion-color-primary: #5E794B;
         --ion-color-primary-rgb: 94, 121, 75;
         --ion-color-primary-contrast: #ffffff;
         --ion-color-primary-contrast-rgb: 255, 255, 255;
         --ion-color-primary-shade: #536a42;
         --ion-color-primary-tint: #6e865d;
+
+        --ion-color-secondary: #C4964A;
+        --ion-color-secondary-rgb: 196, 150, 74;
 
         /* Ensuring background remains dark as per Ionic defaults, 
        but we can tweak specific backgrounds here if the user asks. */

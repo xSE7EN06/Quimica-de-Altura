@@ -1,0 +1,122 @@
+.articles-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.articles-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .page-title {
+        flex: 1;
+        min-width: 300px;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            margin: 5px 0 0 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+    }
+}
+
+.article-title-cell {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 8px 0;
+
+    .article-icon {
+        padding: 10px;
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 4px;
+    }
+
+    .article-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .main-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+            max-width: 500px;
+        }
+
+        .keywords-list {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+
+            .keyword-tag {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                color: var(--text-secondary);
+            }
+
+            .keyword-more {
+                font-size: 0.7rem;
+                color: var(--accent-color);
+                font-weight: 700;
+                align-self: center;
+            }
+        }
+    }
+}
+
+.authors-cell {
+    .author-primary {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .author-others {
+        margin-left: 4px;
+        color: var(--text-secondary);
+        font-style: italic;
+        font-size: 0.85rem;
+    }
+}
+
+.doi-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+
+    &:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+    }
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+}

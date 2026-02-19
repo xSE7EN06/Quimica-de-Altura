@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true">
+  <div class="camera-container">
+    <video #videoElement autoplay playsinline muted></video>
+
+    <!-- Dark overlay with transparent cutout -->
+    <div class="overlay-mask"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="back-button" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </div>
+      <div class="page-title">Detectar Planta</div>
+    </div>
+
+    <!-- Scanning Frame -->
+    <div class="scan-frame">
+      <div class="corner top-left"></div>
+      <div class="corner top-right"></div>
+      <div class="corner bottom-left"></div>
+      <div class="corner bottom-right"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-content">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Analizando...</p>
+      </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="bottom-actions" *ngIf="!showResult">
+      <button class="capture-button" (click)="capture()" [disabled]="isLoading">
+        <div class="inner-circle">
+          <ion-icon name="camera-outline" *ngIf="!isLoading"></ion-icon>
+        </div>
+      </button>
+      <p class="instruction-text">Tomar foto</p>
+    </div>
+
+    <!-- Result Card (Bottom Sheet) - MOVED INSIDE camera-container -->
+    <app-scan-result-card *ngIf="showResult" [plant]="scannedPlant" (close)="closeResult()">
+    </app-scan-result-card>
+  </div>
+
+</ion-content>

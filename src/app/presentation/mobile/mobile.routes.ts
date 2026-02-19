@@ -17,5 +17,38 @@ export const MOBILE_ROUTES: Routes = [
     {
         path: 'result/:id',
         loadComponent: () => import('./pages/result/result.page').then(m => m.ResultPage)
+    },
+    {
+        path: 'detail-plant/:id',
+        loadComponent: () => import('./pages/detail-plant/detail-plant.page').then(m => m.DetailPlantPage)
+    },
+    {
+        path: 'categories',
+        loadComponent: () => import('./pages/categories/categories.page').then(m => m.CategoriesPage)
+    },
+    {
+        path: 'most-searched-plants',
+        loadComponent: () => import('./pages/most-searched-plants/most-searched-plants.page').then(m => m.MostSearchedPlantsPage)
+    },
+    {
+        path: 'category-detail/:categoryName',
+        loadComponent: () => import('./pages/detail-category/detail-category.page').then(m => m.DetailCategoryPage)
+    },
+    {
+        path: 'energizers',
+        redirectTo: 'category-detail/Energizante',
+        pathMatch: 'full'
+    },
+    {
+        path: 'account',
+        loadComponent: () => import('./pages/account/account.page').then(m => m.AccountPage)
+    },
+    {
+        path: 'chat',
+        loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatPage)
+    },
+    {
+        path: 'scan',
+        loadComponent: () => import('./pages/scan/scan.page').then(m => m.ScanPage)
     }
 ];

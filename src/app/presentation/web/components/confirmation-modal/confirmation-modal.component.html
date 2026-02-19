@@ -1,0 +1,20 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="confirm-modal">
+    <ng-template>
+        <div class="modal-container">
+            <div class="modal-icon" [style.color]="iconColor">
+                <mat-icon>{{ icon }}</mat-icon>
+            </div>
+
+            <div class="modal-content">
+                <h2>{{ title }}</h2>
+                <p>{{ message }}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" (click)="onCancel()">{{ cancelText }}</button>
+                <button class="btn-primary" [style.backgroundColor]="confirmColor" (click)="onConfirm()">{{ confirmText
+                    }}</button>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
