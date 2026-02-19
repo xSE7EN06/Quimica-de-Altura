@@ -33,6 +33,7 @@ export class UsersPage implements OnInit {
     activeFilters = {
         role: ''
     };
+    tableLoading = true;
 
     @ViewChild('userTpl', { static: true }) userTpl!: TemplateRef<any>;
     @ViewChild('roleTpl', { static: true }) roleTpl!: TemplateRef<any>;
@@ -67,10 +68,15 @@ export class UsersPage implements OnInit {
     }
 
     private loadUsers() {
+        this.tableLoading = true;
         this.userRepository.getUsers().subscribe(data => {
             this.originalUsers = data;
             this.applyFilters();
-            this.cdr.detectChanges();
+            // Simulate loading delay
+            setTimeout(() => {
+                this.tableLoading = false;
+                this.cdr.detectChanges();
+            }, 2000);
         });
     }
 

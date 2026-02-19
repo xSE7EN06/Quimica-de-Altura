@@ -35,6 +35,7 @@ export class PlantsPage implements OnInit {
     activeFilters = {
         property: ''
     };
+    tableLoading = true;
 
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('propertiesTpl', { static: true }) propertiesTpl!: TemplateRef<any>;
@@ -68,10 +69,14 @@ export class PlantsPage implements OnInit {
     }
 
     private loadPlants() {
+        this.tableLoading = true;
         this.plantRepository.getPlants().subscribe(data => {
             this.originalPlants = data;
             this.applyFilters();
-            this.cdr.detectChanges();
+            setTimeout(() => {
+                this.tableLoading = false;
+                this.cdr.detectChanges();
+            }, 2000);
         });
     }
 

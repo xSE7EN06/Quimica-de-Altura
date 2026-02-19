@@ -1,6 +1,6 @@
 .articles-page {
     padding: 2rem;
-    max-width: 1500px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -28,71 +28,6 @@
             margin: 5px 0 0 0;
             color: var(--text-secondary);
             font-size: 0.95rem;
-        }
-    }
-
-    .header-controls {
-        display: flex;
-        gap: 1.2rem;
-        align-items: center;
-        flex-wrap: wrap;
-
-        .search-bar {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 0.5rem 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            width: 450px;
-            transition: all 0.3s ease;
-
-            &:focus-within {
-                border-color: var(--accent-color);
-                box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
-            }
-
-            .search-icon {
-                color: var(--text-secondary);
-                font-size: 20px;
-                width: 20px;
-                height: 20px;
-            }
-
-            input {
-                background: none;
-                border: none;
-                color: var(--text-primary);
-                width: 100%;
-                outline: none;
-                font-size: 0.95rem;
-
-                &::placeholder {
-                    color: var(--text-secondary);
-                    opacity: 0.7;
-                }
-            }
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(46, 125, 50, 0.2);
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
-            }
         }
     }
 }
@@ -183,33 +118,5 @@
         font-size: 18px;
         width: 18px;
         height: 18px;
-    }
-}
-
-.actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-secondary);
-    padding: 6px;
-    border-radius: 8px;
-    transition: all 0.2s;
-
-    &:hover {
-        background: var(--bg-hover);
-        color: var(--text-primary);
-    }
-
-    &.view:hover {
-        color: #3498db;
-    }
-
-    &.delete:hover {
-        color: #e74c3c;
     }
 }

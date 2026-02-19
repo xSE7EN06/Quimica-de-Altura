@@ -31,6 +31,7 @@ export class ArticlesPage implements OnInit {
         year: '',
         country: ''
     };
+    tableLoading = true;
 
     // Modal state
     isModalOpen = false;
@@ -68,10 +69,14 @@ export class ArticlesPage implements OnInit {
     }
 
     private loadArticles() {
+        this.tableLoading = true;
         this.articleRepository.getArticles().subscribe(data => {
             this.originalArticles = data;
             this.applyFilters();
-            this.cdr.detectChanges();
+            setTimeout(() => {
+                this.tableLoading = false;
+                this.cdr.detectChanges();
+            }, 2000);
         });
     }
 

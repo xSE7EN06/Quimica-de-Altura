@@ -6,7 +6,7 @@
         </div>
     </header>
 
-    <app-data-table [data]="compounds" [columns]="columns" (rowClick)="onViewCompound($event)"
+    <app-data-table [data]="compounds" [columns]="columns" [loading]="tableLoading" (rowClick)="onViewCompound($event)"
         (editAction)="onEditCompound($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
         <div search-bar class="search-bar">

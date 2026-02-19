@@ -8,8 +8,8 @@
     </header>
 
     <!-- Data Table -->
-    <app-data-table [data]="users" [columns]="columns" (rowClick)="onViewUser($event)" (editAction)="onEditUser($event)"
-        (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+    <app-data-table [data]="users" [columns]="columns" [loading]="tableLoading" (rowClick)="onViewUser($event)"
+        (editAction)="onEditUser($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
         <div search-bar class="search-bar">
             <mat-icon class="search-icon">search</mat-icon>
@@ -48,7 +48,7 @@
     <!-- Templates for Table Cells -->
     <ng-template #userTpl let-item>
         <div class="user-cell">
-            <div class="user-avatar" (click)="$event.stopPropagation()">
+            <div class="user-avatar">
                 {{ item.firstName[0] }}{{ item.lastName[0] }}
             </div>
             <div class="user-info">
