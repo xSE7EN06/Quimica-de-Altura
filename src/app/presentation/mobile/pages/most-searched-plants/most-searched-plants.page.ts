@@ -24,17 +24,12 @@ export class MostSearchedPlantsPage {
     ) { }
 
     ngOnInit() {
+        this.loadPlants();
+    }
+
+    loadPlants() {
         this.plantRepository.getPlants().subscribe(plants => {
-            this.plants = plants.map(plant => ({
-                id: plant.id,
-                name: plant.commonName,
-                scientificName: plant.scientificName,
-                imageUrl: plant.imageUrl,
-                properties: plant.properties.map(prop => ({
-                    name: prop,
-                    percentage: Math.floor(Math.random() * 40) + 60 // Random percentage between 60 and 100
-                }))
-            }));
+            this.mapPlants(plants);
         });
     }
 
@@ -43,7 +38,26 @@ export class MostSearchedPlantsPage {
     }
 
     onSearch(term: string) {
-        console.log('Search:', term);
+        if (term && term.trim().length > 0) {
+            this.plantRepository.searchPlants(term).subscribe(plants => {
+                this.mapPlants(plants);
+            });
+        } else {
+            this.loadPlants();
+        }
+    }
+
+    private mapPlants(plants: any[]) {
+        this.plants = plants.map(plant => ({
+            id: plant.id,
+            name: plant.commonName,
+            scientificName: plant.scientificName,
+            imageUrl: plant.imageUrl,
+            properties: plant.properties.map((prop: string) => ({
+                name: prop,
+                percentage: Math.floor(Math.random() * 40) + 60 // Random percentage between 60 and 100
+            }))
+        }));
     }
 
     onFilter() {
