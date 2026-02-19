@@ -92,19 +92,7 @@ export class LoginPage implements OnInit {
             role: 'Visitante',
             birthdate: '2000-01-01', // Default for now
             nationality: 'MX',
-            phoneNumber: '',
-            gender: 'OTHER',
-            status: 'ACTIVE',
-            profilePicture: 'assets/icon/favicon.png', // Default
-            address: { // Default empty address
-                street: '',
-                externalNumber: '',
-                colony: '',
-                city: '',
-                state: '',
-                zipCode: '',
-                country: 'México'
-            }
+            address: 'Av2. Calle 22'
         };
 
         this.authService.register(newUser).subscribe({
