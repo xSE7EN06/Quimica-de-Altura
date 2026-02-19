@@ -7,6 +7,10 @@
 
     <!-- Top Bar -->
     <div class="top-bar">
+      <div class="back-button" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </div>
+      <div class="page-title">Detectar Planta</div>
     </div>
 
     <!-- Scanning Frame -->
@@ -17,13 +21,27 @@
       <div class="corner bottom-right"></div>
     </div>
 
-    <!-- Instructions/Tap area -->
-    <div class="scan-trigger" (click)="capture()"></div>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-content">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Analizando...</p>
+      </div>
+    </div>
 
+    <!-- Bottom Actions -->
+    <div class="bottom-actions" *ngIf="!showResult">
+      <button class="capture-button" (click)="capture()" [disabled]="isLoading">
+        <div class="inner-circle">
+          <ion-icon name="camera-outline" *ngIf="!isLoading"></ion-icon>
+        </div>
+      </button>
+      <p class="instruction-text">Tomar foto</p>
+    </div>
+
+    <!-- Result Card (Bottom Sheet) - MOVED INSIDE camera-container -->
+    <app-scan-result-card *ngIf="showResult" [plant]="scannedPlant" (close)="closeResult()">
+    </app-scan-result-card>
   </div>
-
-  <!-- Result Card (Bottom Sheet) -->
-  <app-scan-result-card *ngIf="showResult" [plant]="scannedPlant" (close)="closeResult()">
-  </app-scan-result-card>
 
 </ion-content>

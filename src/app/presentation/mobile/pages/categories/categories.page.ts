@@ -45,15 +45,33 @@ export class CategoriesPage implements OnInit {
         }
     ];
 
+    filteredCategories: any[] = [];
+
     constructor(private router: Router) {
         addIcons({ alertCircleOutline });
     }
 
     ngOnInit() {
+        this.filteredCategories = [...this.categories];
     }
 
-    onSearch(term: string) {
+    onSearch(event: any) {
+        const term = typeof event === 'string' ? event : event && event.target ? event.target.value : '';
         console.log('Search:', term);
+        this.filterCategories(term);
+    }
+
+    filterCategories(term: string) {
+        if (!term || term.trim() === '') {
+            this.filteredCategories = [...this.categories];
+            return;
+        }
+
+        const searchTerm = term.toLowerCase().trim();
+        this.filteredCategories = this.categories.filter(category =>
+            category.name.toLowerCase().includes(searchTerm) ||
+            category.description.toLowerCase().includes(searchTerm)
+        );
     }
 
     onFilter() {

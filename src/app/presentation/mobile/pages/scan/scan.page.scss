@@ -1,3 +1,4 @@
+
 .camera-container {
   position: relative;
   width: 100%;
@@ -19,13 +20,11 @@ video {
   left: 0;
   width: 100%;
   height: 100%;
-  // Using a radial gradient to simulate a centered clear area or just keeping it clear for now
-  // For a true cutout we might need SVG or complex border tricks. 
-  // Let's use a subtle darkening for the whole screen but keep it simple first
-  background: rgba(0, 0, 0, 0.1); 
+  background: rgba(0, 0, 0, 0.3); // Semi-transparent black
   pointer-events: none;
 }
 
+/* --- Top Bar --- */
 .top-bar {
   position: absolute;
   top: 40px; // Safe area
@@ -34,61 +33,51 @@ video {
   padding: 0 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   z-index: 10;
 }
 
 .back-button {
-  --background: rgba(255, 255, 255, 0.2);
-  --border-radius: 50%;
   width: 40px;
   height: 40px;
-  --padding-start: 0;
-  --padding-end: 0;
-  
-  ion-icon {
-    font-size: 24px;
-  }
-}
-
-// The "Dynamic Island" style pill at the top
-.pill {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 35px;
-  background: black;
-  border-radius: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  
+  ion-icon {
+    font-size: 24px;
+    color: white;
+  }
 }
 
-.pill-notch {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #1a1a2e; // Dark blueish for lens look
-  box-shadow: inset 0 0 4px rgba(255,255,255,0.2);
+.page-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 20px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-// Scanning Frame (Corners)
+
+/* --- Scanning Frame (Corners) --- */
 .scan-frame {
   position: absolute;
-  top: 50%;
+  top: 45%; 
   left: 50%;
   transform: translate(-50%, -50%);
   width: 280px;
   height: 280px;
   pointer-events: none;
+  z-index: 5;
 }
 
 .corner {
   position: absolute;
   width: 40px;
   height: 40px;
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
   border-style: solid;
   border-width: 0;
   border-radius: 8px;
@@ -122,11 +111,86 @@ video {
   border-right-width: 6px;
 }
 
-.scan-trigger {
+
+/* --- Bottom Actions --- */
+.bottom-actions {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.capture-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 4px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  .inner-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 24px;
+  }
+}
+
+.instruction-text {
+  color: white;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+
+/* --- Loading Overlay --- */
+.loading-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5; // Below back button but above video
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+
+  .loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+
+    ion-spinner {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 15px;
+      --color: white;
+    }
+    
+    p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
 }

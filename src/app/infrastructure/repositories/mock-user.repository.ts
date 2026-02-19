@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
 import { User } from '../../domain/models/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
+import { LoadingService } from '../../application/services/loading.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MockUserRepository extends UserRepository {
+    private loadingService = inject(LoadingService);
     private users: User[] = [
         {
             id: '1',

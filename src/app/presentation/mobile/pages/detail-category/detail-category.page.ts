@@ -7,7 +7,7 @@ import { SearchInputComponent } from '../../components/search-input/search-input
 import { MostSearchedCardComponent } from '../../components/most-searched-card/most-searched-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { alertCircleOutline } from 'ionicons/icons';
+import { alertCircleOutline, flashOutline, moonOutline, medkitOutline, restaurantOutline, snowOutline, leafOutline } from 'ionicons/icons';
 import { PlantRepository } from '../../../../domain/repositories/plant.repository';
 
 @Component({
@@ -20,6 +20,7 @@ import { PlantRepository } from '../../../../domain/repositories/plant.repositor
 export class DetailCategoryPage implements OnInit {
     categoryName: string = '';
     plants: any[] = [];
+    private allCategoryPlants: any[] = []; // Store all plants for client-side filtering
     description: string = '';
 
     categoryTitle: string = '';
@@ -59,15 +60,14 @@ export class DetailCategoryPage implements OnInit {
         'Respiratorio': {
             title: 'Respiratorias',
             description: 'Plantas que ayudan a limpiar las vías respiratorias y combatir infecciones.',
-            image: 'https://img.freepik.com/free-vector/itchy-skin-concept-illustration_114360-14330.jpg', // Reusing illustration for now or replacing if better found
+            image: 'https://img.freepik.com/free-vector/itchy-skin-concept-illustration_114360-14330.jpg',
             icon: 'snow-outline',
             benefits: ['🫁 Limpia pulmones', '🦠 Antibacteriano', '🤧 Alivia tos']
         },
-        // Fallback or generic
         'default': {
             title: 'Plantas Medicinales',
             description: 'Plantas medicinales de la región de las Altas Montañas.',
-            image: '/assets/icon/favicon.png', // Fallback image
+            image: '/assets/icon/favicon.png',
             icon: 'leaf-outline',
             benefits: ['🌿 Tradición ancestral', '💪 Remedios naturales', '🌎 Flora local']
         }
@@ -78,7 +78,7 @@ export class DetailCategoryPage implements OnInit {
         private plantRepository: PlantRepository,
         private router: Router
     ) {
-        addIcons({ alertCircleOutline });
+        addIcons({ alertCircleOutline, flashOutline, moonOutline, medkitOutline, restaurantOutline, snowOutline, leafOutline });
     }
 
     ngOnInit() {
@@ -98,10 +98,8 @@ export class DetailCategoryPage implements OnInit {
         this.categoryIcon = config.icon;
         this.categoryBenefits = config.benefits;
 
-        // We pass the normalized key because the repository expects singular category names
-        // e.g. 'Energizante' instead of 'Energizantes'
         this.plantRepository.getPlantsByCategory(key).subscribe(plants => {
-            this.plants = plants.map(plant => ({
+            this.allCategoryPlants = plants.map(plant => ({
                 id: plant.id,
                 name: plant.commonName,
                 scientificName: plant.scientificName,
@@ -111,6 +109,7 @@ export class DetailCategoryPage implements OnInit {
                     percentage: Math.floor(Math.random() * 40) + 60
                 }))
             }));
+            this.plants = [...this.allCategoryPlants];
         });
     }
 
@@ -119,7 +118,7 @@ export class DetailCategoryPage implements OnInit {
         const lower = category.toLowerCase();
         if (lower.includes('energiza')) return 'Energizante';
         if (lower.includes('relaja')) return 'Relajante';
-        if (lower.includes('dolor')) return 'Dolor'; // Matches 'dolor', 'dolencia'
+        if (lower.includes('dolor')) return 'Dolor';
         if (lower.includes('dolencia')) return 'Dolor';
         if (lower.includes('digest')) return 'Digestivo';
         if (lower.includes('respir') || lower.includes('bacter')) return 'Respiratorio';
@@ -128,7 +127,17 @@ export class DetailCategoryPage implements OnInit {
 
 
     onSearch(term: string) {
-        console.log('Search:', term);
+        if (!term || term.trim() === '') {
+            this.plants = [...this.allCategoryPlants];
+            return;
+        }
+
+        const lowerTerm = term.toLowerCase();
+        this.plants = this.allCategoryPlants.filter(plant =>
+            plant.name.toLowerCase().includes(lowerTerm) ||
+            plant.scientificName.toLowerCase().includes(lowerTerm) ||
+            plant.properties.some((p: any) => p.name.toLowerCase().includes(lowerTerm))
+        );
     }
 
     onFilter() {

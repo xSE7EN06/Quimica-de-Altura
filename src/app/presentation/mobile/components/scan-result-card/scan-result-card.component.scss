@@ -4,18 +4,19 @@ $text-secondary: #666;
 $text-body: #333;
 
 .card-container {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    position: fixed; // Changed from absolute to fixed to ensure it's relative to viewport
+    bottom: 0; // Stick to bottom
+    left: 0;
+    right: 0;
     background: $card-bg;
-    border-radius: 30px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 20px 20px 40px 20px; // Extra bottom padding for safe area
+    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.2);
     animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    max-height: 70vh;
+    max-height: 80vh;
     overflow-y: auto;
-    z-index: 100;
+    z-index: 9999; // Very high z-index
 }
 
 .drag-handle {
@@ -185,11 +186,9 @@ $text-body: #333;
 @keyframes slideUp {
     from {
         transform: translateY(100%);
-        opacity: 0;
     }
 
     to {
         transform: translateY(0);
-        opacity: 1;
     }
 }
