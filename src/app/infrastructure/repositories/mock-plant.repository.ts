@@ -294,7 +294,7 @@ export class MockPlantRepository extends PlantRepository {
             scientificName: 'Bougainvillea glabra',
             description: 'Planta trepadora con brácteas coloridas, muy usada para la tos.',
             properties: ['Antitusivo', 'Expectorante', 'Febrífugo'],
-            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Bougainvillea_glabra.jpg/800px-Bougainvillea_glabra.jpg',
+            imageUrl: 'https://th.bing.com/th/id/OIP.IXxYpQ0mzVJtv6IukaYOXAHaE8?w=279&h=186&c=7&r=0&o=7&pid=1.7&rm=3',
             region: 'Zonas Tropicales y Subtropicales',
             category: 'Respiratorio',
             identifyingFeatures: [
@@ -323,7 +323,7 @@ export class MockPlantRepository extends PlantRepository {
             scientificName: 'Tagetes erecta',
             description: 'La flor de muertos, utilizada también para problemas digestivos y cólicos.',
             properties: ['Carminativo', 'Digestivo', 'Antibacteriano'],
-            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Tagetes_erecta_Macro.jpg/800px-Tagetes_erecta_Macro.jpg',
+            imageUrl: 'https://th.bing.com/th/id/OIP.QSxfLUvqp63w0Tid09mypgHaEK?w=277&h=180&c=7&r=0&o=7&pid=1.7&rm=3',
             region: 'Valles Centrales y Altiplano',
             category: 'Digestivo',
             identifyingFeatures: [
@@ -410,7 +410,7 @@ export class MockPlantRepository extends PlantRepository {
             scientificName: 'Artemisia ludoviciana',
             description: 'Hierba amarga usada para dolores de estómago y parásitos.',
             properties: ['Antiparasitario', 'Digestivo', 'Colerético'],
-            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Artemisia_ludoviciana.jpg/800px-Artemisia_ludoviciana.jpg',
+            imageUrl: 'https://th.bing.com/th/id/OIP.z5yVlE9gWGHZ7-Ur30Yh-QHaEK?w=299&h=180&c=7&r=0&o=7&pid=1.7&rm=3',
             region: 'Zonas Semiáridas',
             category: 'Digestivo',
             identifyingFeatures: [
