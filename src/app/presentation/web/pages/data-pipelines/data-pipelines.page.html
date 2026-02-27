@@ -1,0 +1,93 @@
+<div class="data-pipelines-page">
+
+    <header class="page-header">
+        <div class="page-title">
+            <h1>Pipelines de Datos</h1>
+            <p>Monitorea y gestiona los pipelines de sincronización de datos</p>
+        </div>
+    </header>
+
+    <app-data-table
+        [data]="items"
+        [columns]="columns"
+        [loading]="tableLoading"
+        (rowClick)="onViewItem($event)"
+        (editAction)="onEditItem($event)"
+        (deleteAction)="onBulkDelete($event)"
+        (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar pipelines..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''">close</mat-icon>
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddItem()">
+            <mat-icon>add</mat-icon> Nuevo Pipeline
+        </button>
+
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Estado</label>
+                <select (change)="onFilterChange('status', $any($event.target).value); $any($event.target).value = ''">
+                    <option value="">Agregar estado...</option>
+                    <option *ngFor="let s of getAvailableStatuses()" [value]="s">{{ getStatusLabel(s) }}</option>
+                </select>
+                <div class="active-filters" *ngIf="activeFilters['status'].length > 0">
+                    <div class="filter-label">Filtros activos:</div>
+                    <div class="filter-chips">
+                        <span *ngFor="let s of activeFilters['status']" class="filter-chip">
+                            {{ getStatusLabel(s) }}
+                            <mat-icon (click)="removeFilter('status', s)">close</mat-icon>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>Fuente</label>
+                <select (change)="onFilterChange('source', $any($event.target).value); $any($event.target).value = ''">
+                    <option value="">Agregar fuente...</option>
+                    <option *ngFor="let src of getAvailableSources()" [value]="src">{{ src }}</option>
+                </select>
+                <div class="active-filters" *ngIf="activeFilters['source'].length > 0">
+                    <div class="filter-label">Fuentes activas:</div>
+                    <div class="filter-chips">
+                        <span *ngFor="let src of activeFilters['source']" class="filter-chip">
+                            {{ src }}
+                            <mat-icon (click)="removeFilter('source', src)">close</mat-icon>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-data-pipeline-modal
+        [item]="selectedItem"
+        [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext"
+        (prev)="onPrevItem()"
+        (next)="onNextItem()"
+        (saved)="onSaveItem($event)">
+    </app-data-pipeline-modal>
+
+    <app-confirmation-modal
+        title="Eliminar Pipeline"
+        message="¿Estás seguro de que deseas eliminar este pipeline? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        confirmColor="#E53E3E"
+        (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
+    <!-- Cell Templates -->
+    <ng-template #nameTpl let-item>
+        <div class="pipeline-name-cell">
+            <span class="pipeline-name">{{ item.name }}</span>
+            <span class="status-badge {{ item.status }}">{{ getStatusLabel(item.status) }}</span>
+        </div>
+    </ng-template>
+
+    <ng-template #recordsTpl let-item>
+        <span class="records-value">{{ formatNumber(item.recordsSynced) }}</span>
+    </ng-template>
+</div>

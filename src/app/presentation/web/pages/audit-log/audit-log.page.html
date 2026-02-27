@@ -1,0 +1,52 @@
+<div class="page-container">
+
+    <header class="page-header">
+        <div class="page-title">
+            <h1>Registro de Auditoría</h1>
+            <p>Historial de todas las acciones realizadas en el sistema (solo lectura)</p>
+        </div>
+    </header>
+
+    <app-data-table
+        [data]="items"
+        [columns]="columns"
+        [loading]="tableLoading"
+        (rowClick)="onViewItem($event)"
+        (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Buscar por usuario, recurso o ID..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
+        </div>
+
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Acción</label>
+                <select [(ngModel)]="selectedAction" (ngModelChange)="onFilterChange('action', $event)">
+                    <option value="">Todas</option>
+                    <option value="create">Create</option>
+                    <option value="update">Update</option>
+                    <option value="delete">Delete</option>
+                    <option value="approve">Approve</option>
+                    <option value="reject">Reject</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Recurso</label>
+                <select [(ngModel)]="selectedResource" (ngModelChange)="onFilterChange('resource', $event)">
+                    <option value="">Todos</option>
+                    <option *ngFor="let r of availableResources" [value]="r">{{ r }}</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-audit-log-modal [item]="selectedItem"></app-audit-log-modal>
+
+    <!-- Cell Templates -->
+    <ng-template #actionTpl let-item>
+        <span class="badge" [ngClass]="getActionBadgeClass(item.action)">{{ item.action }}</span>
+    </ng-template>
+
+</div>

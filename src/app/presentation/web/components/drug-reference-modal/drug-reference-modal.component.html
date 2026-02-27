@@ -1,0 +1,86 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="drug-reference-modal">
+  <ng-template>
+    <div class="modal-container">
+      <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()"><mat-icon>chevron_left</mat-icon></button>
+      <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()"><mat-icon>chevron_right</mat-icon></button>
+
+      <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+        <div class="modal-header-banner">
+          <div class="header-overlay">
+            <button class="close-btn" (click)="close()"><mat-icon>close</mat-icon></button>
+            <div class="header-content">
+              <span class="category-badge">Referencia Farmacológica</span>
+              <h1>{{ mode === 'add' ? 'Nueva Referencia' : form.get('drugName')?.value }}</h1>
+              <p class="header-sub">{{ form.get('activeIngredient')?.value }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-scroll-content">
+          <form [formGroup]="form">
+            <div class="form-section">
+              <h3>Fármaco</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Nombre del Fármaco</label>
+                  <input type="text" formControlName="drugName" [readOnly]="isReadOnly" placeholder="Ej. Metformina">
+                </div>
+                <div class="form-field">
+                  <label>Ingrediente Activo</label>
+                  <input type="text" formControlName="activeIngredient" [readOnly]="isReadOnly" placeholder="Ej. Metformina HCl">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Enlace Fitoquímico</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Compuesto Análogo</label>
+                  <input type="text" formControlName="linkedCompound" [readOnly]="isReadOnly" placeholder="Ej. Berberina">
+                </div>
+                <div class="form-field">
+                  <label>Planta Relacionada</label>
+                  <input type="text" formControlName="linkedPlant" [readOnly]="isReadOnly" placeholder="Ej. Berberis trifoliolata">
+                </div>
+                <div class="form-field">
+                  <label>Superposición de Vía</label>
+                  <input type="text" formControlName="pathwayOverlap" [readOnly]="isReadOnly" placeholder="Ej. AMPK / gluconeogénesis">
+                </div>
+                <div class="form-field">
+                  <label>Puntaje de Similitud (0–1)</label>
+                  <input type="number" formControlName="similarityScore" [readOnly]="isReadOnly" min="0" max="1" step="0.01">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Mecanismo y Notas</h3>
+              <div class="form-field full-width">
+                <label>Mecanismo de Acción</label>
+                <textarea formControlName="mechanism" [readOnly]="isReadOnly" rows="3" placeholder="Descripción del mecanismo..."></textarea>
+              </div>
+              <div class="form-field full-width">
+                <label>Notas</label>
+                <textarea formControlName="notes" [readOnly]="isReadOnly" rows="2" placeholder="Observaciones adicionales..."></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions">
+            <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()"><mat-icon>edit</mat-icon> Editar</button>
+            <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+            <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()"><mat-icon>save</mat-icon> Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+  message="¿Estás seguro de que deseas guardar los cambios?" confirmColor="var(--accent-color)"
+  confirmText="Guardar" (confirmed)="executeSave()" (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

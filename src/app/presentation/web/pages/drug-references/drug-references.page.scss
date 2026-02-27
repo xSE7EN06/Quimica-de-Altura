@@ -1,0 +1,8 @@
+.drug-references-page { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+.page-header { margin-bottom: 2.5rem; h1 { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin: 0; } p { margin: 5px 0 0; color: var(--text-secondary); font-size: 0.95rem; } }
+.score-cell { display: flex; align-items: center; gap: 8px; }
+.score-bar { flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden; max-width: 80px; }
+.score-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+.score-value { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); min-width: 35px; }
+.filter-controls-vertical { .filter-group { margin-bottom: 1rem; label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 6px; } select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-primary); } } }
+.active-filters { margin-top: 12px; .filter-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; } .filter-chips { display: flex; flex-wrap: wrap; gap: 6px; } .filter-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-color); color: white; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; mat-icon { font-size: 14px; width: 14px; height: 14px; cursor: pointer; } } }

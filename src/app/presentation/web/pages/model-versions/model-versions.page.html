@@ -1,0 +1,84 @@
+<div class="page-container">
+
+    <header class="page-header">
+        <div class="page-title">
+            <h1>Versiones de Modelos</h1>
+            <p>Gestiona y monitorea las versiones de modelos de IA desplegados</p>
+        </div>
+    </header>
+
+    <app-data-table
+        [data]="items"
+        [columns]="columns"
+        [loading]="tableLoading"
+        (rowClick)="onViewItem($event)"
+        (editAction)="onEditItem($event)"
+        (deleteAction)="onDeleteItem($event)"
+        (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Buscar modelos..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddItem()">
+            <mat-icon>add</mat-icon> Nueva Versión
+        </button>
+
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Tipo de Modelo</label>
+                <select [(ngModel)]="selectedType" (ngModelChange)="onFilterChange('type', $event)">
+                    <option value="">Todos</option>
+                    <option value="image-classifier">Image Classifier</option>
+                    <option value="nlp">NLP</option>
+                    <option value="inference-pipeline">Inference Pipeline</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Estado</label>
+                <select [(ngModel)]="selectedStatus" (ngModelChange)="onFilterChange('status', $event)">
+                    <option value="">Todos</option>
+                    <option value="active">Activo</option>
+                    <option value="testing">En Prueba</option>
+                    <option value="deprecated">Obsoleto</option>
+                </select>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-model-version-modal
+        [item]="selectedItem"
+        [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext"
+        (prev)="onPrev()"
+        (next)="onNext()"
+        (saved)="onSaveItem($event)">
+    </app-model-version-modal>
+
+    <app-confirmation-modal
+        title="Eliminar Versión de Modelo"
+        message="¿Estás seguro de que deseas eliminar esta versión? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        confirmColor="#E53E3E"
+        (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
+    <!-- Cell Templates -->
+    <ng-template #nameTpl let-item>
+        <div class="name-cell">
+            <span class="name-text">{{ item.name }}</span>
+            <span class="badge" [ngClass]="getTypeBadgeClass(item.type)">{{ getTypeLabel(item.type) }}</span>
+        </div>
+    </ng-template>
+
+    <ng-template #accuracyTpl let-item>
+        <span class="accuracy-value">{{ (item.accuracy * 100).toFixed(1) }}%</span>
+    </ng-template>
+
+    <ng-template #statusTpl let-item>
+        <span class="badge" [ngClass]="getStatusBadgeClass(item.status)">{{ item.status }}</span>
+    </ng-template>
+
+</div>

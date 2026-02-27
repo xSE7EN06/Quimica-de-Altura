@@ -1,0 +1,137 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="inference-job-modal">
+    <ng-template>
+        <div class="modal-container">
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+                <div class="modal-header-banner">
+                    <div class="header-overlay">
+                        <button class="close-btn" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <div class="header-content">
+                            <span class="category-badge">Trabajo de Inferencia</span>
+                            <h1>{{ mode === 'add' ? 'Nuevo Trabajo' : (form.get('species')?.value || 'Sin especie') }}</h1>
+                            <p class="subtitle-header" *ngIf="mode !== 'add'">
+                                <span class="status-badge-header {{ form.get('status')?.value }}">
+                                    {{ getStatusLabel(form.get('status')?.value) }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-scroll-content">
+                    <form [formGroup]="form">
+                        <div class="form-section">
+                            <h3>Información del Trabajo</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Especie</label>
+                                    <input type="text" formControlName="species" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Toronjil (Agastache mexicana)">
+                                    <div class="field-error" *ngIf="form.get('species')?.invalid && form.get('species')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Tipo de Trabajo</label>
+                                    <input type="text" formControlName="jobType" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Identificación fotográfica">
+                                    <div class="field-error" *ngIf="form.get('jobType')?.invalid && form.get('jobType')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Estado</label>
+                                    <select formControlName="status" [attr.disabled]="isReadOnly ? true : null">
+                                        <option value="pending">Pendiente</option>
+                                        <option value="running">Ejecutando</option>
+                                        <option value="completed">Completado</option>
+                                        <option value="failed">Fallido</option>
+                                        <option value="flagged">Marcado</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label>Puntaje de Confianza (0-1)</label>
+                                    <input type="number" formControlName="confidenceScore" [readOnly]="isReadOnly"
+                                        placeholder="0.00" step="0.01" min="0" max="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Resultado y Revisión</h3>
+                            <div class="form-field full-width">
+                                <label>Salida / Resultado</label>
+                                <textarea formControlName="output" [readOnly]="isReadOnly" rows="4"
+                                    placeholder="Resultado del trabajo de inferencia..."></textarea>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Aprobado Por</label>
+                                    <input type="text" formControlName="approvedBy" [readOnly]="isReadOnly"
+                                        placeholder="Nombre del revisor">
+                                </div>
+                                <div class="form-field checkbox-field">
+                                    <label>Marcado para Revisión</label>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" formControlName="flaggedForReview" [attr.disabled]="isReadOnly ? true : null"
+                                            id="flaggedForReview">
+                                        <label for="flaggedForReview" class="checkbox-label">
+                                            {{ form.get('flaggedForReview')?.value ? 'Sí, marcado' : 'No marcado' }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Fechas</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Creado</label>
+                                    <input type="text" formControlName="createdAt" [readOnly]="isReadOnly"
+                                        placeholder="Fecha de creación">
+                                </div>
+                                <div class="form-field">
+                                    <label>Completado</label>
+                                    <input type="text" formControlName="completedAt" [readOnly]="isReadOnly"
+                                        placeholder="Fecha de finalización">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="footer-actions">
+                        <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
+                            <mat-icon>edit</mat-icon> Editar
+                        </button>
+                        <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+                        <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
+                            <mat-icon>save</mat-icon> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
+
+<app-confirmation-modal
+    [isOpen]="showConfirmModal"
+    title="Confirmar Cambios"
+    message="¿Estás seguro de que deseas actualizar este trabajo de inferencia?"
+    icon="save"
+    confirmColor="var(--accent-color)"
+    confirmText="Guardar"
+    (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

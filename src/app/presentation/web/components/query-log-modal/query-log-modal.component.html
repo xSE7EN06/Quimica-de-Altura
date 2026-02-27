@@ -1,0 +1,81 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="query-log-modal">
+  <ng-template>
+    <div class="modal-container">
+      <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()"><mat-icon>chevron_left</mat-icon></button>
+      <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()"><mat-icon>chevron_right</mat-icon></button>
+
+      <div class="modal-wrapper">
+        <div class="modal-header-banner">
+          <div class="header-overlay">
+            <button class="close-btn" (click)="close()"><mat-icon>close</mat-icon></button>
+            <div class="header-content">
+              <span class="category-badge">Log de Consulta</span>
+              <h1>{{ item?.userId || 'Consulta' }}</h1>
+              <p class="header-sub">Confianza: {{ getConfidencePct() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-scroll-content">
+          <div class="query-box">
+            <label>Consulta del Usuario</label>
+            <p>{{ item?.query }}</p>
+          </div>
+
+          <div class="tags-section">
+            <div class="tag-group">
+              <label>Entidades Extraídas</label>
+              <div class="tag-list">
+                <span class="tag entity" *ngFor="let e of getArray(item?.extractedEntities)">{{ e }}</span>
+              </div>
+            </div>
+            <div class="tag-group">
+              <label>Mapeos Ontológicos</label>
+              <div class="tag-list">
+                <span class="tag ontology" *ngFor="let m of getArray(item?.ontologyMappings)">{{ m }}</span>
+              </div>
+            </div>
+            <div class="tag-group">
+              <label>Plantas Retornadas</label>
+              <div class="tag-list">
+                <span class="tag plant" *ngFor="let p of getArray(item?.plantsReturned)">{{ p }}</span>
+              </div>
+            </div>
+          </div>
+
+          <form [formGroup]="form">
+            <div class="form-section">
+              <h3>Estado</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Marcado para Revisión</label>
+                  <div class="checkbox-field">
+                    <input type="checkbox" formControlName="flagged" [attr.disabled]="isReadOnly ? true : null" id="flaggedQ">
+                    <label for="flaggedQ">Sí, marcar este log</label>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label>Fecha/Hora</label>
+                  <input type="text" [value]="item?.createdAt" readOnly>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions">
+            <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()"><mat-icon>edit</mat-icon> Editar</button>
+            <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+            <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()"><mat-icon>save</mat-icon> Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+  message="¿Guardar los cambios en este log?" confirmColor="var(--accent-color)"
+  confirmText="Guardar" (confirmed)="executeSave()" (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

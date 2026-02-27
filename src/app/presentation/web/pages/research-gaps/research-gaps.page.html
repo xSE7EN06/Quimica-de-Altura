@@ -1,0 +1,33 @@
+<div class="research-gaps-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Brechas de Investigación</h1>
+      <p>Especies con menor publicación y disparidad entre bioactividad y ensayos clínicos</p>
+    </div>
+  </header>
+
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let card of statCards">
+      <div class="stat-icon"><mat-icon>{{ card.icon }}</mat-icon></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ card.value }}</span>
+        <span class="stat-label">{{ card.label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Especies con Menor Publicación</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="lowPublicationChartData" [options]="lowPublicationChartOptions" type="bar"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Bioactividad Reportada vs. Ensayos Clínicos</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="bioactivityChartData" [options]="bioactivityChartOptions" type="bar"></canvas>
+      </div>
+    </div>
+  </div>
+</div>

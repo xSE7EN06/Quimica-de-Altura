@@ -1,0 +1,85 @@
+<div class="inference-jobs-page">
+
+    <header class="page-header">
+        <div class="page-title">
+            <h1>Trabajos de Inferencia</h1>
+            <p>Monitorea y gestiona los trabajos de inferencia del sistema</p>
+        </div>
+    </header>
+
+    <app-data-table
+        [data]="items"
+        [columns]="columns"
+        [loading]="tableLoading"
+        (rowClick)="onViewItem($event)"
+        (editAction)="onEditItem($event)"
+        (deleteAction)="onBulkDelete($event)"
+        (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar trabajos..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''">close</mat-icon>
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddItem()">
+            <mat-icon>add</mat-icon> Nuevo Trabajo
+        </button>
+
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Estado</label>
+                <select (change)="onFilterChange('status', $any($event.target).value); $any($event.target).value = ''">
+                    <option value="">Agregar estado...</option>
+                    <option *ngFor="let s of getAvailableStatuses()" [value]="s">{{ getStatusLabel(s) }}</option>
+                </select>
+                <div class="active-filters" *ngIf="activeFilters['status'].length > 0">
+                    <div class="filter-label">Filtros activos:</div>
+                    <div class="filter-chips">
+                        <span *ngFor="let s of activeFilters['status']" class="filter-chip">
+                            {{ getStatusLabel(s) }}
+                            <mat-icon (click)="removeFilter('status', s)">close</mat-icon>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-inference-job-modal
+        [item]="selectedItem"
+        [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext"
+        (prev)="onPrevItem()"
+        (next)="onNextItem()"
+        (saved)="onSaveItem($event)">
+    </app-inference-job-modal>
+
+    <app-confirmation-modal
+        title="Eliminar Trabajo de Inferencia"
+        message="¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        confirmColor="#E53E3E"
+        (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
+    <!-- Cell Templates -->
+    <ng-template #speciesTpl let-item>
+        <div class="species-cell">
+            <span class="species-name">{{ item.species }}</span>
+            <span class="status-badge {{ item.status }}">{{ getStatusLabel(item.status) }}</span>
+        </div>
+    </ng-template>
+
+    <ng-template #scoreTpl let-item>
+        <span *ngIf="item.confidenceScore > 0" class="score-value">
+            {{ (item.confidenceScore * 100).toFixed(1) }}%
+        </span>
+        <span *ngIf="item.confidenceScore === 0" class="score-na">—</span>
+    </ng-template>
+
+    <ng-template #flaggedTpl let-item>
+        <mat-icon *ngIf="item.flaggedForReview" class="flag-icon flagged" title="Marcado para revisión">flag</mat-icon>
+        <mat-icon *ngIf="!item.flaggedForReview" class="flag-icon not-flagged" title="Sin marcar">outlined_flag</mat-icon>
+    </ng-template>
+</div>

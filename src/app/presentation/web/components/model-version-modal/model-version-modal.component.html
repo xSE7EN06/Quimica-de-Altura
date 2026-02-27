@@ -1,0 +1,149 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="model-version-modal">
+    <ng-template>
+        <div class="modal-container">
+
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <div class="modal-wrapper" [class.is-viewing]="isReadOnly">
+
+                <div class="modal-header">
+                    <div class="header-content">
+                        <div class="header-top">
+                            <span class="badge" [ngClass]="mode !== 'add' && item ? getTypeBadgeClass(item.type) : 'badge-purple'">
+                                <mat-icon class="header-icon">schema</mat-icon>
+                                Versión de Modelo
+                            </span>
+                            <button class="close-btn" (click)="close()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                        <h2>{{ mode === 'add' ? 'Nueva Versión de Modelo' : (item?.name || '') }}</h2>
+                        <p *ngIf="item && mode !== 'add'">
+                            <span class="badge" [ngClass]="getStatusBadgeClass(item.status)">{{ item.status }}</span>
+                            &nbsp;v{{ item.version }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="modal-scroll-content">
+                    <form [formGroup]="itemForm" class="item-form">
+
+                        <!-- Sección: Identificación -->
+                        <div class="form-section">
+                            <h3>Identificación</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Nombre del Modelo</label>
+                                    <input type="text" formControlName="name" [readOnly]="isReadOnly" placeholder="Ej. PlantID Vision">
+                                    <div class="field-error" *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Versión</label>
+                                    <input type="text" formControlName="version" [readOnly]="isReadOnly" placeholder="Ej. 3.2.1">
+                                    <div class="field-error" *ngIf="itemForm.get('version')?.invalid && itemForm.get('version')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Tipo</label>
+                                    <select formControlName="type" [disabled]="isReadOnly" *ngIf="!isReadOnly">
+                                        <option value="image-classifier">Image Classifier</option>
+                                        <option value="nlp">NLP</option>
+                                        <option value="inference-pipeline">Inference Pipeline</option>
+                                    </select>
+                                    <span *ngIf="isReadOnly" class="badge" [ngClass]="getTypeBadgeClass(itemForm.get('type')?.value)">
+                                        {{ getTypeLabel(itemForm.get('type')?.value) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección: Rendimiento -->
+                        <div class="form-section">
+                            <h3>Rendimiento</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Precisión (0–1)</label>
+                                    <input type="number" formControlName="accuracy" [readOnly]="isReadOnly" placeholder="Ej. 0.943" step="0.001" min="0" max="1">
+                                    <div class="field-error" *ngIf="itemForm.get('accuracy')?.invalid && itemForm.get('accuracy')?.touched">
+                                        <span>Valor entre 0 y 1.</span>
+                                    </div>
+                                    <span class="field-hint" *ngIf="itemForm.get('accuracy')?.value">
+                                        = {{ (itemForm.get('accuracy')?.value * 100).toFixed(1) }}%
+                                    </span>
+                                </div>
+                                <div class="form-field">
+                                    <label>Estado</label>
+                                    <select formControlName="status" [disabled]="isReadOnly" *ngIf="!isReadOnly">
+                                        <option value="active">Activo</option>
+                                        <option value="testing">En Prueba</option>
+                                        <option value="deprecated">Obsoleto</option>
+                                    </select>
+                                    <span *ngIf="isReadOnly" class="badge" [ngClass]="getStatusBadgeClass(itemForm.get('status')?.value)">
+                                        {{ itemForm.get('status')?.value }}
+                                    </span>
+                                </div>
+                                <div class="form-field">
+                                    <label>Fecha de Despliegue</label>
+                                    <input type="datetime-local" formControlName="deployedAt" [readOnly]="isReadOnly">
+                                    <div class="field-error" *ngIf="itemForm.get('deployedAt')?.invalid && itemForm.get('deployedAt')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección: Notas -->
+                        <div class="form-section">
+                            <h3>Notas</h3>
+                            <div class="form-field">
+                                <label>Notas Técnicas</label>
+                                <textarea formControlName="notes" [readOnly]="isReadOnly" rows="4"
+                                    placeholder="Descripción técnica del modelo, dataset, arquitectura..."></textarea>
+                            </div>
+                            <div class="form-field checkbox-field">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" formControlName="canRollback" [disabled]="isReadOnly">
+                                    <span>Permite rollback</span>
+                                </label>
+                                <p class="field-description">Indica si este modelo puede ser revertido a una versión anterior.</p>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="footer-actions">
+                        <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
+                            <mat-icon>edit</mat-icon> Editar
+                        </button>
+                        <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+                        <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
+                            <mat-icon>save</mat-icon> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
+
+<app-confirmation-modal
+    [isOpen]="showConfirmModal"
+    title="Confirmar Cambios"
+    message="¿Estás seguro de que deseas actualizar esta versión de modelo?"
+    icon="save"
+    confirmColor="var(--accent-color)"
+    confirmText="Guardar"
+    (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>
