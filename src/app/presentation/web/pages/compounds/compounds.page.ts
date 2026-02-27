@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 import { DataTableComponent, ColumnConfig } from '../../components/data-table/data-table.component';
 import { AddCompoundModalComponent } from '../../components/add-compound-modal/add-compound-modal.component';
 import { CompoundModalComponent } from '../../components/compound-modal/compound-modal.component';
@@ -17,6 +18,7 @@ import { flask, checkmarkCircle, trash, create, eye } from 'ionicons/icons';
     imports: [
         CommonModule,
         MatIconModule,
+        FormsModule,
         DataTableComponent,
         AddCompoundModalComponent,
         CompoundModalComponent,
@@ -27,13 +29,21 @@ import { flask, checkmarkCircle, trash, create, eye } from 'ionicons/icons';
 })
 export class CompoundsPage implements OnInit {
     compounds: ChemicalCompound[] = [];
+    private originalCompounds: ChemicalCompound[] = [];
     columns: ColumnConfig[] = [];
+    activeFilters = {
+        property: [] as string[]
+    };
+    selectedProperty = '';
+    searchTerm = '';
     tableLoading = true;
 
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('formulaTpl', { static: true }) formulaTpl!: TemplateRef<any>;
+    @ViewChild('propertiesTpl', { static: true }) propertiesTpl!: TemplateRef<any>;
     @ViewChild('actionsTpl', { static: true }) actionsTpl!: TemplateRef<any>;
 
+    @ViewChild(DataTableComponent) dataTable!: DataTableComponent;
     @ViewChild(AddCompoundModalComponent) addModal!: AddCompoundModalComponent;
     @ViewChild(CompoundModalComponent) compoundModal!: CompoundModalComponent;
     @ViewChild(ConfirmationModalComponent) confirmModal!: ConfirmationModalComponent;
@@ -58,6 +68,7 @@ export class CompoundsPage implements OnInit {
         this.columns = [
             { key: 'name', header: 'Compuesto', cellTemplate: this.nameTpl },
             { key: 'molecularFormula', header: 'Fórmula', cellTemplate: this.formulaTpl },
+            { key: 'properties', header: 'Propiedades', cellTemplate: this.propertiesTpl },
             { key: 'molecularWeight', header: 'Peso' },
             { key: 'pubchemCid', header: 'PubChem CID' }
         ];
@@ -66,12 +77,67 @@ export class CompoundsPage implements OnInit {
     private loadCompounds() {
         this.tableLoading = true;
         this.compoundRepository.getCompounds().subscribe(data => {
-            this.compounds = data;
+            this.originalCompounds = data;
+            this.applyFilters();
             setTimeout(() => {
                 this.tableLoading = false;
                 this.cdr.detectChanges();
             }, 2000);
         });
+    }
+
+    private applyFilters() {
+        let filtered = [...this.originalCompounds];
+
+        if (this.activeFilters.property.length > 0) {
+            filtered = filtered.filter(c =>
+                this.activeFilters.property.every(prop => (c.properties ?? []).includes(prop))
+            );
+        }
+
+        this.compounds = filtered;
+    }
+
+    onFilterChange(type: string, value: any) {
+        if (type === 'property') {
+            if (value && value !== '' && !this.activeFilters.property.includes(value)) {
+                this.activeFilters.property.push(value);
+                this.applyFilters();
+            }
+            this.selectedProperty = '';
+            this.cdr.detectChanges();
+        }
+    }
+
+    getAvailableProperties(): string[] {
+        const allProperties = ['Antioxidante', 'Antiinflamatorio', 'Antiséptico', 'Analgésico', 'Sedante', 'Estimulante', 'Antiespasmódico'];
+        return allProperties.filter(prop => !this.activeFilters.property.includes(prop));
+    }
+
+    removePropertyFilter(property: string) {
+        const index = this.activeFilters.property.indexOf(property);
+        if (index > -1) {
+            this.activeFilters.property.splice(index, 1);
+            this.applyFilters();
+        }
+    }
+
+    onPropertyTagClick(event: Event, property: string) {
+        event.stopPropagation();
+        const index = this.activeFilters.property.indexOf(property);
+        if (index > -1) {
+            this.activeFilters.property.splice(index, 1);
+        } else {
+            this.activeFilters.property.push(property);
+        }
+        this.applyFilters();
+        if (this.dataTable) {
+            this.dataTable.openFilterMenu();
+        }
+    }
+
+    isPropertyFiltered(property: string): boolean {
+        return this.activeFilters.property.includes(property);
     }
 
     onSearch(query: string) {
@@ -163,7 +229,8 @@ export class CompoundsPage implements OnInit {
     }
 
     onResetFilters() {
-        this.loadCompounds();
+        this.activeFilters.property = [];
+        this.applyFilters();
     }
 
     private async showToast(message: string, icon: string, color: string = 'dark') {

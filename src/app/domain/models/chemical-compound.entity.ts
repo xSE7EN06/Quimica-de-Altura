@@ -9,4 +9,5 @@ export interface ChemicalCompound {
     inchi: string;
     inchiKey: string;
     description?: string; // Optional for compatibility
+    properties?: string[]; // Therapeutic or biological properties
 }

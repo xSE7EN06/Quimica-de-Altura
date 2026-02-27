@@ -33,6 +33,7 @@ export class UsersPage implements OnInit {
     activeFilters = {
         role: ''
     };
+    searchTerm = '';
     tableLoading = true;
 
     @ViewChild('userTpl', { static: true }) userTpl!: TemplateRef<any>;

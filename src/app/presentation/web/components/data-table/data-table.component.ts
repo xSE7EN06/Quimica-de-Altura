@@ -7,6 +7,7 @@ export interface ColumnConfig {
     key: string;
     header: string;
     cellTemplate?: TemplateRef<any>;
+    sortable?: boolean; // Defaults to true if not specified
 }
 
 import { FormsModule } from '@angular/forms';
@@ -57,11 +58,21 @@ export class DataTableComponent implements OnInit, OnChanges {
                 const valB = this.getNestedValue(b, this.sortColumn);
 
                 let comparison = 0;
-                if (typeof valA === 'string') {
-                    comparison = valA.localeCompare(valB);
-                } else {
+                
+                // Handle arrays (e.g., properties)
+                if (Array.isArray(valA) && Array.isArray(valB)) {
+                    const strA = valA.join(', ').toLowerCase();
+                    const strB = valB.join(', ').toLowerCase();
+                    comparison = strA.localeCompare(strB);
+                } else if (typeof valA === 'string' && typeof valB === 'string') {
+                    comparison = valA.toLowerCase().localeCompare(valB.toLowerCase());
+                } else if (valA != null && valB != null) {
                     if (valA < valB) comparison = -1;
                     if (valA > valB) comparison = 1;
+                } else if (valA == null && valB != null) {
+                    comparison = -1;
+                } else if (valA != null && valB == null) {
+                    comparison = 1;
                 }
 
                 return this.sortDirection === 'asc' ? comparison : -comparison;
@@ -181,8 +192,27 @@ export class DataTableComponent implements OnInit, OnChanges {
     @Output() resetFilters = new EventEmitter<void>();
 
     onFilter() {
+        const wasOpen = this.showFilterMenu;
         this.showFilterMenu = !this.showFilterMenu;
+        
+        // If closing the sidebar, reset filters
+        if (wasOpen && !this.showFilterMenu) {
+            this.onResetFilters();
+        }
+        
         this.filterClick.emit();
+    }
+
+    openFilterMenu() {
+        this.showFilterMenu = true;
+    }
+
+    closeFilterMenu(resetFilters: boolean = true) {
+        this.showFilterMenu = false;
+        // Reset filters when closing the sidebar (unless explicitly told not to)
+        if (resetFilters) {
+            this.onResetFilters();
+        }
     }
 
     onSortChange(column: string) {
@@ -193,6 +223,37 @@ export class DataTableComponent implements OnInit, OnChanges {
     onDirectionChange(direction: 'asc' | 'desc') {
         this.sortDirection = direction;
         this.currentPage = 1;
+    }
+
+    onColumnHeaderClick(column: ColumnConfig) {
+        // Skip if column is not sortable (defaults to true if not specified)
+        if (column.sortable === false) {
+            return;
+        }
+
+        // If clicking the same column, toggle direction; otherwise, set new column and default to asc
+        if (this.sortColumn === column.key) {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.sortColumn = column.key;
+            this.sortDirection = 'asc';
+        }
+        this.currentPage = 1;
+    }
+
+    isColumnSorted(columnKey: string): boolean {
+        return this.sortColumn === columnKey;
+    }
+
+    getSortIcon(columnKey: string): string {
+        if (this.sortColumn !== columnKey) {
+            return 'unfold_more'; // Neutral icon when not sorted
+        }
+        return this.sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
+    }
+
+    isColumnSortable(column: ColumnConfig): boolean {
+        return column.sortable !== false; // Default to true
     }
 
     onResetFilters() {

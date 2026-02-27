@@ -57,16 +57,39 @@
 
     <!-- Data Table -->
     <app-data-table [data]="diseases" [columns]="columns" (rowClick)="onViewDisease($event)"
-        (editAction)="onEditDisease($event)" (deleteAction)="onBulkDelete($event)">
+        (editAction)="onEditDisease($event)" (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
 
         <div search-bar class="search-bar">
             <mat-icon class="search-icon">search</mat-icon>
-            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar..." />
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Buscar..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
         </div>
 
         <button add-button class="btn-primary" (click)="onAddDisease()">
             <mat-icon>add</mat-icon> Agregar Enfermedad
         </button>
+
+        <!-- Dynamic Filter Menu -->
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Categoría</label>
+                <select [ngModel]="activeFilters.category" (ngModelChange)="onFilterChange('category', $event)">
+                    <option value="">Todas las categorías</option>
+                    <option value="Digestivas">Digestivas</option>
+                    <option value="Respiratorias">Respiratorias</option>
+                    <option value="Nerviosas">Nerviosas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Gravedad</label>
+                <select [ngModel]="activeFilters.severity" (ngModelChange)="onFilterChange('severity', $event)">
+                    <option value="">Todas las gravedades</option>
+                    <option value="Leve">Leve</option>
+                    <option value="Moderada">Moderada</option>
+                    <option value="Grave">Grave</option>
+                </select>
+            </div>
+        </div>
     </app-data-table>
 
     <!-- Templates -->
@@ -74,8 +97,4 @@
         <span class="text-primary">{{ item.name }}</span>
     </ng-template>
 
-    <ng-template #viewFileTpl let-item>
-        <a href="#" class="view-link" (click)="$event.stopPropagation()">View file <mat-icon
-                style="font-size: 14px; width:14px; height:14px; margin-left: 2px;">check_circle_outline</mat-icon></a>
-    </ng-template>
 </div>
