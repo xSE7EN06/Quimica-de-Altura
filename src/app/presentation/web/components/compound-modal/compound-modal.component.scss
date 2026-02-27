@@ -1,16 +1,30 @@
 .compound-modal {
     --height: 90%;
-    --width: 800px;
-    --border-radius: 28px;
+    --width: 960px;
+    --border-radius: 0;
+    --background: transparent;
+    --box-shadow: none;
+}
+
+.modal-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-wrapper {
     height: 100%;
+    width: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     background: var(--bg-primary);
-    position: relative;
+    border-radius: 28px;
     overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
 
     &.is-viewing {
         .modal-scroll-content {
@@ -31,16 +45,17 @@
     }
 }
 
-/* Navigation Arrows */
+/* Navigation Arrows — float in the 80px gap on each side of the card */
 .nav-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
     color: var(--accent-color);
     display: flex;
     align-items: center;
@@ -48,13 +63,13 @@
     cursor: pointer;
     z-index: 1000;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 
     &:hover {
         background: var(--accent-color);
         color: white;
-        transform: translateY(-50%) scale(1.1);
-        box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
+        transform: translateY(-50%) scale(1.12);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
 
     &:active {
@@ -62,11 +77,11 @@
     }
 
     &.prev {
-        left: 15px;
+        left: 14px;
     }
 
     &.next {
-        right: 15px;
+        right: 14px;
     }
 
     mat-icon {

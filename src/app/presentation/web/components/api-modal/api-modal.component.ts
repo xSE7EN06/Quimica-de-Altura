@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { IonModal, IonToggle } from '@ionic/angular/standalone';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
@@ -32,6 +32,8 @@ export class ApiModalComponent {
     @Output() prev = new EventEmitter<void>();
     @Output() next = new EventEmitter<void>();
 
+    @ViewChild('apiForm') apiForm!: NgForm;
+
     showConfirmModal = false;
 
     constructor() { }
@@ -54,12 +56,14 @@ export class ApiModalComponent {
     }
 
     onSave() {
-        if (this.api.name && this.api.base_url) {
-            if (this.mode === 'edit') {
-                this.showConfirmModal = true;
-            } else {
-                this.executeSave();
-            }
+        if (this.apiForm) {
+            this.apiForm.control.markAllAsTouched();
+            if (!this.apiForm.valid) return;
+        }
+        if (this.mode === 'edit') {
+            this.showConfirmModal = true;
+        } else {
+            this.executeSave();
         }
     }
 

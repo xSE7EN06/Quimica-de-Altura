@@ -45,11 +45,22 @@
                                 <label>Nombre de Usuario</label>
                                 <input type="text" formControlName="userName" [readOnly]="isReadOnly"
                                     placeholder="Ej. jperez">
+                                <div class="field-error" *ngIf="userForm.get('userName')?.invalid && userForm.get('userName')?.touched">
+                                    <span *ngIf="userForm.get('userName')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('userName')?.errors?.['minlength']">Mínimo {{ userForm.get('userName')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('userName')?.errors?.['maxlength']">Máximo {{ userForm.get('userName')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('userName')?.errors?.['pattern']">Solo se permiten letras, números, puntos y guiones bajos.</span>
+                                </div>
                             </div>
                             <div class="form-field">
                                 <label>Correo Institucional</label>
                                 <input type="email" formControlName="email" [readOnly]="isReadOnly"
                                     placeholder="correo@ejemplo.com">
+                                <div class="field-error" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                                    <span *ngIf="userForm.get('email')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('email')?.errors?.['email']">Formato de correo inválido.</span>
+                                    <span *ngIf="userForm.get('email')?.errors?.['maxlength']">Máximo {{ userForm.get('email')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
                             </div>
                         </div>
 
@@ -69,6 +80,12 @@
                             <div class="form-field" *ngIf="mode === 'add'">
                                 <label>Contraseña Temporal</label>
                                 <input type="password" formControlName="password" placeholder="********">
+                                <div class="field-error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                                    <span *ngIf="userForm.get('password')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('password')?.errors?.['minlength']">Mínimo {{ userForm.get('password')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('password')?.errors?.['maxlength']">Máximo {{ userForm.get('password')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('password')?.errors?.['pattern']">Debe contener al menos una mayúscula y un número.</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -84,11 +101,21 @@
                                 <label>Nombre(s)</label>
                                 <input type="text" formControlName="firstName" [readOnly]="isReadOnly"
                                     placeholder="Juan">
+                                <div class="field-error" *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+                                    <span *ngIf="userForm.get('firstName')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('firstName')?.errors?.['minlength']">Mínimo {{ userForm.get('firstName')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('firstName')?.errors?.['maxlength']">Máximo {{ userForm.get('firstName')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
                             </div>
                             <div class="form-field">
                                 <label>Apellidos</label>
                                 <input type="text" formControlName="lastName" [readOnly]="isReadOnly"
                                     placeholder="Pérez">
+                                <div class="field-error" *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+                                    <span *ngIf="userForm.get('lastName')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('lastName')?.errors?.['minlength']">Mínimo {{ userForm.get('lastName')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('lastName')?.errors?.['maxlength']">Máximo {{ userForm.get('lastName')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
                             </div>
                         </div>
 
@@ -96,18 +123,113 @@
                             <div class="form-field">
                                 <label>Fecha de Nacimiento</label>
                                 <input type="date" formControlName="birthdate" [readOnly]="isReadOnly">
+                                <div class="field-error" *ngIf="userForm.get('birthdate')?.invalid && userForm.get('birthdate')?.touched">
+                                    <span *ngIf="userForm.get('birthdate')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('birthdate')?.errors?.['minAge']">Debes tener al menos {{ userForm.get('birthdate')?.errors?.['minAge'].requiredAge }} años.</span>
+                                </div>
                             </div>
                             <div class="form-field">
                                 <label>Nacionalidad</label>
                                 <input type="text" formControlName="nationality" [readOnly]="isReadOnly"
                                     placeholder="Mexicana">
+                                <div class="field-error" *ngIf="userForm.get('nationality')?.invalid && userForm.get('nationality')?.touched">
+                                    <span *ngIf="userForm.get('nationality')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('nationality')?.errors?.['minlength']">Mínimo {{ userForm.get('nationality')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('nationality')?.errors?.['maxlength']">Máximo {{ userForm.get('nationality')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" formGroupName="address">
+                        <div class="section-header">
+                            <mat-icon>home</mat-icon>
+                            <h3>Dirección de Domicilio</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Calle</label>
+                                <input type="text" formControlName="street" [readOnly]="isReadOnly"
+                                    placeholder="Av. Insurgentes">
+                                <div class="field-error" *ngIf="userForm.get('address.street')?.invalid && userForm.get('address.street')?.touched">
+                                    <span *ngIf="userForm.get('address.street')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.street')?.errors?.['minlength']">Mínimo {{ userForm.get('address.street')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('address.street')?.errors?.['maxlength']">Máximo {{ userForm.get('address.street')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <label>Número Exterior</label>
+                                <input type="text" formControlName="externalNumber" [readOnly]="isReadOnly"
+                                    placeholder="123">
+                                <div class="field-error" *ngIf="userForm.get('address.externalNumber')?.invalid && userForm.get('address.externalNumber')?.touched">
+                                    <span *ngIf="userForm.get('address.externalNumber')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.externalNumber')?.errors?.['maxlength']">Máximo {{ userForm.get('address.externalNumber')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-field" formGroupName="address">
-                            <label>Dirección de Domicilio</label>
-                            <textarea formControlName="street" [readOnly]="isReadOnly" rows="3"
-                                placeholder="Calle, Número, Ciudad, Estado"></textarea>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Número Interior (opcional)</label>
+                                <input type="text" formControlName="internalNumber" [readOnly]="isReadOnly"
+                                    placeholder="Depto. 4B">
+                            </div>
+                            <div class="form-field">
+                                <label>Colonia</label>
+                                <input type="text" formControlName="colony" [readOnly]="isReadOnly"
+                                    placeholder="Del Valle">
+                                <div class="field-error" *ngIf="userForm.get('address.colony')?.invalid && userForm.get('address.colony')?.touched">
+                                    <span *ngIf="userForm.get('address.colony')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.colony')?.errors?.['minlength']">Mínimo {{ userForm.get('address.colony')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('address.colony')?.errors?.['maxlength']">Máximo {{ userForm.get('address.colony')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Ciudad</label>
+                                <input type="text" formControlName="city" [readOnly]="isReadOnly"
+                                    placeholder="Ciudad de México">
+                                <div class="field-error" *ngIf="userForm.get('address.city')?.invalid && userForm.get('address.city')?.touched">
+                                    <span *ngIf="userForm.get('address.city')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.city')?.errors?.['minlength']">Mínimo {{ userForm.get('address.city')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('address.city')?.errors?.['maxlength']">Máximo {{ userForm.get('address.city')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <label>Estado / Provincia</label>
+                                <input type="text" formControlName="state" [readOnly]="isReadOnly"
+                                    placeholder="CDMX">
+                                <div class="field-error" *ngIf="userForm.get('address.state')?.invalid && userForm.get('address.state')?.touched">
+                                    <span *ngIf="userForm.get('address.state')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.state')?.errors?.['minlength']">Mínimo {{ userForm.get('address.state')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('address.state')?.errors?.['maxlength']">Máximo {{ userForm.get('address.state')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Código Postal</label>
+                                <input type="text" formControlName="zipCode" [readOnly]="isReadOnly"
+                                    placeholder="06600">
+                                <div class="field-error" *ngIf="userForm.get('address.zipCode')?.invalid && userForm.get('address.zipCode')?.touched">
+                                    <span *ngIf="userForm.get('address.zipCode')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.zipCode')?.errors?.['pattern']">Debe contener entre 4 y 10 dígitos.</span>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <label>País</label>
+                                <input type="text" formControlName="country" [readOnly]="isReadOnly"
+                                    placeholder="México">
+                                <div class="field-error" *ngIf="userForm.get('address.country')?.invalid && userForm.get('address.country')?.touched">
+                                    <span *ngIf="userForm.get('address.country')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="userForm.get('address.country')?.errors?.['minlength']">Mínimo {{ userForm.get('address.country')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="userForm.get('address.country')?.errors?.['maxlength']">Máximo {{ userForm.get('address.country')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -124,7 +246,7 @@
                         Cancelar
                     </button>
 
-                    <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()" [disabled]="userForm.invalid">
+                    <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
                         <mat-icon>{{ mode === 'add' ? 'person_add' : 'check_circle' }}</mat-icon>
                         {{ mode === 'add' ? 'Crear Usuario' : 'Confirmar Cambios' }}
                     </button>

@@ -1,7 +1,7 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="compound-modal">
     <ng-template>
-        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
-            <!-- Navigation Arrows -->
+        <div class="modal-container">
+            <!-- Navigation Arrows — outside the card -->
             <button class="nav-arrow prev" *ngIf="hasPrevious" (click)="prev.emit()" title="Anterior">
                 <mat-icon>chevron_left</mat-icon>
             </button>
@@ -9,6 +9,7 @@
                 <mat-icon>chevron_right</mat-icon>
             </button>
 
+        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
             <!-- Header Banner -->
             <div class="modal-banner">
                 <div class="banner-overlay">
@@ -42,10 +43,20 @@
                             <div class="form-field">
                                 <label>Nombre del Compuesto</label>
                                 <input type="text" formControlName="name" [readOnly]="isReadOnly">
+                                <div class="field-error" *ngIf="compoundForm.get('name')?.invalid && compoundForm.get('name')?.touched">
+                                    <span *ngIf="compoundForm.get('name')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="compoundForm.get('name')?.errors?.['minlength']">Mínimo {{ compoundForm.get('name')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="compoundForm.get('name')?.errors?.['maxlength']">Máximo {{ compoundForm.get('name')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
                             </div>
                             <div class="form-field">
                                 <label>Nombre IUPAC</label>
                                 <input type="text" formControlName="iupacName" [readOnly]="isReadOnly">
+                                <div class="field-error" *ngIf="compoundForm.get('iupacName')?.invalid && compoundForm.get('iupacName')?.touched">
+                                    <span *ngIf="compoundForm.get('iupacName')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="compoundForm.get('iupacName')?.errors?.['minlength']">Mínimo {{ compoundForm.get('iupacName')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="compoundForm.get('iupacName')?.errors?.['maxlength']">Máximo {{ compoundForm.get('iupacName')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -59,10 +70,29 @@
                             <div class="form-field">
                                 <label>Fórmula Molecular</label>
                                 <input type="text" formControlName="molecularFormula" [readOnly]="isReadOnly">
+                                <div class="field-error" *ngIf="compoundForm.get('molecularFormula')?.invalid && compoundForm.get('molecularFormula')?.touched">
+                                    <span *ngIf="compoundForm.get('molecularFormula')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="compoundForm.get('molecularFormula')?.errors?.['maxlength']">Máximo {{ compoundForm.get('molecularFormula')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                                    <span *ngIf="compoundForm.get('molecularFormula')?.errors?.['pattern']">Solo se permiten letras, números y símbolos químicos válidos.</span>
+                                </div>
                             </div>
                             <div class="form-field">
                                 <label>Peso Molecular</label>
                                 <input type="text" formControlName="molecularWeight" [readOnly]="isReadOnly">
+                                <div class="field-error" *ngIf="compoundForm.get('molecularWeight')?.invalid && compoundForm.get('molecularWeight')?.touched">
+                                    <span *ngIf="compoundForm.get('molecularWeight')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="compoundForm.get('molecularWeight')?.errors?.['pattern']">Formato incorrecto. Ej: 154.21 o 154.21 g/mol</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>PubChem CID</label>
+                                <input type="text" formControlName="pubchemCid" [readOnly]="isReadOnly">
+                                <div class="field-error" *ngIf="compoundForm.get('pubchemCid')?.invalid && compoundForm.get('pubchemCid')?.touched">
+                                    <span *ngIf="compoundForm.get('pubchemCid')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    <span *ngIf="compoundForm.get('pubchemCid')?.errors?.['pattern']">Solo se permiten dígitos.</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,14 +105,29 @@
                         <div class="form-field full-width">
                             <label>SMILES</label>
                             <input type="text" formControlName="smiles" [readOnly]="isReadOnly">
+                            <div class="field-error" *ngIf="compoundForm.get('smiles')?.invalid && compoundForm.get('smiles')?.touched">
+                                <span *ngIf="compoundForm.get('smiles')?.errors?.['required']">Este campo es obligatorio.</span>
+                                <span *ngIf="compoundForm.get('smiles')?.errors?.['minlength']">Mínimo {{ compoundForm.get('smiles')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                <span *ngIf="compoundForm.get('smiles')?.errors?.['maxlength']">Máximo {{ compoundForm.get('smiles')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                            </div>
                         </div>
                         <div class="form-field full-width">
                             <label>InChI</label>
                             <textarea formControlName="inchi" [readOnly]="isReadOnly" rows="2"></textarea>
+                            <div class="field-error" *ngIf="compoundForm.get('inchi')?.invalid && compoundForm.get('inchi')?.touched">
+                                <span *ngIf="compoundForm.get('inchi')?.errors?.['required']">Este campo es obligatorio.</span>
+                                <span *ngIf="compoundForm.get('inchi')?.errors?.['minlength']">Mínimo {{ compoundForm.get('inchi')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                <span *ngIf="compoundForm.get('inchi')?.errors?.['maxlength']">Máximo {{ compoundForm.get('inchi')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                            </div>
                         </div>
                         <div class="form-field full-width">
                             <label>InChI Key</label>
                             <input type="text" formControlName="inchiKey" [readOnly]="isReadOnly">
+                            <div class="field-error" *ngIf="compoundForm.get('inchiKey')?.invalid && compoundForm.get('inchiKey')?.touched">
+                                <span *ngIf="compoundForm.get('inchiKey')?.errors?.['required']">Este campo es obligatorio.</span>
+                                <span *ngIf="compoundForm.get('inchiKey')?.errors?.['minlength'] || compoundForm.get('inchiKey')?.errors?.['maxlength']">Debe tener exactamente 27 caracteres.</span>
+                                <span *ngIf="compoundForm.get('inchiKey')?.errors?.['pattern']">Formato incorrecto. Ej: BQJCRHHNABKAKU-KBQPJGBKSA-N</span>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -99,11 +144,12 @@
                         Cancelar
                     </button>
 
-                    <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()" [disabled]="compoundForm.invalid">
+                    <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
                         <mat-icon>check_circle</mat-icon> Guardar Cambios
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     </ng-template>
 </ion-modal>
