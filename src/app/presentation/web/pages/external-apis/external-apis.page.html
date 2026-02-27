@@ -11,7 +11,8 @@
 
         <div search-bar class="search-bar">
             <mat-icon class="search-icon">search</mat-icon>
-            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar servicios..." />
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Buscar servicios..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
         </div>
 
         <button add-button class="btn-primary" (click)="onAddApi()">

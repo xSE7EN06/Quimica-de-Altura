@@ -33,13 +33,16 @@ export class PlantsPage implements OnInit {
     private originalPlants: Plant[] = [];
     columns: ColumnConfig[] = [];
     activeFilters = {
-        property: ''
+        property: [] as string[]
     };
+    selectedProperty = '';
+    searchTerm = '';
     tableLoading = true;
 
     @ViewChild('nameTpl', { static: true }) nameTpl!: TemplateRef<any>;
     @ViewChild('propertiesTpl', { static: true }) propertiesTpl!: TemplateRef<any>;
     @ViewChild('actionsTpl', { static: true }) actionsTpl!: TemplateRef<any>;
+    @ViewChild(DataTableComponent) dataTable!: DataTableComponent;
     @ViewChild(AddPlantModalComponent) addPlantModal!: AddPlantModalComponent;
     @ViewChild(PlantModalComponent) plantModal!: PlantModalComponent;
     @ViewChild(ConfirmationModalComponent) confirmModal!: ConfirmationModalComponent;
@@ -83,8 +86,11 @@ export class PlantsPage implements OnInit {
     private applyFilters() {
         let filtered = [...this.originalPlants];
 
-        if (this.activeFilters.property) {
-            filtered = filtered.filter(p => p.properties.includes(this.activeFilters.property));
+        if (this.activeFilters.property.length > 0) {
+            // Filter plants that have ALL of the selected properties
+            filtered = filtered.filter(p => 
+                this.activeFilters.property.every(prop => p.properties.includes(prop))
+            );
         }
 
         this.plants = filtered;
@@ -195,12 +201,53 @@ export class PlantsPage implements OnInit {
     }
 
     onFilterChange(type: string, value: any) {
-        this.activeFilters.property = value;
+        if (type === 'property') {
+            // Handle single selection from dropdown - add to array if not already present
+            if (value && value !== '' && !this.activeFilters.property.includes(value)) {
+                this.activeFilters.property.push(value);
+                this.applyFilters();
+            }
+            // Reset dropdown selection after adding
+            this.selectedProperty = '';
+            this.cdr.detectChanges();
+        }
+    }
+
+    getAvailableProperties(): string[] {
+        const allProperties = ['Antioxidante', 'Antiinflamatorio', 'Antiséptico', 'Sedante'];
+        return allProperties.filter(prop => !this.activeFilters.property.includes(prop));
+    }
+
+    onPropertyTagClick(event: Event, property: string) {
+        event.stopPropagation(); // Prevent row click
+        // Toggle filter: if property is in array, remove it; otherwise, add it
+        const index = this.activeFilters.property.indexOf(property);
+        if (index > -1) {
+            this.activeFilters.property.splice(index, 1);
+        } else {
+            this.activeFilters.property.push(property);
+        }
         this.applyFilters();
+        // Open the filter sidebar to show active filters
+        if (this.dataTable) {
+            this.dataTable.openFilterMenu();
+        }
+    }
+
+    removePropertyFilter(property: string) {
+        const index = this.activeFilters.property.indexOf(property);
+        if (index > -1) {
+            this.activeFilters.property.splice(index, 1);
+            this.applyFilters();
+        }
+    }
+
+    isPropertyFiltered(property: string): boolean {
+        return this.activeFilters.property.includes(property);
     }
 
     onResetFilters() {
-        this.activeFilters.property = '';
+        this.activeFilters.property = [];
         this.applyFilters();
     }
 

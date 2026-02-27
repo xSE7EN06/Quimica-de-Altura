@@ -13,7 +13,8 @@
 
         <div search-bar class="search-bar">
             <mat-icon class="search-icon">search</mat-icon>
-            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)" placeholder="Buscar plantas..." />
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Buscar plantas..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
         </div>
 
         <button add-button class="btn-primary" (click)="onAddPlant()">
@@ -24,13 +25,21 @@
         <div filter-menu class="filter-controls-vertical">
             <div class="filter-group">
                 <label>Propiedades</label>
-                <select [ngModel]="activeFilters.property" (ngModelChange)="onFilterChange('property', $event)">
-                    <option value="">Todas las propiedades</option>
-                    <option value="Antioxidante">Antioxidante</option>
-                    <option value="Antiinflamatorio">Antiinflamatorio</option>
-                    <option value="Antiséptico">Antiséptico</option>
-                    <option value="Sedante">Sedante</option>
+                <select [ngModel]="selectedProperty" (ngModelChange)="onFilterChange('property', $event)">
+                    <option value="">Agregar propiedad...</option>
+                    <option *ngFor="let prop of getAvailableProperties()" [value]="prop">{{ prop }}</option>
                 </select>
+                
+                <!-- Active Filters Display -->
+                <div class="active-filters" *ngIf="activeFilters.property.length > 0">
+                    <div class="filter-label">Filtros activos:</div>
+                    <div class="filter-chips">
+                        <span *ngFor="let prop of activeFilters.property" class="filter-chip">
+                            {{ prop }}
+                            <mat-icon (click)="removePropertyFilter(prop)">close</mat-icon>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </app-data-table>
@@ -63,7 +72,10 @@
 
     <ng-template #propertiesTpl let-item>
         <div class="properties-container">
-            <span *ngFor="let prop of item.properties" class="property-tag">
+            <span *ngFor="let prop of item.properties" 
+                  class="property-tag" 
+                  [class.active]="isPropertyFiltered(prop)"
+                  (click)="onPropertyTagClick($event, prop)">
                 {{ prop }}
             </span>
         </div>
