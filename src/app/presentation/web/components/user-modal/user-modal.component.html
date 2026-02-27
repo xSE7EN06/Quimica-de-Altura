@@ -1,13 +1,15 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="user-modal">
     <ng-template>
-        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
-            <!-- Navigation Arrows -->
+        <div class="modal-container">
+            <!-- Navigation Arrows (Positioned outside modal card) -->
             <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
                 <mat-icon>chevron_left</mat-icon>
             </button>
             <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
                 <mat-icon>chevron_right</mat-icon>
             </button>
+            
+            <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
 
             <!-- Premium Header (Banner Style) -->
             <div class="modal-banner">
@@ -252,6 +254,7 @@
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     </ng-template>
 </ion-modal>
