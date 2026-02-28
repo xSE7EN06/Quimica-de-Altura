@@ -57,10 +57,18 @@ export class LoginPage implements OnInit {
     }
 
     async onSubmit() {
-        if (this.segmentValue === 'login' && this.loginForm.valid) {
-            await this.handleLogin();
-        } else if (this.segmentValue === 'register' && this.registerForm.valid) {
-            await this.handleRegister();
+        if (this.segmentValue === 'login') {
+            if (this.loginForm.valid) {
+                await this.handleLogin();
+            } else {
+                await this.showAlert('Datos incompletos', 'Asegúrate de ingresar un correo electrónico válido y una contraseña de al menos 6 caracteres sin espacios.');
+            }
+        } else if (this.segmentValue === 'register') {
+            if (this.registerForm.valid) {
+                await this.handleRegister();
+            } else {
+                await this.showAlert('Datos incompletos', 'Por favor, llena todos los campos correctamente. Verifica que las contraseñas coincidan.');
+            }
         }
     }
 

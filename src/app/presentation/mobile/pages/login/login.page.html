@@ -9,11 +9,20 @@
     <div class="logo-container" [class.shrink]="segmentValue === 'register'">
         <!-- Using a generic plant icon if specific image not available yet, styled to match the mock -->
         <div class="logo-placeholder">
-            <img src="/assets/shared/images/logo.png" alt="Logo" />
+            <img src="yolotl-v2.png" alt="Logo" />
         </div>
     </div>
 
     <div class="form-container" [class.expand]="segmentValue === 'register'">
+        <div class="welcome-text fade-in" *ngIf="segmentValue === 'login'">
+            <h2>¡Bienvenido(a)!</h2>
+            <p>Ingresa tus datos para continuar</p>
+        </div>
+        <div class="welcome-text fade-in" *ngIf="segmentValue === 'register'">
+            <h2>¡Únete a nosotros!</h2>
+            <p>Crea tu cuenta ahora</p>
+        </div>
+
         <div class="segment-container">
             <ion-segment [value]="segmentValue" (ionChange)="onSegmentChanged($event)" mode="ios">
                 <ion-segment-button value="login">
@@ -39,8 +48,7 @@
             </div>
 
             <div class="button-container">
-                <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn"
-                    [disabled]="!loginForm.valid" mode="ios">
+                <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn" mode="ios">
                     Iniciar Sesión
                 </ion-button>
             </div>
@@ -78,7 +86,7 @@
 
                 <div class="button-container">
                     <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn"
-                        [disabled]="!registerForm.valid" mode="ios">
+                        mode="ios">
                         Registrarse
                     </ion-button>
                 </div>

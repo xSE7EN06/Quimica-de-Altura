@@ -30,22 +30,25 @@ ion-header {
 
     &.shrink {
         height: 15%; // Shrink when registering
-        
+
         .logo-placeholder {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
+            animation: none;
         }
     }
 
     .logo-placeholder {
-        width: 330px;
-        height: 350px;
+        width: 220px;
+        height: 220px;
         transition: all 0.5s ease-in-out;
+        animation: floatImage 4s ease-in-out infinite;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            image-rendering: crisp-edges;
         }
     }
 }
@@ -57,10 +60,11 @@ ion-header {
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
     padding: 30px;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
-    transition: all 0.5s ease-in-out;
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    animation: slideUpFade 0.6s ease-out;
 
     &.expand {
         height: 85%; // Expand when registering
@@ -90,24 +94,42 @@ ion-header {
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-bottom: 40px;
+    gap: 12px;
+    margin-bottom: 30px;
 }
 
 .custom-input {
-    --background: #e8eaf0;
-    /* Slightly darker gray for better visibility */
-    --border-radius: 12px;
+    --background: #f4f5f8;
+    --border-radius: 16px;
     --padding-start: 15px;
-    --min-height: 55px;
-    border-radius: 12px;
-    border: 1px solid #d1d5db;
+    --min-height: 48px;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+
+    &.item-has-focus {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transform: translateY(-1px);
+    }
 
     ion-input {
-        --placeholder-color: #777;
+        --placeholder-color: #8c8c8c;
         --color: #333;
+        font-size: 15px;
         color: #333;
-        /* Fallback */
+        font-weight: 400;
+    }
+
+    ion-icon {
+        font-size: 20px;
+        margin-right: 8px;
+        transition: color 0.3s ease;
+    }
+
+    &.item-has-focus ion-icon {
+        color: var(--ion-color-primary);
     }
 }
 
@@ -118,6 +140,77 @@ ion-header {
         height: 50px;
         font-size: 16px;
         font-weight: 600;
-        --box-shadow: 0 4px 10px rgba(93, 117, 84, 0.3);
+        --box-shadow: 0 6px 15px rgba(93, 117, 84, 0.35);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+
+        &:active {
+            transform: scale(0.97);
+            --box-shadow: 0 2px 8px rgba(93, 117, 84, 0.25);
+        }
+
+        &[disabled],
+        &.button-disabled {
+            --opacity: 0.6;
+            --box-shadow: none;
+            pointer-events: none;
+        }
+    }
+}
+
+.welcome-text {
+    text-align: center;
+    margin-bottom: 20px;
+
+    h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #5E794B;
+        margin: 0 0 5px 0;
+    }
+
+    p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes floatImage {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
     }
 }
