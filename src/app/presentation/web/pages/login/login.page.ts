@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -24,6 +26,13 @@ import { Router } from '@angular/router';
 export class WebLoginPage {
   private loadingService = inject(LoadingService);
   private router = inject(Router);
+  showPassword = false;
+  rememberMe = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   goToDashboard() {
     // 1. Mostrar loader
     this.loadingService.show();

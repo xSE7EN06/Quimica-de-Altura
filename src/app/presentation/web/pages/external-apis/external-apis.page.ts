@@ -32,6 +32,7 @@ export class ExternalApisPage implements OnInit {
     activeFilters = {
         authType: ''
     };
+    searchTerm = '';
     tableLoading = true;
 
     // Modal state

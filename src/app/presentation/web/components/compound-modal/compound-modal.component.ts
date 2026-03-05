@@ -45,14 +45,14 @@ export class CompoundModalComponent implements OnInit, OnChanges {
     private initForm() {
         this.compoundForm = this.fb.group({
             id: [''],
-            name: ['', Validators.required],
-            iupacName: ['', Validators.required],
-            molecularFormula: ['', Validators.required],
-            molecularWeight: ['', Validators.required],
-            pubchemCid: ['', Validators.required],
-            smiles: ['', Validators.required],
-            inchi: ['', Validators.required],
-            inchiKey: ['', Validators.required]
+            name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]],
+            iupacName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(400)]],
+            molecularFormula: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(/^[A-Za-z0-9().+\-\[\]]+$/)]],
+            molecularWeight: ['', [Validators.required, Validators.pattern(/^\d+\.?\d*\s*(g\/mol)?$/)]],
+            pubchemCid: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+            smiles: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(1000)]],
+            inchi: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]],
+            inchiKey: ['', [Validators.required, Validators.minLength(27), Validators.maxLength(27), Validators.pattern(/^[A-Z]{14}-[A-Z]{10}-[A-Z]$/)]]
         });
     }
 
@@ -75,6 +75,7 @@ export class CompoundModalComponent implements OnInit, OnChanges {
     }
 
     onSave() {
+        this.compoundForm.markAllAsTouched();
         if (this.compoundForm.valid) {
             if (this.mode === 'edit') {
                 this.showConfirmModal = true;

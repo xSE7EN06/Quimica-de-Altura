@@ -31,6 +31,7 @@ export class ArticlesPage implements OnInit {
         year: '',
         country: ''
     };
+    searchTerm = '';
     tableLoading = true;
 
     // Modal state

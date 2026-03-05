@@ -214,11 +214,16 @@ $ivory-white: #fdfcf8;
     padding: 0 5px;
 
     .input-icon {
+        font-family: 'Material Icons';
         color: rgba(89, 122, 77, 0.6);
         font-size: 22px;
         width: 22px;
         height: 22px;
         transition: color 0.3s;
+        font-weight: normal;
+        font-style: normal;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
     }
 
     .input-field {
@@ -227,7 +232,7 @@ $ivory-white: #fdfcf8;
 
         input {
             width: 100%;
-            padding: 12px 0;
+            padding: 12px 40px 12px 0;
             background: transparent;
             border: none;
             color: $primary-green;
@@ -285,6 +290,33 @@ $ivory-white: #fdfcf8;
         input:focus~.input-bar::after {
             transform: scaleX(1);
         }
+
+        .password-toggle {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(89, 122, 77, 0.6);
+            transition: color 0.3s;
+            z-index: 1;
+
+            &:hover {
+                color: $gold-mustard;
+            }
+
+            mat-icon {
+                font-size: 20px;
+                width: 20px;
+                height: 20px;
+            }
+        }
     }
 
     &:focus-within .input-icon {
@@ -294,8 +326,36 @@ $ivory-white: #fdfcf8;
 
 .form-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-top: -10px;
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: #888;
+        font-weight: 500;
+        user-select: none;
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: $gold-mustard;
+            border-radius: 4px;
+        }
+
+        span {
+            transition: color 0.2s;
+        }
+
+        &:hover span {
+            color: $primary-green;
+        }
+    }
 
     .forgot-password {
         color: #888;
@@ -338,10 +398,22 @@ $ivory-white: #fdfcf8;
     }
 
     mat-icon {
+        font-family: 'Material Icons';
         font-size: 20px;
         width: 20px;
         height: 20px;
         transition: transform 0.3s;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
     }
 
     &:hover mat-icon {

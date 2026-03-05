@@ -11,8 +11,9 @@
 
         <div search-bar class="search-bar">
             <mat-icon class="search-icon">search</mat-icon>
-            <input type="text" #searchInput (keyup)="onSearch(searchInput.value)"
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)"
                 placeholder="Buscar por título, autor o palabras clave..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
         </div>
 
         <button add-button class="btn-primary" (click)="onAddArticle()">

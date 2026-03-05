@@ -25,22 +25,36 @@
             </div>
 
             <div class="modal-body">
+                <form #apiForm="ngForm">
                 <div class="form-grid">
                     <div class="form-group full">
                         <label>Nombre del Servicio</label>
-                        <input type="text" [(ngModel)]="api.name" [disabled]="mode === 'view'"
-                            placeholder="Ej. PlantNet API">
+                        <input type="text" name="apiName" [(ngModel)]="api.name" [disabled]="mode === 'view'"
+                            placeholder="Ej. PlantNet API"
+                            required minlength="3" maxlength="100"
+                            #apiName="ngModel">
+                        <div class="field-error" *ngIf="apiName.invalid && apiName.touched">
+                            <span *ngIf="apiName.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="apiName.errors?.['minlength']">Mínimo {{ apiName.errors?.['minlength'].requiredLength }} caracteres.</span>
+                            <span *ngIf="apiName.errors?.['maxlength']">Máximo {{ apiName.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                        </div>
                     </div>
 
                     <div class="form-group full">
                         <label>Base URL</label>
-                        <input type="text" [(ngModel)]="api.base_url" [disabled]="mode === 'view'"
-                            placeholder="https://api.ejemplo.com/v1">
+                        <input type="text" name="baseUrl" [(ngModel)]="api.base_url" [disabled]="mode === 'view'"
+                            placeholder="https://api.ejemplo.com/v1"
+                            required pattern="https?://.+"
+                            #baseUrl="ngModel">
+                        <div class="field-error" *ngIf="baseUrl.invalid && baseUrl.touched">
+                            <span *ngIf="baseUrl.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="baseUrl.errors?.['pattern']">Debe ser una URL válida que comience con http:// o https://</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>Tipo de Autenticación</label>
-                        <select [(ngModel)]="api.authType" [disabled]="mode === 'view'">
+                        <select name="authType" [(ngModel)]="api.authType" [disabled]="mode === 'view'">
                             <option value="None">Sin Autenticación</option>
                             <option value="API Key">API Key</option>
                             <option value="OAuth2">OAuth 2.0</option>
@@ -50,20 +64,21 @@
 
                     <div class="form-group">
                         <label>Rate Limit</label>
-                        <input type="text" [(ngModel)]="api.rateLimit" [disabled]="mode === 'view'"
-                            placeholder="Ej. 100 req/min">
+                        <input type="text" name="rateLimit" [(ngModel)]="api.rateLimit" [disabled]="mode === 'view'"
+                            placeholder="Ej. 100 req/min" maxlength="50">
                     </div>
 
                     <div class="form-group full">
                         <label>Descripción</label>
-                        <textarea [(ngModel)]="api.description" [disabled]="mode === 'view'" rows="3"></textarea>
+                        <textarea name="description" [(ngModel)]="api.description" [disabled]="mode === 'view'"
+                            rows="3" maxlength="500"></textarea>
                     </div>
                 </div>
 
                 <div class="endpoints-section">
                     <div class="section-header">
                         <h3>Endpoints Configurados</h3>
-                        <button *ngIf="mode !== 'view'" class="btn-add-mini" (click)="addEndpoint()">
+                        <button *ngIf="mode !== 'view'" class="btn-add-mini" type="button" (click)="addEndpoint()">
                             <mat-icon>add</mat-icon> Agregar Endpoint
                         </button>
                     </div>
@@ -72,21 +87,54 @@
                         <div *ngFor="let edp of api.endpoints; let i = index" class="endpoint-card">
                             <div class="edp-header">
                                 <span class="method-tag" [ngClass]="edp.method.toLowerCase()">{{ edp.method }}</span>
-                                <input type="text" [(ngModel)]="edp.name" [disabled]="mode === 'view'"
-                                    class="edp-name-input" placeholder="Nombre del endpoint">
-                                <button *ngIf="mode !== 'view'" class="btn-remove" (click)="removeEndpoint(i)">
+                                <div class="edp-name-wrapper" style="flex:1">
+                                    <input type="text" [name]="'epName' + i" [(ngModel)]="edp.name"
+                                        [disabled]="mode === 'view'"
+                                        class="edp-name-input" placeholder="Nombre del endpoint"
+                                        required minlength="2" maxlength="50"
+                                        #epName="ngModel">
+                                    <div class="field-error" *ngIf="epName.invalid && epName.touched">
+                                        <span *ngIf="epName.errors?.['required']">Este campo es obligatorio.</span>
+                                        <span *ngIf="epName.errors?.['minlength']">Mínimo {{ epName.errors?.['minlength'].requiredLength }} caracteres.</span>
+                                    </div>
+                                </div>
+                                <button *ngIf="mode !== 'view'" type="button" class="btn-remove" (click)="removeEndpoint(i)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
                             <div class="edp-body">
-                                <input type="text" [(ngModel)]="edp.path" [disabled]="mode === 'view'"
-                                    class="edp-path-input" placeholder="/ruta/del/recurso">
+                                <div>
+                                    <input type="text" [name]="'epPath' + i" [(ngModel)]="edp.path"
+                                        [disabled]="mode === 'view'"
+                                        class="edp-path-input" placeholder="/ruta/del/recurso"
+                                        required pattern="/.*"
+                                        #epPath="ngModel">
+                                    <div class="field-error" *ngIf="epPath.invalid && epPath.touched">
+                                        <span *ngIf="epPath.errors?.['required']">Este campo es obligatorio.</span>
+                                        <span *ngIf="epPath.errors?.['pattern']">La ruta debe comenzar con /</span>
+                                    </div>
+                                </div>
                                 <div class="edp-footer">
-                                    <input type="text" [(ngModel)]="edp.description" [disabled]="mode === 'view'"
+                                    <input type="text" [name]="'epDesc' + i" [(ngModel)]="edp.description"
+                                        [disabled]="mode === 'view'"
                                         class="edp-desc-input" placeholder="Descripción breve...">
+                                    <div class="edp-method-wrapper">
+                                        <select [name]="'epMethod' + i" [(ngModel)]="edp.method"
+                                            [disabled]="mode === 'view'"
+                                            required #epMethod="ngModel">
+                                            <option value="GET">GET</option>
+                                            <option value="POST">POST</option>
+                                            <option value="PUT">PUT</option>
+                                            <option value="DELETE">DELETE</option>
+                                            <option value="PATCH">PATCH</option>
+                                        </select>
+                                        <div class="field-error" *ngIf="epMethod.invalid && epMethod.touched">
+                                            <span *ngIf="epMethod.errors?.['required']">Selecciona un método.</span>
+                                        </div>
+                                    </div>
                                     <div class="toggle-box">
                                         <span>Activo</span>
-                                        <ion-toggle [(ngModel)]="edp.isActive"
+                                        <ion-toggle [name]="'epActive' + i" [(ngModel)]="edp.isActive"
                                             [disabled]="mode === 'view'"></ion-toggle>
                                     </div>
                                 </div>
@@ -99,6 +147,7 @@
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
 
             <div class="modal-footer" *ngIf="mode !== 'view'">
