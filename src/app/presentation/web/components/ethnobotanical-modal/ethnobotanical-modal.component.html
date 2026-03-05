@@ -1,0 +1,163 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="ethnobotanical-modal">
+    <ng-template>
+        <div class="modal-container">
+            <!-- Navigation Arrows -->
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+                <div class="modal-header-banner">
+                    <div class="header-overlay">
+                        <button class="close-btn" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <div class="header-content">
+                            <span class="category-badge">Registro Etnobotánico</span>
+                            <h1>{{ mode === 'add' ? 'Nuevo Registro' : form.get('species')?.value }}</h1>
+                            <p class="header-subtitle" *ngIf="mode !== 'add' && form.get('evidenceLevel')?.value">
+                                <span class="evidence-pill" [ngClass]="getEvidenceBadgeClass(form.get('evidenceLevel')?.value)">
+                                    Evidencia {{ form.get('evidenceLevel')?.value }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-scroll-content">
+                    <form [formGroup]="form">
+
+                        <!-- Section 1: Identificación -->
+                        <div class="form-section">
+                            <h3>Identificación</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Especie</label>
+                                    <input type="text" formControlName="species" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Artemisia mexicana">
+                                    <div class="field-error" *ngIf="form.get('species')?.invalid && form.get('species')?.touched">
+                                        <span *ngIf="form.get('species')?.errors?.['required']">Este campo es obligatorio.</span>
+                                        <span *ngIf="form.get('species')?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Comunidad</label>
+                                    <input type="text" formControlName="community" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Comunidad Nahua de Huauchinango">
+                                    <div class="field-error" *ngIf="form.get('community')?.invalid && form.get('community')?.touched">
+                                        <span *ngIf="form.get('community')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Región</label>
+                                    <input type="text" formControlName="region" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Sierra Norte de Puebla">
+                                    <div class="field-error" *ngIf="form.get('region')?.invalid && form.get('region')?.touched">
+                                        <span *ngIf="form.get('region')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Uso Etnobotánico -->
+                        <div class="form-section">
+                            <h3>Uso Etnobotánico</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Condición Tratada</label>
+                                    <input type="text" formControlName="conditionTreated" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Fiebre, dolor de cabeza">
+                                    <div class="field-error" *ngIf="form.get('conditionTreated')?.invalid && form.get('conditionTreated')?.touched">
+                                        <span *ngIf="form.get('conditionTreated')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Parte de la Planta Utilizada</label>
+                                    <input type="text" formControlName="rawMaterialPart" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Hojas, raíz, corteza">
+                                    <div class="field-error" *ngIf="form.get('rawMaterialPart')?.invalid && form.get('rawMaterialPart')?.touched">
+                                        <span *ngIf="form.get('rawMaterialPart')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field full-width">
+                                    <label>Método de Preparación</label>
+                                    <textarea formControlName="preparationMethod" [readOnly]="isReadOnly" rows="3"
+                                        placeholder="Describe cómo se prepara el remedio..."></textarea>
+                                    <div class="field-error" *ngIf="form.get('preparationMethod')?.invalid && form.get('preparationMethod')?.touched">
+                                        <span *ngIf="form.get('preparationMethod')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Documentación -->
+                        <div class="form-section">
+                            <h3>Documentación</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Documentador</label>
+                                    <input type="text" formControlName="documenter" [readOnly]="isReadOnly"
+                                        placeholder="Nombre del investigador">
+                                    <div class="field-error" *ngIf="form.get('documenter')?.invalid && form.get('documenter')?.touched">
+                                        <span *ngIf="form.get('documenter')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Año</label>
+                                    <input type="number" formControlName="year" [readOnly]="isReadOnly"
+                                        placeholder="Ej. 2023">
+                                    <div class="field-error" *ngIf="form.get('year')?.invalid && form.get('year')?.touched">
+                                        <span *ngIf="form.get('year')?.errors?.['required']">Este campo es obligatorio.</span>
+                                        <span *ngIf="form.get('year')?.errors?.['min'] || form.get('year')?.errors?.['max']">
+                                            Ingresa un año válido.
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Nivel de Evidencia</label>
+                                    <select formControlName="evidenceLevel" [attr.disabled]="isReadOnly ? true : null">
+                                        <option value="">Seleccionar nivel...</option>
+                                        <option value="L1">L1 — Alto</option>
+                                        <option value="L2">L2 — Moderado</option>
+                                        <option value="L3">L3 — Bajo</option>
+                                        <option value="L4">L4 — Anecdótico</option>
+                                    </select>
+                                    <div class="field-error" *ngIf="form.get('evidenceLevel')?.invalid && form.get('evidenceLevel')?.touched">
+                                        <span *ngIf="form.get('evidenceLevel')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field full-width">
+                                    <label>Notas Adicionales</label>
+                                    <textarea formControlName="notes" [readOnly]="isReadOnly" rows="3"
+                                        placeholder="Observaciones, referencias adicionales..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="footer-actions">
+                        <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
+                            <mat-icon>edit</mat-icon> Editar Información
+                        </button>
+                        <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+                        <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
+                            <mat-icon>save</mat-icon> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+    message="¿Estás seguro de que deseas guardar los cambios en este registro etnobotánico?" icon="save"
+    confirmColor="var(--accent-color)" confirmText="Guardar" (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

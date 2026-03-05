@@ -1,0 +1,148 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="genomic-data-modal">
+    <ng-template>
+        <div class="modal-container">
+            <!-- Navigation Arrows -->
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+                <div class="modal-header-banner">
+                    <div class="header-overlay">
+                        <button class="close-btn" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <div class="header-content">
+                            <span class="category-badge">Dato Genómico</span>
+                            <h1>{{ mode === 'add' ? 'Nuevo Registro' : form.get('species')?.value }}</h1>
+                            <p class="header-subtitle" *ngIf="mode !== 'add' && form.get('status')?.value">
+                                <span class="status-pill" [ngClass]="form.get('status')?.value">
+                                    {{ getStatusLabel(form.get('status')?.value) }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-scroll-content">
+                    <form [formGroup]="form">
+
+                        <!-- Section 1: Identificación -->
+                        <div class="form-section">
+                            <h3>Identificación de Especie</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Especie</label>
+                                    <input type="text" formControlName="species" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Artemisia mexicana">
+                                    <div class="field-error" *ngIf="form.get('species')?.invalid && form.get('species')?.touched">
+                                        <span *ngIf="form.get('species')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>ID GenBank</label>
+                                    <input type="text" formControlName="genbankId" [readOnly]="isReadOnly"
+                                        placeholder="Ej. MN123456">
+                                    <div class="field-error" *ngIf="form.get('genbankId')?.invalid && form.get('genbankId')?.touched">
+                                        <span *ngIf="form.get('genbankId')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Archivo FASTA</label>
+                                    <input type="text" formControlName="fastaFile" [readOnly]="isReadOnly"
+                                        placeholder="Nombre del archivo .fasta">
+                                    <div class="field-error" *ngIf="form.get('fastaFile')?.invalid && form.get('fastaFile')?.touched">
+                                        <span *ngIf="form.get('fastaFile')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Estado</label>
+                                    <select formControlName="status" [attr.disabled]="isReadOnly ? true : null">
+                                        <option value="pending">Pendiente</option>
+                                        <option value="processed">Procesado</option>
+                                        <option value="error">Error</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Datos de Secuencia -->
+                        <div class="form-section">
+                            <h3>Datos de Secuencia</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Vía Metabólica KEGG</label>
+                                    <input type="text" formControlName="keggPathway" [readOnly]="isReadOnly"
+                                        placeholder="Ej. map00940">
+                                    <div class="field-error" *ngIf="form.get('keggPathway')?.invalid && form.get('keggPathway')?.touched">
+                                        <span *ngIf="form.get('keggPathway')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Homología Enzimática</label>
+                                    <input type="text" formControlName="enzymeHomology" [readOnly]="isReadOnly"
+                                        placeholder="Ej. EC 1.14.13.x">
+                                    <div class="field-error" *ngIf="form.get('enzymeHomology')?.invalid && form.get('enzymeHomology')?.touched">
+                                        <span *ngIf="form.get('enzymeHomology')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Clúster Génico</label>
+                                    <input type="text" formControlName="geneCluster" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Terpenoid cluster A">
+                                    <div class="field-error" *ngIf="form.get('geneCluster')?.invalid && form.get('geneCluster')?.touched">
+                                        <span *ngIf="form.get('geneCluster')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Fecha de Carga</label>
+                                    <input type="date" formControlName="uploadedAt" [readOnly]="isReadOnly">
+                                    <div class="field-error" *ngIf="form.get('uploadedAt')?.invalid && form.get('uploadedAt')?.touched">
+                                        <span *ngIf="form.get('uploadedAt')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Resultados BLAST -->
+                        <div class="form-section">
+                            <h3>Resultados BLAST</h3>
+                            <div class="form-grid">
+                                <div class="form-field full-width">
+                                    <label>Resultados de Alineamiento</label>
+                                    <textarea formControlName="blastResults" [readOnly]="isReadOnly" rows="4"
+                                        placeholder="Resultados del alineamiento BLAST..."></textarea>
+                                    <div class="field-error" *ngIf="form.get('blastResults')?.invalid && form.get('blastResults')?.touched">
+                                        <span *ngIf="form.get('blastResults')?.errors?.['required']">Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="footer-actions">
+                        <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
+                            <mat-icon>edit</mat-icon> Editar Información
+                        </button>
+                        <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+                        <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
+                            <mat-icon>save</mat-icon> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+    message="¿Estás seguro de que deseas guardar los cambios en este registro genómico?" icon="save"
+    confirmColor="var(--accent-color)" confirmText="Guardar" (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

@@ -1,0 +1,64 @@
+<div class="ontology-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Mapa Ontológico</h1>
+      <p>Gestiona los términos canónicos, códigos ICD-10 y MeSH del sistema</p>
+    </div>
+  </header>
+
+  <app-data-table [data]="items" [columns]="columns" [loading]="tableLoading"
+    (rowClick)="onViewItem($event)" (editAction)="onEditItem($event)"
+    (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+    <div search-bar class="search-bar">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar términos..." />
+      <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''">close</mat-icon>
+    </div>
+
+    <button add-button class="btn-primary" (click)="onAddItem()">
+      <mat-icon>add</mat-icon> Nuevo Término
+    </button>
+
+    <div filter-menu class="filter-controls-vertical">
+      <div class="filter-group">
+        <label>Categoría</label>
+        <select [ngModel]="selectedCategory" (ngModelChange)="onFilterChange('category', $event); selectedCategory = ''">
+          <option value="">Seleccionar categoría...</option>
+          <option *ngFor="let cat of getCategories()" [value]="cat">{{ cat }}</option>
+        </select>
+        <div class="active-filters" *ngIf="activeFilters['category']?.length">
+          <div class="filter-label">Filtros activos:</div>
+          <div class="filter-chips">
+            <span *ngFor="let c of activeFilters['category']" class="filter-chip">
+              {{ c }} <mat-icon (click)="removeFilter('category', c)">close</mat-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-data-table>
+
+  <app-ontology-modal [item]="selectedItem" [hasPrevious]="hasPrevious" [hasNext]="hasNext"
+    (prev)="onPrevItem()" (next)="onNextItem()" (saved)="onSaveItem($event)">
+  </app-ontology-modal>
+
+  <app-confirmation-modal title="Eliminar Término"
+    message="¿Estás seguro de que deseas eliminar este término ontológico? Esta acción no se puede deshacer."
+    confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+  </app-confirmation-modal>
+
+  <ng-template #termTpl let-item>
+    <div class="term-cell">
+      <span class="term-name">{{ item.canonicalTerm }}</span>
+      <span class="category-tag">{{ item.category }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #synonymsTpl let-item>
+    <div class="synonyms-container">
+      <span *ngFor="let s of item.synonyms?.slice(0, 3)" class="synonym-tag">{{ s }}</span>
+      <span *ngIf="item.synonyms?.length > 3" class="more-tag">+{{ item.synonyms.length - 3 }}</span>
+    </div>
+  </ng-template>
+</div>

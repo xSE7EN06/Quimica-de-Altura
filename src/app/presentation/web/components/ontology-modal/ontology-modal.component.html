@@ -1,0 +1,96 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="ontology-modal">
+  <ng-template>
+    <div class="modal-container">
+      <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+
+      <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+        <div class="modal-header-banner">
+          <div class="header-overlay">
+            <button class="close-btn" (click)="close()"><mat-icon>close</mat-icon></button>
+            <div class="header-content">
+              <span class="category-badge">Mapa Ontológico</span>
+              <h1>{{ mode === 'add' ? 'Nuevo Término' : form.get('canonicalTerm')?.value }}</h1>
+              <p class="header-sub">{{ form.get('icd10Code')?.value }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-scroll-content">
+          <form [formGroup]="form">
+            <div class="form-section">
+              <h3>Identificación</h3>
+              <div class="form-grid">
+                <div class="form-field full-width">
+                  <label>Término Canónico</label>
+                  <input type="text" formControlName="canonicalTerm" [readOnly]="isReadOnly" placeholder="Ej. Dolor de cabeza">
+                  <div class="field-error" *ngIf="form.get('canonicalTerm')?.invalid && form.get('canonicalTerm')?.touched">
+                    <span>Este campo es obligatorio.</span>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label>Código ICD-10</label>
+                  <input type="text" formControlName="icd10Code" [readOnly]="isReadOnly" placeholder="Ej. G43.909">
+                  <div class="field-error" *ngIf="form.get('icd10Code')?.invalid && form.get('icd10Code')?.touched">
+                    <span>Este campo es obligatorio.</span>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label>MeSH ID</label>
+                  <input type="text" formControlName="meshId" [readOnly]="isReadOnly" placeholder="Ej. D006261">
+                  <div class="field-error" *ngIf="form.get('meshId')?.invalid && form.get('meshId')?.touched">
+                    <span>Este campo es obligatorio.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Clasificación</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Categoría</label>
+                  <input type="text" formControlName="category" [readOnly]="isReadOnly" placeholder="Ej. Neurología">
+                  <div class="field-error" *ngIf="form.get('category')?.invalid && form.get('category')?.touched">
+                    <span>Este campo es obligatorio.</span>
+                  </div>
+                </div>
+                <div class="form-field full-width">
+                  <label>Sinónimos (separados por coma)</label>
+                  <input type="text" formControlName="synonyms" [readOnly]="isReadOnly" placeholder="cefalea, jaqueca, migraña">
+                </div>
+                <div class="form-field full-width">
+                  <label>Descripción</label>
+                  <textarea formControlName="description" [readOnly]="isReadOnly" rows="3"
+                    placeholder="Descripción del término..."></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions">
+            <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
+              <mat-icon>edit</mat-icon> Editar Información
+            </button>
+            <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+            <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
+              <mat-icon>save</mat-icon> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+  message="¿Estás seguro de que deseas guardar los cambios en este término ontológico?" icon="save"
+  confirmColor="var(--accent-color)" confirmText="Guardar" (confirmed)="executeSave()"
+  (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>
