@@ -1,4 +1,4 @@
-<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="regional-modal">
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="regional-availability-modal">
   <ng-template>
     <div class="modal-container">
       <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()"><mat-icon>chevron_left</mat-icon></button>

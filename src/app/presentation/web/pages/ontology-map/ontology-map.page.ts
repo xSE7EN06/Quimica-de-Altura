@@ -88,8 +88,8 @@ export class OntologyMapPage implements OnInit {
     this.itemModal.open('edit', item);
   }
 
-  onPrevItem() { if (this.hasPrevious) { this.currentIndex--; this.selectedItem = this.items[this.currentIndex]; } }
-  onNextItem() { if (this.hasNext) { this.currentIndex++; this.selectedItem = this.items[this.currentIndex]; } }
+  onPrevItem() { if (this.hasPrevious) { this.currentIndex--; this.selectedItem = this.items[this.currentIndex]; this.itemModal.open('view', this.selectedItem); } }
+  onNextItem() { if (this.hasNext) { this.currentIndex++; this.selectedItem = this.items[this.currentIndex]; this.itemModal.open('view', this.selectedItem); } }
 
   onDeleteItem(item: OntologyTerm) { this.selectedItemId = item.id; this.confirmModal.open(); }
 

@@ -82,8 +82,8 @@ export class ImageLogsPage implements OnInit {
   onAddItem() { this.itemModal.open('add'); }
   onViewItem(item: ImageLog) { this.selectedItem = item; this.currentIndex = this.items.indexOf(item); this.itemModal.open('view', item); }
   onEditItem(item: ImageLog) { this.selectedItem = item; this.currentIndex = this.items.indexOf(item); this.itemModal.open('edit', item); }
-  onPrevItem() { if (this.hasPrevious) { this.currentIndex--; this.selectedItem = this.items[this.currentIndex]; } }
-  onNextItem() { if (this.hasNext) { this.currentIndex++; this.selectedItem = this.items[this.currentIndex]; } }
+  onPrevItem() { if (this.hasPrevious) { this.currentIndex--; this.selectedItem = this.items[this.currentIndex]; this.itemModal.open('view', this.selectedItem); } }
+  onNextItem() { if (this.hasNext) { this.currentIndex++; this.selectedItem = this.items[this.currentIndex]; this.itemModal.open('view', this.selectedItem); } }
   onDeleteItem(item: ImageLog) { this.selectedItemId = item.id; this.confirmModal.open(); }
 
   onBulkDelete(items: ImageLog[]) {
