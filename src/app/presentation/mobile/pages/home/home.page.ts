@@ -42,9 +42,9 @@ export class HomePage {
             this.setPlantsOfDay();
         });
 
-        this.authService.currentUser.subscribe(user => {
+        this.authService.currentUser$.subscribe(user => {
             if (user) {
-                this.userName = user.firstName;
+                this.userName = user.first_name || user.email;
             }
         });
     }

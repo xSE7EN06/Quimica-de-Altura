@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '../../infrastructure/guards/auth.guard';
 
 export const WEB_ROUTES: Routes = [
     {
@@ -11,8 +12,29 @@ export const WEB_ROUTES: Routes = [
         loadComponent: () => import('./pages/login/login.page').then(m => m.WebLoginPage)
     },
     {
+        path: 'register',
+        loadComponent: () => import('./pages/register/register.page').then(m => m.RegisterPage)
+    },
+    {
+        path: 'verify-email',
+        loadComponent: () => import('./pages/verify-email/verify-email.page').then(m => m.VerifyEmailPage)
+    },
+    {
+        path: 'forgot-password',
+        loadComponent: () => import('./pages/forgot-password/forgot-password.page').then(m => m.ForgotPasswordPage)
+    },
+    {
+        path: 'two-factor',
+        loadComponent: () => import('./pages/two-factor/two-factor.page').then(m => m.TwoFactorPage)
+    },
+    {
+        path: 'auth/callback/:provider',
+        loadComponent: () => import('./pages/oauth-callback/oauth-callback.page').then(m => m.OAuthCallbackPage)
+    },
+    {
         path: 'dashboard',
         loadComponent: () => import('./layout/dashboard-layout/dashboard-layout.component').then(m => m.DashboardLayoutComponent),
+        canActivate: [authGuard],
         children: [
             {
                 path: '',

@@ -1,0 +1,100 @@
+<div class="auth-wrapper">
+    <div class="background-decor">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="auth-container">
+        <div class="glass-card">
+            <div class="brand-header">
+                <img src="/assets/shared/images/logo.jpg" alt="Logo" class="brand-logo" />
+                <h1>Crear Cuenta</h1>
+                <p>Regístrate para acceder a la plataforma</p>
+            </div>
+
+            @if (errorMessage()) {
+                <div class="error-banner">
+                    <mat-icon>error_outline</mat-icon>
+                    <span>{{ errorMessage() }}</span>
+                </div>
+            }
+
+            @if (successMessage()) {
+                <div class="success-banner">
+                    <mat-icon>check_circle_outline</mat-icon>
+                    <span>{{ successMessage() }}</span>
+                </div>
+            }
+
+            <form class="auth-form" (ngSubmit)="register()">
+                <div class="form-row">
+                    <div class="input-group">
+                        <mat-icon class="input-icon">person</mat-icon>
+                        <div class="input-field">
+                            <input type="text" id="firstName" required placeholder=" "
+                                   [(ngModel)]="firstName" name="firstName" [disabled]="loading()" />
+                            <label for="firstName">Nombre</label>
+                            <div class="input-bar"></div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <mat-icon class="input-icon">person</mat-icon>
+                        <div class="input-field">
+                            <input type="text" id="lastName" required placeholder=" "
+                                   [(ngModel)]="lastName" name="lastName" [disabled]="loading()" />
+                            <label for="lastName">Apellido</label>
+                            <div class="input-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <mat-icon class="input-icon">mail</mat-icon>
+                    <div class="input-field">
+                        <input type="email" id="email" required placeholder=" "
+                               [(ngModel)]="email" name="email" [disabled]="loading()" />
+                        <label for="email">Correo Electrónico</label>
+                        <div class="input-bar"></div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <mat-icon class="input-icon">lock</mat-icon>
+                    <div class="input-field">
+                        <input [type]="showPassword ? 'text' : 'password'" id="password" required placeholder=" "
+                               [(ngModel)]="password" name="password" [disabled]="loading()" />
+                        <label for="password">Contraseña (12+ caracteres, mayúscula, minúscula, número y especial)</label>
+                        <div class="input-bar"></div>
+                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <mat-icon class="input-icon">lock</mat-icon>
+                    <div class="input-field">
+                        <input [type]="showPassword ? 'text' : 'password'" id="confirmPassword" required placeholder=" "
+                               [(ngModel)]="confirmPassword" name="confirmPassword" [disabled]="loading()" />
+                        <label for="confirmPassword">Confirmar Contraseña</label>
+                        <div class="input-bar"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" [disabled]="loading()">
+                    @if (loading()) {
+                        <mat-spinner diameter="22"></mat-spinner>
+                        <span>Creando cuenta...</span>
+                    } @else {
+                        <span>Crear Cuenta</span>
+                        <mat-icon>person_add</mat-icon>
+                    }
+                </button>
+            </form>
+
+            <div class="auth-link">
+                <p>¿Ya tienes cuenta? <a routerLink="/login">Iniciar Sesión</a></p>
+            </div>
+        </div>
+    </div>
+</div>

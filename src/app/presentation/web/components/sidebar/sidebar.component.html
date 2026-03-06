@@ -153,12 +153,11 @@
     <div class="sidebar-footer">
         <div class="user-profile">
             <div class="avatar">
-                <img src="assets/avatar-placeholder.png" alt="User"
-                    onerror="this.src='https://ui-avatars.com/api/?name=Admin+User&background=random'" />
+                <img src="https://ui-avatars.com/api/?name={{ userName }}&background=random" alt="User" />
             </div>
             <div class="user-info">
-                <span class="user-name">Admin User</span>
-                <span class="user-role">Administrador</span>
+                <span class="user-name">{{ userName }}</span>
+                <span class="user-role">{{ userRole }}</span>
             </div>
         </div>
 
@@ -170,6 +169,11 @@
         <button class="nav-item theme-toggle" (click)="toggleTheme()">
             <mat-icon class="nav-icon">{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
             <span class="nav-label">{{ isDarkTheme ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+        </button>
+
+        <button class="nav-item logout-btn" (click)="logout()">
+            <mat-icon class="nav-icon">logout</mat-icon>
+            <span class="nav-label">Cerrar Sesión</span>
         </button>
     </div>
 </aside>

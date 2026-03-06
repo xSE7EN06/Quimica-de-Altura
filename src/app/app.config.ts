@@ -41,12 +41,13 @@ import { MockAuditLogRepository } from './infrastructure/repositories/mock-audit
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { loadingInterceptor } from './infrastructure/interceptors/loading.interceptor';
+import { authInterceptor } from './infrastructure/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([loadingInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])),
     provideIonicAngular({}),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
