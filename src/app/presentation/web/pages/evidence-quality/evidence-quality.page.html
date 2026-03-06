@@ -1,0 +1,33 @@
+<div class="evidence-quality-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Calidad de Evidencia</h1>
+      <p>Distribución por niveles de evidencia y oportunidades de investigación</p>
+    </div>
+  </header>
+
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let card of statCards">
+      <div class="stat-icon"><mat-icon>{{ card.icon }}</mat-icon></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ card.value }}</span>
+        <span class="stat-label">{{ card.label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Distribución L1–L4</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="distributionChartData" [options]="distributionChartOptions" type="doughnut"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Oportunidades de Investigación por Especie</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="opportunitiesChartData" [options]="opportunitiesChartOptions" type="bar"></canvas>
+      </div>
+    </div>
+  </div>
+</div>

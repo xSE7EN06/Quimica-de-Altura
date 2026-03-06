@@ -1,0 +1,96 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="moderation-modal">
+  <ng-template>
+    <div class="modal-container">
+      <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()"><mat-icon>chevron_left</mat-icon></button>
+      <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()"><mat-icon>chevron_right</mat-icon></button>
+
+      <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+        <div class="modal-header-banner">
+          <div class="header-overlay">
+            <button class="close-btn" (click)="close()"><mat-icon>close</mat-icon></button>
+            <div class="header-content">
+              <span class="category-badge">Moderación</span>
+              <h1>{{ mode === 'add' ? 'Nuevo Elemento' : (item?.type | titlecase) }}</h1>
+              <p class="header-sub">{{ form.get('submittedBy')?.value }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-scroll-content">
+          <form [formGroup]="form">
+            <div class="form-section">
+              <h3>Clasificación</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Tipo</label>
+                  <select formControlName="type" [attr.disabled]="isReadOnly ? true : null">
+                    <option value="record">Registro</option>
+                    <option value="correction">Corrección</option>
+                    <option value="submission">Envío</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>Estado</label>
+                  <select formControlName="status" [attr.disabled]="isReadOnly ? true : null">
+                    <option value="pending">Pendiente</option>
+                    <option value="approved">Aprobado</option>
+                    <option value="rejected">Rechazado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Contenido</h3>
+              <div class="form-field full-width">
+                <label>Descripción / Contenido</label>
+                <textarea formControlName="content" [readOnly]="isReadOnly" rows="4" placeholder="Describe el registro o corrección..."></textarea>
+              </div>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Enviado por</label>
+                  <input type="text" formControlName="submittedBy" [readOnly]="isReadOnly" placeholder="email@ejemplo.com">
+                </div>
+                <div class="form-field">
+                  <label>Fecha de Envío</label>
+                  <input type="text" formControlName="submittedAt" [readOnly]="true">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Revisión</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Revisado por</label>
+                  <input type="text" formControlName="reviewedBy" [readOnly]="isReadOnly" placeholder="Revisor...">
+                </div>
+                <div class="form-field">
+                  <label>Fecha de Revisión</label>
+                  <input type="text" formControlName="reviewedAt" [readOnly]="true">
+                </div>
+                <div class="form-field full-width">
+                  <label>Notas de Revisión</label>
+                  <textarea formControlName="notes" [readOnly]="isReadOnly" rows="2" placeholder="Justificación de la decisión..."></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions">
+            <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()"><mat-icon>edit</mat-icon> Editar</button>
+            <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+            <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()"><mat-icon>save</mat-icon> Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+  message="¿Estás seguro de que deseas guardar los cambios en este elemento de moderación?" confirmColor="var(--accent-color)"
+  confirmText="Guardar" (confirmed)="executeSave()" (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

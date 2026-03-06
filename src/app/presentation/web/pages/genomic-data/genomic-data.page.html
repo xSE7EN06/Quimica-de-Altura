@@ -1,0 +1,69 @@
+<div class="genomic-data-page">
+
+    <header class="page-header">
+        <div class="page-title">
+            <h1>Datos Genómicos</h1>
+            <p>Gestiona los registros de datos genómicos y secuencias de especies</p>
+        </div>
+    </header>
+
+    <app-data-table [data]="items" [columns]="columns" [loading]="tableLoading"
+        (rowClick)="onViewItem($event)" (editAction)="onEditItem($event)"
+        (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)"
+                placeholder="Buscar registros genómicos..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddItem()">
+            <mat-icon>add</mat-icon> Nuevo Registro
+        </button>
+
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Estado</label>
+                <select [ngModel]="selectedStatus" (ngModelChange)="onFilterChange('status', $event)">
+                    <option value="">Agregar estado...</option>
+                    <option *ngFor="let s of getAvailableStatuses()" [value]="s">{{ getStatusLabel(s) }}</option>
+                </select>
+
+                <div class="active-filters" *ngIf="activeFilters.status.length > 0">
+                    <div class="filter-label">Filtros activos:</div>
+                    <div class="filter-chips">
+                        <span *ngFor="let s of activeFilters.status" class="filter-chip">
+                            {{ getStatusLabel(s) }}
+                            <mat-icon (click)="removeFilter('status', s)">close</mat-icon>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-genomic-data-modal
+        [item]="selectedItem"
+        [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext"
+        (prev)="onPrevItem()"
+        (next)="onNextItem()"
+        (saved)="onSaveItem($event)">
+    </app-genomic-data-modal>
+
+    <app-confirmation-modal title="Eliminar Registro"
+        message="¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+        confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
+    <!-- Cell Templates -->
+    <ng-template #speciesTpl let-item>
+        <div class="species-cell">
+            <div class="species-info">
+                <span class="species-name">{{ item.species }}</span>
+                <span class="status-badge" [ngClass]="item.status">{{ getStatusLabel(item.status) }}</span>
+            </div>
+        </div>
+    </ng-template>
+</div>

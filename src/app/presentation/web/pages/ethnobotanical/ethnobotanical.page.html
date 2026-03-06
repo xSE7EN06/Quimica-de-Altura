@@ -1,0 +1,71 @@
+<div class="ethnobotanical-page">
+
+    <header class="page-header">
+        <div class="page-title">
+            <h1>Registros Etnobotánicos</h1>
+            <p>Gestiona los registros de uso etnobotánico documentados en comunidades</p>
+        </div>
+    </header>
+
+    <app-data-table [data]="items" [columns]="columns" [loading]="tableLoading"
+        (rowClick)="onViewItem($event)" (editAction)="onEditItem($event)"
+        (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+        <div search-bar class="search-bar">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)"
+                placeholder="Buscar registros..." />
+            <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch('')">close</mat-icon>
+        </div>
+
+        <button add-button class="btn-primary" (click)="onAddItem()">
+            <mat-icon>add</mat-icon> Nuevo Registro
+        </button>
+
+        <div filter-menu class="filter-controls-vertical">
+            <div class="filter-group">
+                <label>Nivel de Evidencia</label>
+                <select [ngModel]="selectedEvidenceLevel" (ngModelChange)="onFilterChange('evidenceLevel', $event)">
+                    <option value="">Agregar nivel...</option>
+                    <option *ngFor="let level of getAvailableEvidenceLevels()" [value]="level">{{ level }}</option>
+                </select>
+
+                <div class="active-filters" *ngIf="activeFilters.evidenceLevel.length > 0">
+                    <div class="filter-label">Filtros activos:</div>
+                    <div class="filter-chips">
+                        <span *ngFor="let level of activeFilters.evidenceLevel" class="filter-chip">
+                            {{ level }}
+                            <mat-icon (click)="removeFilter('evidenceLevel', level)">close</mat-icon>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-data-table>
+
+    <app-ethnobotanical-modal
+        [item]="selectedItem"
+        [hasPrevious]="hasPrevious"
+        [hasNext]="hasNext"
+        (prev)="onPrevItem()"
+        (next)="onNextItem()"
+        (saved)="onSaveItem($event)">
+    </app-ethnobotanical-modal>
+
+    <app-confirmation-modal title="Eliminar Registro"
+        message="¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+        confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+    </app-confirmation-modal>
+
+    <!-- Cell Templates -->
+    <ng-template #speciesTpl let-item>
+        <div class="species-cell">
+            <div class="species-info">
+                <span class="species-name">{{ item.species }}</span>
+                <span class="evidence-badge" [ngClass]="'level-' + item.evidenceLevel.toLowerCase()">
+                    {{ item.evidenceLevel }}
+                </span>
+            </div>
+        </div>
+    </ng-template>
+</div>

@@ -1,0 +1,33 @@
+<div class="genomic-tracker-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Rastreador Genómico</h1>
+      <p>Actividades inferidas, validadas y niveles de confianza por especie</p>
+    </div>
+  </header>
+
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let card of statCards">
+      <div class="stat-icon"><mat-icon>{{ card.icon }}</mat-icon></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ card.value }}</span>
+        <span class="stat-label">{{ card.label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Inferidas vs. Validadas por Especie</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="inferredChartData" [options]="inferredChartOptions" type="bar"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Niveles de Confianza</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="confidenceChartData" [options]="confidenceChartOptions" type="doughnut"></canvas>
+      </div>
+    </div>
+  </div>
+</div>

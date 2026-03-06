@@ -1,0 +1,67 @@
+<div class="query-logs-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Logs de Consultas</h1>
+      <p>Registro de consultas del chatbot Yolotl y sus resultados</p>
+    </div>
+  </header>
+
+  <app-data-table [data]="items" [columns]="columns" [loading]="tableLoading"
+    (rowClick)="onViewItem($event)" (editAction)="onEditItem($event)"
+    (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+    <div search-bar class="search-bar">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar consulta o usuario..." />
+      <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''">close</mat-icon>
+    </div>
+
+    <button add-button class="btn-primary" (click)="onAddItem()">
+      <mat-icon>add</mat-icon> Nuevo Log
+    </button>
+
+    <div filter-menu class="filter-controls-vertical">
+      <div class="filter-group">
+        <label>Marcado para Revisión</label>
+        <select [ngModel]="selectedFlagged" (ngModelChange)="onFilterChange('flagged', $event); selectedFlagged = ''">
+          <option value="">Todos</option>
+          <option value="true">Sí (marcados)</option>
+          <option value="false">No marcados</option>
+        </select>
+        <div class="active-filters" *ngIf="activeFilters['flagged']?.length">
+          <div class="filter-chips">
+            <span *ngFor="let f of activeFilters['flagged']" class="filter-chip">
+              {{ f === 'true' ? 'Marcados' : 'No marcados' }} <mat-icon (click)="removeFilter('flagged', f)">close</mat-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-data-table>
+
+  <app-query-log-modal [item]="selectedItem" [hasPrevious]="hasPrevious" [hasNext]="hasNext"
+    (prev)="onPrevItem()" (next)="onNextItem()" (saved)="onSaveItem($event)">
+  </app-query-log-modal>
+
+  <app-confirmation-modal title="Eliminar Log"
+    message="¿Estás seguro de que deseas eliminar este log de consulta?"
+    confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+  </app-confirmation-modal>
+
+  <ng-template #queryTpl let-item>
+    <span class="query-text">{{ truncate(item.query) }}</span>
+  </ng-template>
+
+  <ng-template #entitiesTpl let-item>
+    <div class="entities-container">
+      <span *ngFor="let e of item.extractedEntities?.slice(0, 2)" class="entity-tag">{{ e }}</span>
+      <span *ngIf="item.extractedEntities?.length > 2" class="more-tag">+{{ item.extractedEntities.length - 2 }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #flaggedTpl let-item>
+    <mat-icon [style.color]="item.flagged ? '#e74c3c' : 'var(--text-secondary)'">
+      {{ item.flagged ? 'flag' : 'outlined_flag' }}
+    </mat-icon>
+  </ng-template>
+</div>

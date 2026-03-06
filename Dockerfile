@@ -3,17 +3,17 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files for better layer caching
+COPY package.json package-lock.json* ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies (use ci when lockfile exists for reproducible builds)
+RUN npm ci
 
 # Copy source code
 COPY . .
 
 # Build the application for production
-RUN npm run build
+RUN npm run build -- --configuration=production
 
 # Stage 2: Serve the application with nginx
 FROM nginx:alpine

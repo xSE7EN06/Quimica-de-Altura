@@ -7,14 +7,9 @@
     <!-- Scrollable Navigation Area -->
     <div class="scrollable-content">
 
-        <!-- Section: PRINCIPAL -->
+        <!-- Section: DATOS CRUDOS -->
         <div class="nav-section">
-            <h3 class="section-title">PRINCIPAL</h3>
-
-            <a routerLink="/dashboard/users" routerLinkActive="active" class="nav-item">
-                <mat-icon class="nav-icon">people</mat-icon>
-                <span class="nav-label">Usuarios</span>
-            </a>
+            <h3 class="section-title">DATOS CRUDOS</h3>
 
             <a routerLink="/dashboard/plants" routerLinkActive="active" class="nav-item">
                 <mat-icon class="nav-icon">eco</mat-icon>
@@ -25,21 +20,65 @@
                 <mat-icon class="nav-icon">science</mat-icon>
                 <span class="nav-label">Compuestos</span>
             </a>
-        </div>
 
-        <!-- Section: FUENTES DE DATOS -->
-        <div class="nav-section">
-            <h3 class="section-title">FUENTES DE DATOS</h3>
+            <a routerLink="/dashboard/ethnobotanical" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">groups</mat-icon>
+                <span class="nav-label">Etnobotánica</span>
+            </a>
 
+            <a routerLink="/dashboard/genomic-data" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">biotech</mat-icon>
+                <span class="nav-label">Datos Genómicos</span>
+            </a>
 
             <a routerLink="/dashboard/articles" routerLinkActive="active" class="nav-item">
                 <mat-icon class="nav-icon">description</mat-icon>
                 <span class="nav-label">Artículos</span>
             </a>
 
-            <a routerLink="/dashboard/apis" routerLinkActive="active" class="nav-item">
+            <a routerLink="/dashboard/ontology-map" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">account_tree</mat-icon>
+                <span class="nav-label">Mapa Ontológico</span>
+            </a>
+
+            <a routerLink="/dashboard/regional-availability" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">location_on</mat-icon>
+                <span class="nav-label">Disponibilidad Regional</span>
+            </a>
+
+            <a routerLink="/dashboard/drug-references" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">medication</mat-icon>
+                <span class="nav-label">Referencias Farmacológicas</span>
+            </a>
+        </div>
+
+        <!-- Section: OPERACIONES -->
+        <div class="nav-section">
+            <h3 class="section-title">OPERACIONES</h3>
+
+            <a routerLink="/dashboard/inference-jobs" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">memory</mat-icon>
+                <span class="nav-label">Trabajos de Inferencia</span>
+            </a>
+
+            <a routerLink="/dashboard/data-pipelines" routerLinkActive="active" class="nav-item">
                 <mat-icon class="nav-icon">ssid_chart</mat-icon>
-                <span class="nav-label">APIs Externas</span>
+                <span class="nav-label">Pipelines de Datos</span>
+            </a>
+
+            <a routerLink="/dashboard/image-logs" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">photo_library</mat-icon>
+                <span class="nav-label">Logs de Imágenes</span>
+            </a>
+
+            <a routerLink="/dashboard/query-logs" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">manage_search</mat-icon>
+                <span class="nav-label">Logs de Consultas</span>
+            </a>
+
+            <a routerLink="/dashboard/moderation" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">gavel</mat-icon>
+                <span class="nav-label">Moderación</span>
             </a>
         </div>
 
@@ -47,9 +86,64 @@
         <div class="nav-section">
             <h3 class="section-title">ANÁLISIS</h3>
 
-            <a routerLink="/dashboard/analytics" routerLinkActive="active" class="nav-item">
-                <mat-icon class="nav-icon">auto_awesome</mat-icon>
-                <span class="nav-label">Análisis</span>
+            <a routerLink="/dashboard/biodiversity" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">forest</mat-icon>
+                <span class="nav-label">Biodiversidad</span>
+            </a>
+
+            <a routerLink="/dashboard/phytochemical" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">bubble_chart</mat-icon>
+                <span class="nav-label">Fitoquímica</span>
+            </a>
+
+            <a routerLink="/dashboard/evidence-quality" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">verified</mat-icon>
+                <span class="nav-label">Calidad de Evidencia</span>
+            </a>
+
+            <a routerLink="/dashboard/genomic-tracker" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">analytics</mat-icon>
+                <span class="nav-label">Rastreador Genómico</span>
+            </a>
+
+            <a routerLink="/dashboard/epidemiology" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">bar_chart</mat-icon>
+                <span class="nav-label">Epidemiología</span>
+            </a>
+
+            <a routerLink="/dashboard/drug-analogs" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">link</mat-icon>
+                <span class="nav-label">Análogos Farmacológicos</span>
+            </a>
+
+            <a routerLink="/dashboard/research-gaps" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">find_in_page</mat-icon>
+                <span class="nav-label">Brechas de Investigación</span>
+            </a>
+        </div>
+
+        <!-- Section: SISTEMA -->
+        <div class="nav-section">
+            <h3 class="section-title">SISTEMA</h3>
+
+            <a routerLink="/dashboard/users" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">people</mat-icon>
+                <span class="nav-label">Usuarios</span>
+            </a>
+
+            <a routerLink="/dashboard/apis" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">cloud_sync</mat-icon>
+                <span class="nav-label">APIs Externas</span>
+            </a>
+
+            <a routerLink="/dashboard/model-versions" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">schema</mat-icon>
+                <span class="nav-label">Versiones de Modelos</span>
+            </a>
+
+            <a routerLink="/dashboard/audit-log" routerLinkActive="active" class="nav-item">
+                <mat-icon class="nav-icon">history</mat-icon>
+                <span class="nav-label">Registro de Auditoría</span>
             </a>
         </div>
 
@@ -59,12 +153,11 @@
     <div class="sidebar-footer">
         <div class="user-profile">
             <div class="avatar">
-                <img src="assets/avatar-placeholder.png" alt="User"
-                    onerror="this.src='https://ui-avatars.com/api/?name=Admin+User&background=random'" />
+                <img src="https://ui-avatars.com/api/?name={{ userName }}&background=random" alt="User" />
             </div>
             <div class="user-info">
-                <span class="user-name">Admin User</span>
-                <span class="user-role">Administrador</span>
+                <span class="user-name">{{ userName }}</span>
+                <span class="user-role">{{ userRole }}</span>
             </div>
         </div>
 
@@ -76,6 +169,11 @@
         <button class="nav-item theme-toggle" (click)="toggleTheme()">
             <mat-icon class="nav-icon">{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
             <span class="nav-label">{{ isDarkTheme ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+        </button>
+
+        <button class="nav-item logout-btn" (click)="logout()">
+            <mat-icon class="nav-icon">logout</mat-icon>
+            <span class="nav-label">Cerrar Sesión</span>
         </button>
     </div>
 </aside>

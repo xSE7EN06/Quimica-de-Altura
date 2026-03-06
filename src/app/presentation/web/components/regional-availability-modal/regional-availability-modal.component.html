@@ -1,0 +1,86 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="regional-availability-modal">
+  <ng-template>
+    <div class="modal-container">
+      <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()"><mat-icon>chevron_left</mat-icon></button>
+      <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()"><mat-icon>chevron_right</mat-icon></button>
+
+      <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+        <div class="modal-header-banner">
+          <div class="header-overlay">
+            <button class="close-btn" (click)="close()"><mat-icon>close</mat-icon></button>
+            <div class="header-content">
+              <span class="category-badge">Disponibilidad Regional</span>
+              <h1>{{ mode === 'add' ? 'Nuevo Registro' : form.get('species')?.value }}</h1>
+              <p class="header-sub">{{ form.get('state')?.value }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-scroll-content">
+          <form [formGroup]="form">
+            <div class="form-section">
+              <h3>Especie y Localización</h3>
+              <div class="form-grid">
+                <div class="form-field full-width">
+                  <label>Especie</label>
+                  <input type="text" formControlName="species" [readOnly]="isReadOnly" placeholder="Ej. Acuyo (Piper auritum)">
+                </div>
+                <div class="form-field">
+                  <label>Estado</label>
+                  <input type="text" formControlName="state" [readOnly]="isReadOnly" placeholder="Ej. Veracruz">
+                </div>
+                <div class="form-field">
+                  <label>Región</label>
+                  <input type="text" formControlName="region" [readOnly]="isReadOnly" placeholder="Ej. Sierra de Zongolica">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Disponibilidad</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Abundancia</label>
+                  <select formControlName="abundance" [attr.disabled]="isReadOnly ? true : null">
+                    <option value="common">Común</option>
+                    <option value="scarce">Escasa</option>
+                    <option value="rare">Rara</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>Fuente</label>
+                  <input type="text" formControlName="source" [readOnly]="isReadOnly" placeholder="Ej. Herbario UNAM 2022">
+                </div>
+                <div class="form-field">
+                  <label>Última Actualización</label>
+                  <input type="date" formControlName="lastUpdated" [readOnly]="isReadOnly">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Notas</h3>
+              <div class="form-field full-width">
+                <label>Observaciones</label>
+                <textarea formControlName="notes" [readOnly]="isReadOnly" rows="3" placeholder="Observaciones adicionales..."></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions">
+            <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()"><mat-icon>edit</mat-icon> Editar</button>
+            <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+            <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()"><mat-icon>save</mat-icon> Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<app-confirmation-modal [isOpen]="showConfirmModal" title="Confirmar Cambios"
+  message="¿Estás seguro de que deseas guardar los cambios?" confirmColor="var(--accent-color)"
+  confirmText="Guardar" (confirmed)="executeSave()" (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

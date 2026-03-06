@@ -1,290 +1,285 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError, delay } from 'rxjs';
-import { finalize, map, tap } from 'rxjs/operators';
-import { AuthRepository } from '../../domain/repositories/auth.repository';
-// import { User } from '../../domain/models/user.entity'; <-- REMOVED IMPORT
-// import { USERS_MOCK } from '../repositories/mock-user.repository'; <-- REMOVED IMPORT
-import { LoadingService } from '../../application/services/loading.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import {
+  LoginRequest, LoginResult, LoginResponse, isLoginChallenge,
+  RegisterRequest, RegisterResponse,
+  RefreshRequest, LogoutRequest,
+  ValidateTokenRequest, ValidateTokenResponse,
+  VerifyEmailRequest, ResendVerificationRequest,
+  PasswordResetRequest, PasswordResetConfirm,
+  TwoFactorSetupResponse, TwoFactorVerifySetupRequest, TwoFactorVerifySetupResponse,
+  TwoFactorChallengeRequest, TwoFactorEmailCodeRequest, TwoFactorDisableRequest,
+  BackupCodesResponse, RegenerateBackupCodesResponse,
+  Session, OAuthAuthorizeResponse,
+  AuthUser, JwtPayload, ApiMessage
+} from '../../domain/models/auth.models';
 
-// --- DEFINED INTERFACE AND MOCK DATA DIRECTLY IN THIS FILE AS REQUESTED ---
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
-export interface User {
-    id: string;
-    userName: string;
-    firstName: string;
-    lastName: string;
-    password?: string;
-    email: string;
-    role: string;
-    birthdate: string;
-    nationality: string;
-    address: string;
-}
+  private readonly BASE = `${environment.gatewayUrl}/api/auth/api/v1/auth`;
+  private readonly ACCESS_KEY = 'access_token';
+  private readonly REFRESH_KEY = 'refresh_token';
+  private readonly USER_KEY = 'auth_user';
+  /** Refresh ~5 min before expiry; min 60s from now */
+  private readonly REFRESH_BUFFER_SEC = 300;
+  private refreshTimerId: ReturnType<typeof setTimeout> | null = null;
 
-export const USERS_MOCK: User[] = [
-    {
-        id: '1',
-        userName: 'admin',
-        firstName: 'Administrador',
-        lastName: 'Principal',
-        email: 'admin@quimicaalturas.com',
-        password: 'password123',
-        role: 'Administrador',
-        birthdate: '1990-01-01',
-        nationality: 'Mexicana',
-        address: 'Calle Principal 123, Veracruz, México'
-    },
-    {
-        id: '2',
-        userName: 'lruiz',
-        firstName: 'Laura',
-        lastName: 'Ruiz',
-        email: 'l.ruiz@quimicaalturas.com',
-        password: 'password123',
-        role: 'Investigador',
-        birthdate: '1985-05-15',
-        nationality: 'Mexicana',
-        address: 'Av. Las Palmas 456, Córdoba, México'
-    },
-    {
-        id: '3',
-        userName: 'mgarcia',
-        firstName: 'Miguel',
-        lastName: 'García',
-        email: 'm.garcia@quimicaalturas.com',
-        password: 'password123',
-        role: 'Administrador',
-        birthdate: '1992-11-20',
-        nationality: 'Mexicana',
-        address: 'Calle Benito Juárez 789, Orizaba, México'
-    },
-    {
-        id: '4',
-        userName: 'jlopez',
-        firstName: 'Juan',
-        lastName: 'López',
-        email: 'j.lopez@quimicaalturas.com',
-        password: 'password123',
-        role: 'Usuario',
-        birthdate: '1995-02-14',
-        nationality: 'Mexicana',
-        address: 'Av. Revolución 101, Xalapa, México'
-    },
-    {
-        id: '5',
-        userName: 'ana.martinez',
-        firstName: 'Ana',
-        lastName: 'Martínez',
-        email: 'ana.mtz@quimicaalturas.com',
-        password: 'password123',
-        role: 'Investigador',
-        birthdate: '1988-08-30',
-        nationality: 'Mexicana',
-        address: 'Calle 5 de Mayo 22, Coatepec, México'
-    },
-    {
-        id: '6',
-        userName: 'carlos.s',
-        firstName: 'Carlos',
-        lastName: 'Sánchez',
-        email: 'c.sanchez@quimicaalturas.com',
-        password: 'password123',
-        role: 'Administrador',
-        birthdate: '1982-12-12',
-        nationality: 'Mexicana',
-        address: 'Blvd. Córdoba-Fortín 55, Fortín, México'
-    },
-    {
-        id: '7',
-        userName: 'sofia.v',
-        firstName: 'Sofía',
-        lastName: 'Vázquez',
-        email: 'sofia.v@quimicaalturas.com',
-        password: 'password123',
-        role: 'Usuario',
-        birthdate: '1996-04-25',
-        nationality: 'Mexicana',
-        address: 'Calle Real 88, Orizaba, México'
-    },
-    {
-        id: '8',
-        userName: 'rhernandez',
-        firstName: 'Roberto',
-        lastName: 'Hernández',
-        email: 'r.hernandez@quimicaalturas.com',
-        password: 'password123',
-        role: 'Investigador',
-        birthdate: '1980-07-19',
-        nationality: 'Mexicana',
-        address: 'Av. Independencia 404, Veracruz, México'
-    },
-    {
-        id: '9',
-        userName: 'paty.g',
-        firstName: 'Patricia',
-        lastName: 'Gómez',
-        email: 'p.gomez@quimicaalturas.com',
-        password: 'password123',
-        role: 'Usuario',
-        birthdate: '1999-01-10',
-        nationality: 'Mexicana',
-        address: 'Calle Reforma 33, Boca del Río, México'
-    },
-    {
-        id: '10',
-        userName: 'd.torres',
-        firstName: 'Daniel',
-        lastName: 'Torres',
-        email: 'd.torres@quimicaalturas.com',
-        password: 'password123',
-        role: 'Usuario',
-        birthdate: '2000-05-05',
-        nationality: 'Mexicana',
-        address: 'Av. Xalapa 77, Xalapa, México'
-    },
-    {
-        id: '11',
-        userName: 'e.ramirez',
-        firstName: 'Elena',
-        lastName: 'Ramírez',
-        email: 'e.ramirez@quimicaalturas.com',
-        password: 'password123',
-        role: 'Investigador',
-        birthdate: '1987-03-22',
-        nationality: 'Mexicana',
-        address: 'Calle Madero 12, Zongolica, México'
-    },
-    {
-        id: '12',
-        userName: 'fer.c',
-        firstName: 'Fernando',
-        lastName: 'Castillo',
-        email: 'f.castillo@quimicaalturas.com',
-        password: 'password123',
-        role: 'Administrador',
-        birthdate: '1993-09-15',
-        nationality: 'Mexicana',
-        address: 'Av. 1 505, Córdoba, México'
-    },
-    {
-        id: '13',
-        userName: 'g.jimenez',
-        firstName: 'Gabriela',
-        lastName: 'Jiménez',
-        email: 'g.jimenez@quimicaalturas.com',
-        password: 'password123',
-        role: 'Administrador',
-        birthdate: '1984-11-08',
-        nationality: 'Mexicana',
-        address: 'Calle Sur 10 202, Orizaba, México'
-    },
-    {
-        id: '14',
-        userName: 'h.diaz',
-        firstName: 'Héctor',
-        lastName: 'Díaz',
-        email: 'h.diaz@quimicaalturas.com',
-        password: 'password123',
-        role: 'Usuario',
-        birthdate: '1997-06-30',
-        nationality: 'Mexicana',
-        address: 'Av. Ruiz Cortines 900, Xalapa, México'
-    },
-    {
-        id: '15',
-        userName: 'i.morales',
-        firstName: 'Isabel',
-        lastName: 'Morales',
-        email: 'i.morales@quimicaalturas.com',
-        password: 'password123',
-        role: 'Investigador',
-        birthdate: '1990-02-18',
-        nationality: 'Mexicana',
-        address: 'Calle Hidalgo 45, Huatusco, México'
-    }
-];
+  private currentUserSubject = new BehaviorSubject<AuthUser | null>(this.loadStoredUser());
+  readonly currentUser$ = this.currentUserSubject.asObservable();
+  readonly isAuthenticated$ = this.currentUser$.pipe(map(u => !!u));
 
-@Injectable({
-    providedIn: 'root'
-})
-export class AuthService extends AuthRepository {
-    private loadingService = inject(LoadingService);
-    private currentUserSubject: BehaviorSubject<User | null>;
-    public currentUser: Observable<User | null>;
-    private readonly STORAGE_KEY = 'current_user';
-    private localUsers: User[] = [...USERS_MOCK]; // Clone to allow local additions
+  get currentUserValue(): AuthUser | null {
+    return this.currentUserSubject.value;
+  }
 
-    constructor() {
-        super();
-        const storedUser = localStorage.getItem(this.STORAGE_KEY);
-        this.currentUserSubject = new BehaviorSubject<User | null>(storedUser ? JSON.parse(storedUser) : null);
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  get accessToken(): string | null {
+    return localStorage.getItem(this.ACCESS_KEY);
+  }
 
-    // --- API IMPLEMENTATION NOTE ---
-    // In the future, replace the logic inside these methods with HTTP calls to your API.
-    // The method signatures can remain the same (returning Observables), making the transition seamless.
+  get refreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_KEY);
+  }
 
-    login(email: string, password?: string): Observable<User | undefined> {
-        this.loadingService.show();
-        // MOCK LOGIC: Find user by email (and password if checking)
-        const user = this.localUsers.find(u => u.email === email && (password ? u.password === password : true));
+  // ─── Authentication ───────────────────────────────────────────────
 
-        if (user) {
-            // Simulate API delay
-            return of(user).pipe(
-                delay(2000),
-                tap(u => {
-                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(u));
-                    this.currentUserSubject.next(u);
-                }),
-                finalize(() => this.loadingService.hide())
-            );
-        } else {
-            this.loadingService.hide(); // Hide manually since we are throwing error directly
-            return throwError(() => new Error('Invalid credentials'));
+  login(credentials: LoginRequest): Observable<LoginResult> {
+    return this.http.post<LoginResult>(`${this.BASE}/login`, credentials).pipe(
+      tap(result => {
+        if (!isLoginChallenge(result)) {
+          this.storeTokens(result);
         }
+      })
+    );
+  }
+
+  register(data: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.BASE}/register`, data);
+  }
+
+  /** Validate access token; returns user_id, email, role, roles for guards and UI. */
+  validateToken(): Observable<ValidateTokenResponse> {
+    const token = this.accessToken;
+    if (!token) {
+      return throwError(() => new Error('No access token'));
+    }
+    return this.http.post<ValidateTokenResponse>(`${this.BASE}/validate`, { token } as ValidateTokenRequest);
+  }
+
+  refreshAccessToken(): Observable<LoginResponse> {
+    const refresh_token = this.refreshToken;
+    if (!refresh_token) {
+      return throwError(() => new Error('No refresh token'));
+    }
+    return this.http.post<LoginResponse>(`${this.BASE}/refresh`, { refresh_token } as RefreshRequest).pipe(
+      tap(tokens => this.storeTokens(tokens)),
+      catchError(err => {
+        this.clearSession();
+        this.router.navigate(['/login']);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  logout(): Observable<void> {
+    const body: LogoutRequest = {
+      refresh_token: this.refreshToken || '',
+      access_token: this.accessToken || undefined,
+    };
+    const obs = this.http.post<void>(`${this.BASE}/logout`, body).pipe(
+      catchError(() => of(undefined as unknown as void))
+    );
+    obs.subscribe(() => {
+      this.clearSession();
+      this.router.navigate(['/login']);
+    });
+    return obs;
+  }
+
+  // ─── Email Verification ───────────────────────────────────────────
+
+  verifyEmail(data: VerifyEmailRequest): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(`${this.BASE}/verify-email`, data);
+  }
+
+  resendVerification(data: ResendVerificationRequest): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(`${this.BASE}/resend-verification`, data);
+  }
+
+  // ─── Password Reset ───────────────────────────────────────────────
+
+  requestPasswordReset(data: PasswordResetRequest): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(`${this.BASE}/password/reset-request`, data);
+  }
+
+  resetPassword(data: PasswordResetConfirm): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(`${this.BASE}/password/reset`, data);
+  }
+
+  // ─── Two-Factor Authentication ────────────────────────────────────
+
+  setup2FA(user_id: string): Observable<TwoFactorSetupResponse> {
+    return this.http.post<TwoFactorSetupResponse>(`${this.BASE}/2fa/setup`, { user_id });
+  }
+
+  verifySetup2FA(data: TwoFactorVerifySetupRequest): Observable<TwoFactorVerifySetupResponse> {
+    return this.http.post<TwoFactorVerifySetupResponse>(`${this.BASE}/2fa/verify-setup`, data);
+  }
+
+  challenge2FA(data: TwoFactorChallengeRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.BASE}/2fa/challenge`, data).pipe(
+      tap(tokens => this.storeTokens(tokens))
+    );
+  }
+
+  requestEmailCode2FA(data: TwoFactorEmailCodeRequest): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(`${this.BASE}/2fa/request-email-code`, data);
+  }
+
+  disable2FA(data: TwoFactorDisableRequest): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(`${this.BASE}/2fa/disable`, data);
+  }
+
+  getBackupCodesCount(user_id: string): Observable<BackupCodesResponse> {
+    const params = new HttpParams().set('user_id', user_id);
+    return this.http.get<BackupCodesResponse>(`${this.BASE}/2fa/backup-codes`, { params });
+  }
+
+  regenerateBackupCodes(user_id: string, password: string): Observable<RegenerateBackupCodesResponse> {
+    const params = new HttpParams().set('user_id', user_id).set('password', password);
+    return this.http.post<RegenerateBackupCodesResponse>(
+      `${this.BASE}/2fa/regenerate-backup-codes`, null, { params }
+    );
+  }
+
+  // ─── Sessions ─────────────────────────────────────────────────────
+
+  listSessions(): Observable<Session[]> {
+    return this.http.get<Session[]>(`${this.BASE}/sessions/`);
+  }
+
+  revokeSession(sessionId: string): Observable<void> {
+    return this.http.delete<void>(`${this.BASE}/sessions/${sessionId}`);
+  }
+
+  revokeAllSessions(): Observable<void> {
+    return this.http.delete<void>(`${this.BASE}/sessions/all`);
+  }
+
+  trustDevice(sessionId: string): Observable<void> {
+    return this.http.post<void>(`${this.BASE}/sessions/devices/trust/${sessionId}`, null);
+  }
+
+  untrustDevice(sessionId: string): Observable<void> {
+    return this.http.delete<void>(`${this.BASE}/sessions/devices/trust/${sessionId}`);
+  }
+
+  listTrustedDevices(): Observable<Session[]> {
+    return this.http.get<Session[]>(`${this.BASE}/sessions/devices`);
+  }
+
+  // ─── OAuth ────────────────────────────────────────────────────────
+
+  getOAuthUrl(provider: 'google' | 'github'): Observable<OAuthAuthorizeResponse> {
+    return this.http.get<OAuthAuthorizeResponse>(`${this.BASE}/oauth/${provider}/authorize`);
+  }
+
+  handleOAuthCallback(provider: 'google' | 'github', code: string, state: string): Observable<LoginResponse> {
+    const params = new HttpParams().set('code', code).set('state', state);
+    return this.http.get<LoginResponse>(`${this.BASE}/oauth/${provider}/callback`, { params }).pipe(
+      tap(tokens => this.storeTokens(tokens))
+    );
+  }
+
+  // ─── Token & Session Helpers ──────────────────────────────────────
+
+  storeTokens(tokens: LoginResponse): void {
+    localStorage.setItem(this.ACCESS_KEY, tokens.access_token);
+    localStorage.setItem(this.REFRESH_KEY, tokens.refresh_token);
+
+    const user = this.decodeUser(tokens.access_token);
+    if (user) {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      this.currentUserSubject.next(user);
     }
 
-    register(user: User): Observable<User> {
-        this.loadingService.show();
-        // MOCK LOGIC: Add user to local array
-        // Check if email already exists
-        if (this.localUsers.find(u => u.email === user.email)) {
-            this.loadingService.hide();
-            return throwError(() => new Error('Email already registered'));
-        }
+    this.scheduleRefresh(tokens.expires_in);
+  }
 
-        const newUser = { ...user, id: `usr_${Date.now()}` }; // Generate mock ID
-        this.localUsers.push(newUser);
-
-        // Auto-login after register
-        return of(newUser).pipe(
-            tap(u => {
-                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(u));
-                this.currentUserSubject.next(u);
-            }),
-            finalize(() => this.loadingService.hide())
-        );
+  /** Schedule proactive refresh when ~5 min left (using expires_in from API). */
+  private scheduleRefresh(expiresInSeconds: number): void {
+    if (this.refreshTimerId != null) {
+      clearTimeout(this.refreshTimerId);
+      this.refreshTimerId = null;
     }
+    const bufferSec = Math.min(this.REFRESH_BUFFER_SEC, Math.max(0, expiresInSeconds - 60));
+    const delayMs = (expiresInSeconds - bufferSec) * 1000;
+    if (delayMs < 1000) return;
+    this.refreshTimerId = setTimeout(() => {
+      this.refreshTimerId = null;
+      this.refreshAccessToken().subscribe({
+        error: () => { /* clearSession + redirect handled by interceptor or refresh error */ }
+      });
+    }, delayMs);
+  }
 
-    logout(): void {
-        localStorage.removeItem(this.STORAGE_KEY);
-        this.currentUserSubject.next(null);
+  clearSession(): void {
+    if (this.refreshTimerId != null) {
+      clearTimeout(this.refreshTimerId);
+      this.refreshTimerId = null;
     }
+    localStorage.removeItem(this.ACCESS_KEY);
+    localStorage.removeItem(this.REFRESH_KEY);
+    localStorage.removeItem(this.USER_KEY);
+    this.currentUserSubject.next(null);
+  }
 
-    getCurrentUser(): Observable<User | null> {
-        return this.currentUser;
+  isTokenExpired(): boolean {
+    const token = this.accessToken;
+    if (!token) return true;
+    try {
+      const payload = this.decodeJwt(token);
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
     }
+  }
 
-    isAuthenticated(): Observable<boolean> {
-        return this.currentUser.pipe(map(user => !!user));
+  private loadStoredUser(): AuthUser | null {
+    try {
+      const raw = localStorage.getItem(this.USER_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
     }
+  }
 
-    /**
-     * Helper to get the current value without subscription
-     */
-    public get currentUserValue(): User | null {
-        return this.currentUserSubject.value;
+  private decodeUser(token: string): AuthUser | null {
+    try {
+      const payload = this.decodeJwt(token);
+      return {
+        id: payload.sub,
+        email: payload.email,
+        first_name: '',
+        last_name: '',
+        roles: payload.roles || [],
+      };
+    } catch {
+      return null;
     }
+  }
+
+  private decodeJwt(token: string): JwtPayload {
+    const parts = token.split('.');
+    if (parts.length !== 3) throw new Error('Invalid JWT');
+    const payload = parts[1];
+    const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+    return JSON.parse(decoded);
+  }
 }

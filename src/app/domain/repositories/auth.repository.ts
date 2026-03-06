@@ -1,10 +1,14 @@
 import { Observable } from 'rxjs';
-import { User } from '../models/user.entity';
+import {
+  LoginRequest, LoginResult,
+  RegisterRequest, RegisterResponse,
+  AuthUser
+} from '../models/auth.models';
 
 export abstract class AuthRepository {
-    abstract login(email: string, password?: string): Observable<User | undefined>;
-    abstract register(user: User): Observable<User>;
-    abstract logout(): void;
-    abstract getCurrentUser(): Observable<User | null>;
+    abstract login(credentials: LoginRequest): Observable<LoginResult>;
+    abstract register(data: RegisterRequest): Observable<RegisterResponse>;
+    abstract logout(): Observable<void>;
+    abstract getCurrentUser(): Observable<AuthUser | null>;
     abstract isAuthenticated(): Observable<boolean>;
 }
