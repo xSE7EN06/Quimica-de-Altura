@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,8 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { LoadingService } from '../../../../application/services/loading.service';
-import { Router } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
+import { isLoginChallenge } from '../../../../domain/models/auth.models';
+
 @Component({
   selector: 'app-web-login',
   standalone: true,
@@ -18,35 +21,108 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule,
+    RouterLink,
   ],
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss']
 })
 export class WebLoginPage {
-  private loadingService = inject(LoadingService);
+  private authService = inject(AuthService);
   private router = inject(Router);
+
+  email = '';
+  password = '';
   showPassword = false;
   rememberMe = false;
+
+  loading = signal(false);
+  errorMessage = signal('');
+  /** Show link to verify-email when login fails with 401 (e.g. unverified email) */
+  showVerifyEmailLink = signal(false);
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  goToDashboard() {
-    // 1. Mostrar loader
-    this.loadingService.show();
-    console.log("Esperando 6 segundos...");
+  login() {
+    this.errorMessage.set('');
+    this.showVerifyEmailLink.set(false);
 
-    // 2. Usar setTimeout para esperar
-    setTimeout(() => {
-      // 3. Ocultar loader (aunque al cambiar de página a veces no es necesario, es buena práctica)
-      this.loadingService.hide();
+    if (!this.email || !this.password) {
+      this.errorMessage.set('Por favor ingresa tu correo y contraseña.');
+      return;
+    }
 
-      // 4. Navegar SIN recargar la página
-      this.router.navigate(['/dashboard']);
+    this.loading.set(true);
 
-      console.log("Yendo al dashboard");
-    }, 6000); // 6000 milisegundos = 6 segundos
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (result) => {
+        this.loading.set(false);
+        if (isLoginChallenge(result)) {
+          this.router.navigate(['/two-factor'], {
+            queryParams: { challenge: result.challenge_token }
+          });
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      error: (err) => {
+        this.loading.set(false);
+        const body = err.error ?? {};
+        const detail = body.detail && typeof body.detail === 'object' ? body.detail : {};
+        const apiMessage = (detail.message ?? (typeof body.detail === 'string' ? body.detail : null) ?? body.message ?? '') as string;
+        const msgLower = (apiMessage || '').toLowerCase();
+        const hasUnverifiedCode =
+          detail.code === 'email_not_verified' ||
+          body.code === 'email_not_verified' ||
+          /email.*verif|verif.*email|not verified|unverified|never verified|verify your email|please verify/i.test(msgLower);
+        // API may return 403 (per doc) or 401 for unverified; redirect when body indicates it
+        const isUnverified =
+          (err.status === 403 || err.status === 401) && hasUnverifiedCode;
+
+        if (isUnverified) {
+          this.router.navigate(['/verify-email'], {
+            queryParams: { email: this.email, resend: '1', ...(apiMessage && { message: apiMessage }) }
+          });
+          return;
+        }
+        if (err.status === 401) {
+          this.errorMessage.set('Credenciales inválidas o correo sin verificar. Verifica tu correo y contraseña.');
+          this.showVerifyEmailLink.set(true);
+        } else if (err.status === 429) {
+          this.errorMessage.set('Demasiados intentos. Espera un momento antes de reintentar.');
+        } else {
+          this.errorMessage.set('Error de conexión. Intenta de nuevo más tarde.');
+        }
+      }
+    });
+  }
+
+  goToVerifyEmail() {
+    this.router.navigate(['/verify-email'], {
+      queryParams: { email: this.email || undefined, resend: '1' }
+    });
+  }
+
+  loginWithGoogle() {
+    this.authService.getOAuthUrl('google').subscribe({
+      next: (res) => {
+        sessionStorage.setItem('oauth_state', res.state);
+        window.location.href = res.authorization_url;
+      },
+      error: () => this.errorMessage.set('No se pudo conectar con Google.')
+    });
+  }
+
+  loginWithGitHub() {
+    this.authService.getOAuthUrl('github').subscribe({
+      next: (res) => {
+        sessionStorage.setItem('oauth_state', res.state);
+        window.location.href = res.authorization_url;
+      },
+      error: () => this.errorMessage.set('No se pudo conectar con GitHub.')
+    });
   }
 }
