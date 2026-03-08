@@ -1,0 +1,65 @@
+<ion-content class="ion-padding" style="--background: #ffffff;">
+    <div class="verify-container">
+
+        <!-- Icon Badge -->
+        <div class="icon-wrapper bounce-in">
+            <div class="icon-circle">
+                <ion-icon name="lock-closed"></ion-icon>
+            </div>
+        </div>
+
+        <!-- Text Headers -->
+        <div class="text-center fade-in">
+            <h2 class="title">Código de Verificación</h2>
+            <p class="subtitle">Hemos enviado el código a:<br>
+                <strong *ngIf="email">{{ email }}</strong>
+                <strong *ngIf="!email">tu correo registrado</strong>
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="verifyForm" (ngSubmit)="verify()" class="fade-in">
+
+            <!-- OTP Boxes -->
+            <div class="otp-container">
+                <input #otpInput *ngFor="let control of otpControls; let i = index" [formControlName]="control"
+                    type="tel" maxlength="1" class="otp-box" (input)="onInputChange($event, i)"
+                    (keydown)="onKeyDown($event, i)" autocomplete="off" />
+            </div>
+
+            <!-- Submit Button -->
+            <ion-button expand="block" type="submit" [disabled]="!verifyForm.valid || isLoading" class="submit-btn">
+                <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+                <span *ngIf="!isLoading">Verificar</span>
+            </ion-button>
+
+            <!-- Resend Text -->
+            <div class="resend-container">
+                <span class="resend-text">¿No recibiste el código? </span>
+                <a class="resend-link" (click)="resendCode()">Reenviar</a>
+            </div>
+
+        </form>
+
+        <!-- Success Modal -->
+        <ion-modal [isOpen]="isSuccessModalOpen" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5]"
+            (didDismiss)="goToLogin()">
+            <ng-template>
+                <div class="success-modal-content">
+                    <div class="modal-icon-wrapper">
+                        <ion-icon name="checkmark"></ion-icon>
+                    </div>
+                    <h3 class="modal-title">¡Registro Exitoso!</h3>
+                    <p class="modal-text">
+                        Felicidades, tu cuenta ha sido verificada correctamente. Ahora puedes disfrutar de nuestros
+                        servicios.
+                    </p>
+                    <ion-button expand="block" (click)="goToLogin()" class="modal-btn">
+                        Regresar al Login
+                    </ion-button>
+                </div>
+            </ng-template>
+        </ion-modal>
+
+    </div>
+</ion-content>

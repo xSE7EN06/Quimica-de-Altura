@@ -40,6 +40,14 @@ export const MOBILE_ROUTES: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'verify-email',
+        loadComponent: () => import('./pages/verify-email/verify-email.page').then(m => m.VerifyEmailPage)
+    },
+    {
+        path: 'two-factor',
+        loadComponent: () => import('./pages/two-factor/two-factor.page').then(m => m.TwoFactorPage)
+    },
+    {
         path: 'account',
         loadComponent: () => import('./pages/account/account.page').then(m => m.AccountPage)
     },

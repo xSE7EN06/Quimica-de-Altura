@@ -32,14 +32,16 @@ export class LoginPage implements OnInit {
         addIcons({ mail, lockClosed, person });
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            password: ['', [Validators.required, Validators.minLength(8)]]
         });
 
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>\[\]\\/_+\-=~`]).*$/;
+
         this.registerForm = this.fb.group({
-            firstName: ['', [Validators.required, Validators.minLength(2)]],
-            lastName: ['', [Validators.required, Validators.minLength(2)]],
+            first_name: ['', [Validators.required, Validators.minLength(2)]],
+            last_name: ['', [Validators.required, Validators.minLength(2)]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(6)]],
+            password: ['', [Validators.required, Validators.minLength(12), Validators.pattern(passwordRegex)]],
             confirmPassword: ['', [Validators.required]]
         }, { validators: this.passwordMatchValidator });
     }
@@ -57,10 +59,18 @@ export class LoginPage implements OnInit {
     }
 
     async onSubmit() {
-        if (this.segmentValue === 'login' && this.loginForm.valid) {
-            await this.handleLogin();
-        } else if (this.segmentValue === 'register' && this.registerForm.valid) {
-            await this.handleRegister();
+        if (this.segmentValue === 'login') {
+            if (this.loginForm.valid) {
+                await this.handleLogin();
+            } else {
+                await this.showAlert('Datos incompletos', 'Asegúrate de ingresar un correo electrónico válido y una contraseña de al menos 8 caracteres sin espacios.');
+            }
+        } else if (this.segmentValue === 'register') {
+            if (this.registerForm.valid) {
+                await this.handleRegister();
+            } else {
+                await this.showAlert('Contraseña o datos inválidos', 'Por favor, llena todos los campos correctamente. Tu contraseña debe tener al menos 12 caracteres, incluir una mayúscula, una minúscula, un número, un carácter especial y ambas contraseñas deben coincidir.');
+            }
         }
     }
 
@@ -68,36 +78,49 @@ export class LoginPage implements OnInit {
         const { email, password } = this.loginForm.value;
 
         this.authService.login({ email, password }).subscribe({
-            next: async (result) => {
-                if (isLoginChallenge(result)) {
-                    await this.showAlert('2FA', 'Se requiere verificación de dos factores. Usa la versión web.');
+            next: async (res) => {
+                if (isLoginChallenge(res)) {
+                    this.router.navigate(['/two-factor'], { queryParams: { token: res.challenge_token } });
                 } else {
                     await this.showSuccessModal();
                     this.router.navigate(['/home']);
                 }
             },
             error: async (err) => {
-                const msg = err.status === 401 ? 'Credenciales incorrectas' : 'Error de conexión';
-                await this.showAlert('Error', msg);
+                const detail = err.error?.detail;
+                const message = typeof detail === 'string' ? detail : (detail?.message || err.error?.message || 'Credenciales incorrectas');
+                const code = detail?.code;
+
+                if (code === 'locked' || err.error?.locked) {
+                    await this.showAlert('Cuenta Bloqueada', 'Demasiados intentos. Tu cuenta ha sido bloqueada temporalmente.');
+                } else if (code === 'banned' || err.error?.banned) {
+                    await this.showAlert('Cuenta Suspendida', 'Tu cuenta ha sido baneada.');
+                } else if (code === 'email_not_verified' || err.error?.email_not_verified) {
+                    this.router.navigate(['/verify-email'], { queryParams: { email } });
+                } else {
+                    const msg = err.status === 401 ? 'Credenciales incorrectas' : message;
+                    await this.showAlert('Error', msg);
+                }
             }
         });
     }
 
     async handleRegister() {
         const formValue = this.registerForm.value;
-
-        this.authService.register({
+        const newUser = {
+            first_name: formValue.first_name,
+            last_name: formValue.last_name,
             email: formValue.email,
-            password: formValue.password,
-            first_name: formValue.firstName,
-            last_name: formValue.lastName,
-        }).subscribe({
-            next: async () => {
-                await this.showSuccessModal();
-                await this.showAlert('Verificación', 'Revisa tu correo para verificar tu cuenta.');
+            password: formValue.password
+        };
+
+        this.authService.register(newUser).subscribe({
+            next: async (res) => {
+                await this.showAlert('Registro exitoso', 'Por favor verifica tu correo para continuar.');
+                this.router.navigate(['/verify-email'], { queryParams: { email: newUser.email } });
             },
             error: async (err) => {
-                const msg = err.status === 409 ? 'Este correo ya está registrado' : 'No se pudo registrar';
+                const msg = err.status === 409 ? 'Este correo ya está registrado' : (err.error?.message || 'No se pudo registrar');
                 await this.showAlert('Error', msg);
             }
         });

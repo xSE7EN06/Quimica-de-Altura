@@ -43,6 +43,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { loadingInterceptor } from './infrastructure/interceptors/loading.interceptor';
 import { authInterceptor } from './infrastructure/interceptors/auth.interceptor';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
