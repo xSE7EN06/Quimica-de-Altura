@@ -17,12 +17,14 @@ import { MockArticleRepository } from './infrastructure/repositories/mock-articl
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { loadingInterceptor } from './infrastructure/interceptors/loading.interceptor';
+import { authInterceptor } from './infrastructure/interceptors/auth.interceptor';
+import { refreshInterceptor } from './infrastructure/interceptors/refresh.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([loadingInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, refreshInterceptor, loadingInterceptor])),
     provideIonicAngular({}),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
