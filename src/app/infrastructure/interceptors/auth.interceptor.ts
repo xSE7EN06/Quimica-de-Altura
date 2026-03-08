@@ -1,33 +1,49 @@
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { TokenService } from '../services/token.service';
+import { catchError, switchMap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
-export const authInterceptor: HttpInterceptorFn = (
-    req: HttpRequest<any>,
-    next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
-    const tokenService = inject(TokenService);
-    const token = tokenService.getAccessToken();
+let isRefreshing = false;
 
-    let authReq = req;
-    const url = req.url;
+export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
 
-    const isPublicUrl = url.includes('/login') || url.includes('/register') || url.includes('/verify-email') || url.includes('/2fa/challenge') || url.includes('/resend-verification') || url.includes('/refresh') || url.includes('/validate');
+  const skipUrls = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/validate', '/auth/verify-email',
+    '/auth/resend-verification', '/auth/password/', '/auth/2fa/challenge',
+    '/auth/2fa/request-email-code', '/auth/oauth/'];
+  const shouldSkip = skipUrls.some(url => req.url.includes(url));
 
-    if (token && !isPublicUrl) {
-        authReq = req.clone({
-            setHeaders: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-    }
+  if (shouldSkip || !auth.accessToken) {
+    return next(req);
+  }
 
-    return next(authReq).pipe(
-        catchError((error: HttpErrorResponse) => {
-            // Return and let refresh interceptor handle 401
+  const authed = req.clone({
+    setHeaders: { Authorization: `Bearer ${auth.accessToken}` }
+  });
+
+  return next(authed).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401 && !isRefreshing && !req.url.includes('/auth/refresh')) {
+        isRefreshing = true;
+        return auth.refreshAccessToken().pipe(
+          switchMap(tokens => {
+            isRefreshing = false;
+            const retried = req.clone({
+              setHeaders: { Authorization: `Bearer ${tokens.access_token}` }
+            });
+            return next(retried);
+          }),
+          catchError(() => {
+            isRefreshing = false;
+            auth.clearSession();
+            router.navigate(['/login']);
             return throwError(() => error);
-        })
-    );
+          })
+        );
+      }
+      return throwError(() => error);
+    })
+  );
 };

@@ -1,0 +1,79 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="audit-log-modal">
+    <ng-template>
+        <div class="modal-container" *ngIf="item">
+
+            <div class="modal-wrapper">
+
+                <div class="modal-header">
+                    <div class="header-top">
+                        <span class="badge" [ngClass]="getActionBadgeClass(item.action)">
+                            <mat-icon class="header-icon">history</mat-icon>
+                            Registro de Auditoría
+                        </span>
+                        <button class="close-btn" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                    <h2>{{ item.resource }} / {{ item.resourceId }}</h2>
+                    <p>
+                        <span class="badge" [ngClass]="getActionBadgeClass(item.action)">{{ item.action }}</span>
+                        &nbsp;por {{ item.userName }}
+                    </p>
+                </div>
+
+                <div class="modal-scroll-content">
+
+                    <div class="detail-section">
+                        <h3>Información del Evento</h3>
+
+                        <div class="detail-grid">
+                            <div class="detail-field">
+                                <label>Usuario</label>
+                                <span class="detail-value">{{ item.userName }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <label>Acción</label>
+                                <span class="badge" [ngClass]="getActionBadgeClass(item.action)">{{ item.action }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <label>Recurso</label>
+                                <span class="detail-value">{{ item.resource }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <label>ID de Recurso</label>
+                                <span class="detail-value mono">{{ item.resourceId }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <label>Fecha y Hora</label>
+                                <span class="detail-value">{{ item.timestamp }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <label>Dirección IP</label>
+                                <span class="detail-value mono">{{ item.ipAddress || '—' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section" *ngIf="item.changes">
+                        <h3>Cambios Registrados</h3>
+                        <pre class="changes-block">{{ getPrettyChanges(item.changes) }}</pre>
+                    </div>
+
+                    <div class="detail-section" *ngIf="!item.changes">
+                        <p class="no-changes">No se registraron cambios de campo para este evento.</p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <div class="footer-actions">
+                        <button class="btn-close" (click)="close()">
+                            <mat-icon>close</mat-icon> Cerrar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>

@@ -1,7 +1,7 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="close()" class="article-management-modal">
     <ng-template>
-        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
-            <!-- Navigation Arrows -->
+        <div class="modal-container">
+            <!-- Navigation Arrows — outside the card -->
             <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
                 <mat-icon>chevron_left</mat-icon>
             </button>
@@ -9,6 +9,7 @@
                 <mat-icon>chevron_right</mat-icon>
             </button>
 
+        <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
             <div class="modal-header">
                 <div class="header-icon">
                     <mat-icon>{{ mode === 'add' ? 'library_add' : 'menu_book' }}</mat-icon>
@@ -35,47 +36,80 @@
                     </div>
                 </div>
 
-                <div class="form-grid">
+                <form [formGroup]="articleForm" class="form-grid">
                     <div class="form-group full">
                         <label>Título de la Investigación</label>
-                        <input type="text" [(ngModel)]="article.title" [disabled]="mode === 'view'"
+                        <input type="text" formControlName="title" [disabled]="mode === 'view'"
                             placeholder="Ej. Análisis de alcaloides en plantas medicinales...">
+                        <div class="field-error" *ngIf="articleForm.get('title')?.invalid && articleForm.get('title')?.touched">
+                            <span *ngIf="articleForm.get('title')?.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="articleForm.get('title')?.errors?.['minlength']">Mínimo {{ articleForm.get('title')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                            <span *ngIf="articleForm.get('title')?.errors?.['maxlength']">Máximo {{ articleForm.get('title')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label>Año de Publicación</label>
-                        <input type="number" [(ngModel)]="article.year" [disabled]="mode === 'view'">
+                        <input type="number" formControlName="year" [disabled]="mode === 'view'">
+                        <div class="field-error" *ngIf="articleForm.get('year')?.invalid && articleForm.get('year')?.touched">
+                            <span *ngIf="articleForm.get('year')?.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="articleForm.get('year')?.errors?.['min']">El año mínimo es 1900.</span>
+                            <span *ngIf="articleForm.get('year')?.errors?.['max']">El año no puede ser mayor al actual ({{ currentYear }}).</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>País de Origen</label>
-                        <input type="text" [(ngModel)]="article.country" [disabled]="mode === 'view'"
+                        <input type="text" formControlName="country" [disabled]="mode === 'view'"
                             placeholder="México, Perú, etc.">
+                        <div class="field-error" *ngIf="articleForm.get('country')?.invalid && articleForm.get('country')?.touched">
+                            <span *ngIf="articleForm.get('country')?.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="articleForm.get('country')?.errors?.['minlength']">Mínimo {{ articleForm.get('country')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                            <span *ngIf="articleForm.get('country')?.errors?.['maxlength']">Máximo {{ articleForm.get('country')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                        </div>
                     </div>
 
                     <div class="form-group full">
                         <label>URL / DOI</label>
-                        <input type="text" [(ngModel)]="article.doi" [disabled]="mode === 'view'"
+                        <input type="text" formControlName="doi" [disabled]="mode === 'view'"
                             placeholder="https://doi.org/10.xxxx/xxxx">
+                        <div class="field-error" *ngIf="articleForm.get('doi')?.invalid && articleForm.get('doi')?.touched">
+                            <span *ngIf="articleForm.get('doi')?.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="articleForm.get('doi')?.errors?.['pattern']">Debe ser una URL válida o un DOI con formato 10.XXXX/...</span>
+                        </div>
                     </div>
 
                     <div class="form-group full">
                         <label>Autores (Separados por coma)</label>
-                        <input type="text" [(ngModel)]="authorsList" [disabled]="mode === 'view'"
+                        <input type="text" formControlName="authors" [disabled]="mode === 'view'"
                             placeholder="Pérez, J., Smith, A., etc.">
+                        <div class="field-error" *ngIf="articleForm.get('authors')?.invalid && articleForm.get('authors')?.touched">
+                            <span *ngIf="articleForm.get('authors')?.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="articleForm.get('authors')?.errors?.['minlength']">Mínimo {{ articleForm.get('authors')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                            <span *ngIf="articleForm.get('authors')?.errors?.['maxlength']">Máximo {{ articleForm.get('authors')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                        </div>
                     </div>
 
                     <div class="form-group full">
-                        <label>Palabras Clave (Separadas por coma)</label>
-                        <input type="text" [(ngModel)]="keywordsList" [disabled]="mode === 'view'"
+                        <label>Palabras Clave (Separadas por coma, opcional)</label>
+                        <input type="text" formControlName="keywords" [disabled]="mode === 'view'"
                             placeholder="Química, Botánica, Medicina...">
+                        <div class="field-error" *ngIf="articleForm.get('keywords')?.invalid && articleForm.get('keywords')?.touched">
+                            <span *ngIf="articleForm.get('keywords')?.errors?.['maxlength']">Máximo {{ articleForm.get('keywords')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                        </div>
                     </div>
 
                     <div class="form-group full">
                         <label>Resumen / Abstract</label>
-                        <textarea [(ngModel)]="article.abstract" [disabled]="mode === 'view'" rows="6"
+                        <textarea formControlName="abstract" [disabled]="mode === 'view'" rows="6"
                             placeholder="Resumen detallado de la investigación..."></textarea>
+                        <div class="field-error" *ngIf="articleForm.get('abstract')?.invalid && articleForm.get('abstract')?.touched">
+                            <span *ngIf="articleForm.get('abstract')?.errors?.['required']">Este campo es obligatorio.</span>
+                            <span *ngIf="articleForm.get('abstract')?.errors?.['minlength']">Mínimo {{ articleForm.get('abstract')?.errors?.['minlength'].requiredLength }} caracteres.</span>
+                            <span *ngIf="articleForm.get('abstract')?.errors?.['maxlength']">Máximo {{ articleForm.get('abstract')?.errors?.['maxlength'].requiredLength }} caracteres.</span>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
 
             <div class="modal-footer" *ngIf="mode !== 'view'">
@@ -91,6 +125,7 @@
                     <mat-icon>edit</mat-icon> Editar Artículo
                 </button>
             </div>
+        </div>
         </div>
     </ng-template>
 </ion-modal>

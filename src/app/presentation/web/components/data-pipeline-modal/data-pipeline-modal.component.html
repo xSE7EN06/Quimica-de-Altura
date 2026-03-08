@@ -1,0 +1,119 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onDidDismiss()" class="data-pipeline-modal">
+    <ng-template>
+        <div class="modal-container">
+            <button class="nav-arrow prev" *ngIf="hasPrevious && mode !== 'add'" (click)="prev.emit()" title="Anterior">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav-arrow next" *ngIf="hasNext && mode !== 'add'" (click)="next.emit()" title="Siguiente">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+
+            <div class="modal-wrapper" [class.is-viewing]="mode === 'view'">
+                <div class="modal-header-banner">
+                    <div class="header-overlay">
+                        <button class="close-btn" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <div class="header-content">
+                            <span class="category-badge">Pipeline de Datos</span>
+                            <h1>{{ mode === 'add' ? 'Nuevo Pipeline' : (form.get('name')?.value || 'Sin nombre') }}</h1>
+                            <p class="subtitle-header" *ngIf="mode !== 'add'">
+                                <span class="status-badge-header {{ form.get('status')?.value }}">
+                                    {{ getStatusLabel(form.get('status')?.value) }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-scroll-content">
+                    <form [formGroup]="form">
+                        <div class="form-section">
+                            <h3>Información del Pipeline</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Nombre</label>
+                                    <input type="text" formControlName="name" [readOnly]="isReadOnly"
+                                        placeholder="Ej. Pipeline GBIF">
+                                    <div class="field-error" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Fuente</label>
+                                    <input type="text" formControlName="source" [readOnly]="isReadOnly"
+                                        placeholder="Ej. GBIF, PubChem">
+                                    <div class="field-error" *ngIf="form.get('source')?.invalid && form.get('source')?.touched">
+                                        <span>Este campo es obligatorio.</span>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label>Estado</label>
+                                    <select formControlName="status" [attr.disabled]="isReadOnly ? true : null">
+                                        <option value="active">Activo</option>
+                                        <option value="idle">Inactivo</option>
+                                        <option value="syncing">Sincronizando</option>
+                                        <option value="error">Error</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label>Registros Sincronizados</label>
+                                    <input type="number" formControlName="recordsSynced" [readOnly]="isReadOnly"
+                                        placeholder="0" min="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Sincronización</h3>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label>Última Sincronización</label>
+                                    <input type="text" formControlName="lastSync" [readOnly]="isReadOnly"
+                                        placeholder="Fecha de última sincronización">
+                                </div>
+                                <div class="form-field">
+                                    <label>Próxima Sincronización</label>
+                                    <input type="text" formControlName="nextSync" [readOnly]="isReadOnly"
+                                        placeholder="Fecha de próxima sincronización">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Registro de Errores</h3>
+                            <div class="form-field full-width">
+                                <label>Log de Errores</label>
+                                <textarea formControlName="errorLog" [readOnly]="isReadOnly" rows="4"
+                                    placeholder="Sin errores registrados..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="footer-actions">
+                        <button *ngIf="isReadOnly" class="btn-edit" (click)="toggleEdit()">
+                            <mat-icon>edit</mat-icon> Editar
+                        </button>
+                        <button *ngIf="!isReadOnly" class="btn-cancel" (click)="close()">Cancelar</button>
+                        <button *ngIf="!isReadOnly" class="btn-save" (click)="onSave()">
+                            <mat-icon>save</mat-icon> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
+
+<app-confirmation-modal
+    [isOpen]="showConfirmModal"
+    title="Confirmar Cambios"
+    message="¿Estás seguro de que deseas actualizar este pipeline de datos?"
+    icon="save"
+    confirmColor="var(--accent-color)"
+    confirmText="Guardar"
+    (confirmed)="executeSave()"
+    (cancelled)="showConfirmModal = false">
+</app-confirmation-modal>

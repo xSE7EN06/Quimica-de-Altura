@@ -1,0 +1,71 @@
+<div class="regional-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Disponibilidad Regional</h1>
+      <p>Gestiona la disponibilidad de especies medicinales por estado</p>
+    </div>
+  </header>
+
+  <app-data-table [data]="items" [columns]="columns" [loading]="tableLoading"
+    (rowClick)="onViewItem($event)" (editAction)="onEditItem($event)"
+    (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+    <div search-bar class="search-bar">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar por especie o región..." />
+      <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''">close</mat-icon>
+    </div>
+
+    <button add-button class="btn-primary" (click)="onAddItem()">
+      <mat-icon>add</mat-icon> Nuevo Registro
+    </button>
+
+    <div filter-menu class="filter-controls-vertical">
+      <div class="filter-group">
+        <label>Estado</label>
+        <select [ngModel]="selectedState" (ngModelChange)="onFilterChange('state', $event); selectedState = ''">
+          <option value="">Seleccionar estado...</option>
+          <option *ngFor="let s of getStates()" [value]="s">{{ s }}</option>
+        </select>
+        <div class="active-filters" *ngIf="activeFilters['state']?.length">
+          <div class="filter-label">Estados activos:</div>
+          <div class="filter-chips">
+            <span *ngFor="let s of activeFilters['state']" class="filter-chip">
+              {{ s }} <mat-icon (click)="removeFilter('state', s)">close</mat-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Abundancia</label>
+        <select [ngModel]="selectedAbundance" (ngModelChange)="onFilterChange('abundance', $event); selectedAbundance = ''">
+          <option value="">Seleccionar abundancia...</option>
+          <option value="common">Común</option>
+          <option value="scarce">Escasa</option>
+          <option value="rare">Rara</option>
+        </select>
+        <div class="active-filters" *ngIf="activeFilters['abundance']?.length">
+          <div class="filter-label">Abundancia activa:</div>
+          <div class="filter-chips">
+            <span *ngFor="let a of activeFilters['abundance']" class="filter-chip">
+              {{ getAbundanceLabel(a) }} <mat-icon (click)="removeFilter('abundance', a)">close</mat-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-data-table>
+
+  <app-regional-availability-modal [item]="selectedItem" [hasPrevious]="hasPrevious" [hasNext]="hasNext"
+    (prev)="onPrevItem()" (next)="onNextItem()" (saved)="onSaveItem($event)">
+  </app-regional-availability-modal>
+
+  <app-confirmation-modal title="Eliminar Registro"
+    message="¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+    confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+  </app-confirmation-modal>
+
+  <ng-template #abundanceTpl let-item>
+    <span class="status-badge" [ngClass]="item.abundance">{{ getAbundanceLabel(item.abundance) }}</span>
+  </ng-template>
+</div>

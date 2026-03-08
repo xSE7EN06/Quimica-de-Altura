@@ -17,7 +17,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '1254',
             smiles: 'CC(C)C1CCC(CC1O)C',
             inchi: 'InChI=1S/C10H20O/c1-7(2)9-5-4-8(3)6-10(9)11/h7-11H,4-6H2,1-3H3',
-            inchiKey: 'CQEVNEHBBNORPU-UHFFFAOYSA-N'
+            inchiKey: 'CQEVNEHBBNORPU-UHFFFAOYSA-N',
+            properties: ['Antiséptico', 'Analgésico']
         },
         {
             id: '2',
@@ -28,7 +29,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '5280343',
             smiles: 'C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O',
             inchi: 'InChI=1S/C15H10O7/c16-7-4-10(19)12-11(5-7)22-15(14(21)13(12)20)6-1-2-8(17)9(18)3-6/h1-5,16-19,21H',
-            inchiKey: 'REFJWTPEDBCVDE-UHFFFAOYSA-N'
+            inchiKey: 'REFJWTPEDBCVDE-UHFFFAOYSA-N',
+            properties: ['Antioxidante', 'Antiinflamatorio']
         },
         {
             id: '3',
@@ -39,7 +41,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '5281792',
             smiles: 'C1=CC(=C(C=C1C=CC(=O)OC(CC2=CC(=C(C=C2)O)O)C(=O)O)O)O',
             inchi: 'InChI=1S/C18H16O8/c19-12-4-1-10(7-14(12)21)3-6-17(24)26-16(18(25)26)9-11-2-5-13(20)15(22)8-11/h1-8,16,19-22H,9H2,(H,25,26)',
-            inchiKey: 'DOUMSIUAVSJWRE-UHFFFAOYSA-N'
+            inchiKey: 'DOUMSIUAVSJWRE-UHFFFAOYSA-N',
+            properties: ['Antioxidante', 'Antiinflamatorio', 'Antiséptico']
         },
         {
             id: '4',
@@ -50,7 +53,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '6989',
             smiles: 'CC1=CC(=C(C=C1)C(C)C)O',
             inchi: 'InChI=1S/C10H14O/c1-7(2)10-5-4-8(3)6-9(10)11/h4-7,11H,1-3H3',
-            inchiKey: 'MGNIMBSQLORROK-UHFFFAOYSA-N'
+            inchiKey: 'MGNIMBSQLORROK-UHFFFAOYSA-N',
+            properties: ['Antiséptico', 'Antioxidante']
         },
         {
             id: '5',
@@ -61,7 +65,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '3314',
             smiles: 'COC1=C(C=CC(=C1)CC=C)O',
             inchi: 'InChI=1S/C10H12O2/c1-3-4-8-5-6-9(11)10(7-8)12-2/h3,5-7,11H,1,4H2,2H3',
-            inchiKey: 'RRAFCDWBNXTKKO-UHFFFAOYSA-N'
+            inchiKey: 'RRAFCDWBNXTKKO-UHFFFAOYSA-N',
+            properties: ['Antiséptico', 'Analgésico', 'Sedante']
         },
         {
             id: '6',
@@ -72,7 +77,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '2519',
             smiles: 'CN1C=NC2=C1C(=O)N(C(=O)N2C)C',
             inchi: 'InChI=1S/C8H10N4O2/c1-10-4-9-6-5(10)7(13)12(3)8(14)11(6)2/h4H,1-3H3',
-            inchiKey: 'RYYVLZVUVIJVGH-UHFFFAOYSA-N'
+            inchiKey: 'RYYVLZVUVIJVGH-UHFFFAOYSA-N',
+            properties: ['Estimulante']
         },
         {
             id: '7',
@@ -83,7 +89,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '1548943',
             smiles: 'CC(C)C=CCCCC(=O)NCC1=CC(=C(C=C1)O)OC',
             inchi: 'InChI=1S/C18H27NO3/c1-14(2)8-6-4-5-7-9-18(21)19-13-15-10-11-16(20)17(12-15)22-3/h6,8,10-12,14,20H,4-5,7,9,13H2,1-3H3,(H,19,21)/b8-6+',
-            inchiKey: 'YKJMSFGAABHHOQ-FSRGNKNGSA-N'
+            inchiKey: 'YKJMSFGAABHHOQ-FSRGNKNGSA-N',
+            properties: ['Analgésico', 'Antiinflamatorio']
         },
         {
             id: '8',
@@ -94,7 +101,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '174174',
             smiles: 'CN1C2CCC1CC(C2)OC(=O)C(CO)C3=CC=CC=C3',
             inchi: 'InChI=1S/C17H23NO3/c1-18-12-7-8-13(18)10-14(9-12)21-17(20)16(11-19)15-5-3-2-4-6-15/h2-6,12-14,16,19H,7-11H2,1H3/t12?,13?,14-,16?',
-            inchiKey: 'RKUNLFJZGGFXQJ-UHFFFAOYSA-N'
+            inchiKey: 'RKUNLFJZGGFXQJ-UHFFFAOYSA-N',
+            properties: ['Antiespasmódico', 'Sedante']
         },
         {
             id: '9',
@@ -105,7 +113,8 @@ export class MockCompoundRepository extends CompoundRepository {
             pubchemCid: '1183',
             smiles: 'COC1=C(C=CC(=C1)C=O)O',
             inchi: 'InChI=1S/C8H8O3/c1-11-8-4-6(5-9)2-3-7(8)10/h2-5,10H,1H3',
-            inchiKey: 'MWOOGOJHIENMIC-UHFFFAOYSA-N'
+            inchiKey: 'MWOOGOJHIENMIC-UHFFFAOYSA-N',
+            properties: ['Antioxidante']
         },
         {
             id: '10',

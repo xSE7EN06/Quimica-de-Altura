@@ -64,3 +64,28 @@ ion-modal.auto-height-modal {
 }
 
 @import 'app/app.scss';
+
+/* Field-level validation error messages (shared across all modals) */
+.field-error {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+
+  span {
+    font-size: 0.75rem;
+    color: #e53e3e;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    &::before { content: '⚠ '; }
+  }
+}
+
+/* Highlight invalid+touched inputs inside modals */
+ion-modal input.ng-invalid.ng-touched,
+ion-modal textarea.ng-invalid.ng-touched,
+ion-modal select.ng-invalid.ng-touched {
+  border-color: #e53e3e !important;
+  box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.15) !important;
+}

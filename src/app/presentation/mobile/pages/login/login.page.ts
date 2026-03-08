@@ -7,6 +7,7 @@ import { addIcons } from 'ionicons';
 import { mail, lockClosed, person } from 'ionicons/icons';
 import { SuccessModalComponent } from '../../components/success-modal/success-modal.component';
 import { AuthService } from '../../../../infrastructure/services/auth.service';
+import { isLoginChallenge } from '../../../../domain/models/auth.models';
 
 @Component({
     selector: 'app-login',
@@ -78,7 +79,7 @@ export class LoginPage implements OnInit {
 
         this.authService.login({ email, password }).subscribe({
             next: async (res) => {
-                if (res.requires_2fa) {
+                if (isLoginChallenge(res)) {
                     this.router.navigate(['/two-factor'], { queryParams: { token: res.challenge_token } });
                 } else {
                     await this.showSuccessModal();
@@ -97,7 +98,8 @@ export class LoginPage implements OnInit {
                 } else if (code === 'email_not_verified' || err.error?.email_not_verified) {
                     this.router.navigate(['/verify-email'], { queryParams: { email } });
                 } else {
-                    await this.showAlert('Error', message);
+                    const msg = err.status === 401 ? 'Credenciales incorrectas' : message;
+                    await this.showAlert('Error', msg);
                 }
             }
         });
@@ -118,8 +120,8 @@ export class LoginPage implements OnInit {
                 this.router.navigate(['/verify-email'], { queryParams: { email: newUser.email } });
             },
             error: async (err) => {
-                const message = err.error?.message || 'No se pudo registrar';
-                await this.showAlert('Error', message);
+                const msg = err.status === 409 ? 'Este correo ya está registrado' : (err.error?.message || 'No se pudo registrar');
+                await this.showAlert('Error', msg);
             }
         });
     }

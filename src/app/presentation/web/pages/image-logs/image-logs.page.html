@@ -1,0 +1,78 @@
+<div class="image-logs-page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Logs de Imágenes</h1>
+      <p>Registro de identificaciones fotográficas de plantas medicinales</p>
+    </div>
+  </header>
+
+  <app-data-table [data]="items" [columns]="columns" [loading]="tableLoading"
+    (rowClick)="onViewItem($event)" (editAction)="onEditItem($event)"
+    (deleteAction)="onBulkDelete($event)" (resetFilters)="onResetFilters()">
+
+    <div search-bar class="search-bar">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar especie o usuario..." />
+      <mat-icon class="clear-icon" *ngIf="searchTerm" (click)="searchTerm = ''">close</mat-icon>
+    </div>
+
+    <button add-button class="btn-primary" (click)="onAddItem()">
+      <mat-icon>add</mat-icon> Nuevo Log
+    </button>
+
+    <div filter-menu class="filter-controls-vertical">
+      <div class="filter-group">
+        <label>Feedback</label>
+        <select [ngModel]="selectedFeedback" (ngModelChange)="onFilterChange('userFeedback', $event); selectedFeedback = ''">
+          <option value="">Todos</option>
+          <option value="correct">Correcto</option>
+          <option value="incorrect">Incorrecto</option>
+          <option value="unsure">Inseguro</option>
+        </select>
+        <div class="active-filters" *ngIf="activeFilters['userFeedback']?.length">
+          <div class="filter-chips">
+            <span *ngFor="let f of activeFilters['userFeedback']" class="filter-chip">
+              {{ getFeedbackLabel(f) }} <mat-icon (click)="removeFilter('userFeedback', f)">close</mat-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Marcado para Revisión</label>
+        <select [ngModel]="selectedFlagged" (ngModelChange)="onFilterChange('flagged', $event); selectedFlagged = ''">
+          <option value="">Todos</option>
+          <option value="true">Sí (marcados)</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+    </div>
+  </app-data-table>
+
+  <app-image-log-modal [item]="selectedItem" [hasPrevious]="hasPrevious" [hasNext]="hasNext"
+    (prev)="onPrevItem()" (next)="onNextItem()" (saved)="onSaveItem($event)">
+  </app-image-log-modal>
+
+  <app-confirmation-modal title="Eliminar Log"
+    message="¿Estás seguro de que deseas eliminar este log de imagen?"
+    confirmText="Eliminar" confirmColor="#E53E3E" (confirmed)="onConfirmDelete()">
+  </app-confirmation-modal>
+
+  <ng-template #speciesTpl let-item>
+    <div class="species-cell">
+      <div class="thumb" *ngIf="item.imageUrl">
+        <img [src]="item.imageUrl" [alt]="item.predictedSpecies" (error)="$any($event.target).src='https://via.placeholder.com/40x40'">
+      </div>
+      <span>{{ item.predictedSpecies }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #feedbackTpl let-item>
+    <span class="feedback-badge" [ngClass]="item.userFeedback">{{ getFeedbackLabel(item.userFeedback) }}</span>
+  </ng-template>
+
+  <ng-template #flaggedTpl let-item>
+    <mat-icon [style.color]="item.flagged ? '#e74c3c' : 'var(--text-secondary)'">
+      {{ item.flagged ? 'flag' : 'outlined_flag' }}
+    </mat-icon>
+  </ng-template>
+</div>
