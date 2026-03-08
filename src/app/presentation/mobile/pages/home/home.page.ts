@@ -7,7 +7,7 @@ import { IdentifyPlantUseCase } from '../../../../application/use-cases/identify
 import { Router } from '@angular/router';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { PlantCardComponent } from '../../components/plant-card/plant-card.component';
-import { AuthService } from '../../../../infrastructure/services/auth.service';
+import { SessionService } from '../../../../infrastructure/services/session.service';
 
 import { Plant } from '../../../../domain/models/plant.entity';
 import { PlantRepository } from '../../../../domain/repositories/plant.repository';
@@ -33,7 +33,7 @@ export class HomePage {
         private identifyPlantUseCase: IdentifyPlantUseCase,
         private router: Router,
         private plantRepository: PlantRepository,
-        private authService: AuthService
+        private sessionService: SessionService
     ) { }
 
     ngOnInit() {
@@ -42,9 +42,9 @@ export class HomePage {
             this.setPlantsOfDay();
         });
 
-        this.authService.currentUser.subscribe(user => {
+        this.sessionService.currentUser$.subscribe(user => {
             if (user) {
-                this.userName = user.firstName;
+                this.userName = user.email.split('@')[0];
             }
         });
     }
