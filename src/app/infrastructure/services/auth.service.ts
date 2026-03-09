@@ -115,11 +115,11 @@ export class AuthService {
   // ─── Password Reset ───────────────────────────────────────────────
 
   requestPasswordReset(data: PasswordResetRequest): Observable<ApiMessage> {
-    return this.http.post<ApiMessage>(`${this.BASE}/password/reset-request`, data);
+    return this.http.post<ApiMessage>(`${this.BASE}/forgot-password`, data);
   }
 
   resetPassword(data: PasswordResetConfirm): Observable<ApiMessage> {
-    return this.http.post<ApiMessage>(`${this.BASE}/password/reset`, data);
+    return this.http.post<ApiMessage>(`${this.BASE}/reset-password`, data);
   }
 
   // ─── Two-Factor Authentication ────────────────────────────────────

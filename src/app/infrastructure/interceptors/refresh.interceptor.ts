@@ -22,7 +22,7 @@ export const refreshInterceptor: HttpInterceptorFn = (
                     isRefreshing = true;
                     refreshTokenSubject.next(null);
 
-                    return authService.refreshToken().pipe(
+                    return authService.refreshAccessToken().pipe(
                         switchMap((tokenResponse: any) => {
                             isRefreshing = false;
                             refreshTokenSubject.next(tokenResponse.access_token);

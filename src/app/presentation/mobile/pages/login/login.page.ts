@@ -6,6 +6,7 @@ import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonIte
 import { addIcons } from 'ionicons';
 import { mail, lockClosed, person } from 'ionicons/icons';
 import { SuccessModalComponent } from '../../components/success-modal/success-modal.component';
+import { ForgotPasswordModalComponent } from '../../components/forgot-password-modal/forgot-password-modal.component';
 import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { isLoginChallenge } from '../../../../domain/models/auth.models';
 
@@ -56,6 +57,24 @@ export class LoginPage implements OnInit {
 
     onSegmentChanged(event: any) {
         this.segmentValue = event.detail.value;
+    }
+
+    async onForgotPassword() {
+        const modal = await this.modalCtrl.create({
+            component: ForgotPasswordModalComponent,
+            initialBreakpoint: 0.50, // Bottom sheet effect, adjusting to take up about 75% height
+            breakpoints: [0, 0.75, 1], // Allowed snap points
+            backdropDismiss: true
+        });
+
+        await modal.present();
+
+        const { data } = await modal.onWillDismiss();
+
+        // Optionally handle data if needed, like showing a success toast, etc
+        if (data?.success) {
+            console.log('Password reset successfully');
+        }
     }
 
     async onSubmit() {

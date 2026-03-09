@@ -82,7 +82,7 @@ export class VerifyEmailPage implements OnInit {
       // Concatenate the 6 digits to form the code
       const code = this.otpControls.map(c => this.verifyForm.get(c)?.value).join('');
 
-      this.authService.verifyEmail(this.email, code).subscribe({
+      this.authService.verifyEmail({ email: this.email, code }).subscribe({
         next: async () => {
           this.isLoading = false;
           this.isSuccessModalOpen = true;
@@ -106,7 +106,7 @@ export class VerifyEmailPage implements OnInit {
   }
 
   resendCode() {
-    this.authService.resendVerification(this.email).subscribe({
+    this.authService.resendVerification({ email: this.email }).subscribe({
       next: async () => {
         const toast = await this.toastCtrl.create({
           message: 'Código reenviado',

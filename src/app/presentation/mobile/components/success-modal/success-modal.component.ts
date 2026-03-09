@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonButton, IonIcon, ModalController, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkmark } from 'ionicons/icons';
 
 @Component({
-    selector: 'app-success-modal',
-    standalone: true,
-    imports: [CommonModule, IonContent, IonButton, IonIcon, IonText],
-    template: `
+  selector: 'app-success-modal',
+  standalone: true,
+  imports: [CommonModule, IonButton, IonIcon],
+  template: `
     <div class="modal-content">
       <div class="icon-circle">
         <ion-icon name="checkmark"></ion-icon>
@@ -25,7 +25,7 @@ import { checkmark } from 'ionicons/icons';
       </ion-button>
     </div>
   `,
-    styles: [`
+  styles: [`
     :host {
       display: flex;
       align-items: center;
@@ -94,11 +94,11 @@ import { checkmark } from 'ionicons/icons';
 })
 export class SuccessModalComponent {
 
-    constructor(private modalCtrl: ModalController) {
-        addIcons({ checkmark });
-    }
+  constructor(private modalCtrl: ModalController) {
+    addIcons({ checkmark });
+  }
 
-    dismiss() {
-        this.modalCtrl.dismiss();
-    }
+  dismiss() {
+    this.modalCtrl.dismiss();
+  }
 }
