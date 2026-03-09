@@ -11,7 +11,7 @@ export class LoadingService {
 
     show(): void {
         this._loadingCount++;
-        this._isLoading.set(true);
+        setTimeout(() => this._isLoading.set(true));
     }
 
     hide(): void {
@@ -20,7 +20,7 @@ export class LoadingService {
         }
 
         if (this._loadingCount === 0) {
-            this._isLoading.set(false);
+            setTimeout(() => this._isLoading.set(false));
         }
     }
 }

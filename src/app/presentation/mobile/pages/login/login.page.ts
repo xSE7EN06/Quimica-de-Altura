@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
     async onForgotPassword() {
         const modal = await this.modalCtrl.create({
             component: ForgotPasswordModalComponent,
-            initialBreakpoint: 0.50, // Bottom sheet effect, adjusting to take up about 75% height
+            initialBreakpoint: 0.75, // Bottom sheet effect, adjusting to take up about 75% height
             breakpoints: [0, 0.75, 1], // Allowed snap points
             backdropDismiss: true
         });
