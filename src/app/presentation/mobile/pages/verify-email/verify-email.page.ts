@@ -89,8 +89,11 @@ export class VerifyEmailPage implements OnInit {
         },
         error: async (err) => {
           this.isLoading = false;
+          const detail = err.error?.detail;
+          const message = typeof detail === 'string' ? detail : (err.error?.message || 'Código inválido');
+
           const toast = await this.toastCtrl.create({
-            message: err.error?.message || 'Código inválido',
+            message: message,
             duration: 2500,
             color: 'danger',
             position: 'top'
@@ -116,9 +119,12 @@ export class VerifyEmailPage implements OnInit {
         toast.present();
       },
       error: async (err) => {
+        const detail = err.error?.detail;
+        const message = typeof detail === 'string' ? detail : (err.error?.message || 'No se pudo reenviar el código');
+
         const toast = await this.toastCtrl.create({
-          message: err.error?.message || 'No se pudo reenviar el código',
-          duration: 2500,
+          message: message,
+          duration: 3000,
           color: 'danger'
         });
         toast.present();
