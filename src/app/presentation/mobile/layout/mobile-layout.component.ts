@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg } from '@ionic/angular/standalone';
+import { Component, inject } from '@angular/core';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
+import { IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline } from 'ionicons/icons';
+import { filter } from 'rxjs/operators';
+import { MenuController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-mobile-layout',
   standalone: true,
-  imports: [RouterLink, IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg],
+  imports: [RouterLink, IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon],
   template: `
     <ion-app>
       <ion-menu side="end" menuId="mobile-menu" contentId="main-content">
@@ -132,7 +134,29 @@ import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCi
   `]
 })
 export class MobileLayoutComponent {
+  private router = inject(Router);
+  private menuCtrl = inject(MenuController);
+
   constructor() {
     addIcons({ homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const url = event.urlAfterRedirects;
+
+      // We only want to enable the side menu on primary screens
+      // "solo deberia salir dentro del home, no en login etc".
+      const allowedMenuRoutes = ['/home', '/chat', '/scan', '/account'];
+      const isAllowed = allowedMenuRoutes.some(route => url.includes(route));
+
+      if (isAllowed) {
+        this.menuCtrl.enable(true, 'mobile-menu');
+        this.menuCtrl.swipeGesture(true, 'mobile-menu');
+      } else {
+        this.menuCtrl.enable(false, 'mobile-menu');
+        this.menuCtrl.swipeGesture(false, 'mobile-menu');
+      }
+    });
   }
 }
