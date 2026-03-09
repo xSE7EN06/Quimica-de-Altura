@@ -6,8 +6,8 @@ import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonItem, IonInp
 import { AuthService } from '../../../../infrastructure/services/auth.service';
 
 @Component({
-    selector: 'app-two-factor',
-    template: `
+  selector: 'app-two-factor',
+  template: `
     <ion-header>
       <ion-toolbar>
         <ion-title>Autenticación 2FA</ion-title>
@@ -34,52 +34,52 @@ import { AuthService } from '../../../../infrastructure/services/auth.service';
       </form>
     </ion-content>
   `,
-    standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonItem, IonInput, IonLabel]
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonItem, IonInput, IonLabel]
 })
 export class TwoFactorPage implements OnInit {
-    twoFactorForm: FormGroup;
-    challenge_token: string = '';
+  twoFactorForm: FormGroup;
+  challenge_token: string = '';
 
-    constructor(
-        private fb: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private authService: AuthService,
-        private toastCtrl: ToastController
-    ) {
-        this.twoFactorForm = this.fb.group({
-            code: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
-        });
-    }
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+    private toastCtrl: ToastController
+  ) {
+    this.twoFactorForm = this.fb.group({
+      code: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
+    });
+  }
 
-    ngOnInit() {
-        this.route.queryParams.subscribe(params => {
-            this.challenge_token = params['token'];
-            if (!this.challenge_token) {
-                this.router.navigate(['/login']);
-            }
-        });
-    }
-
-    verify() {
-        if (this.twoFactorForm.valid) {
-            const code = this.twoFactorForm.value.code;
-            this.authService.twoFactorChallenge(this.challenge_token, code).subscribe({
-                next: async () => {
-                    const toast = await this.toastCtrl.create({ message: 'Autenticación exitosa', duration: 2000, color: 'success' });
-                    toast.present();
-                    this.router.navigate(['/home']);
-                },
-                error: async (err) => {
-                    const toast = await this.toastCtrl.create({ message: err.error?.message || 'Código inválido', duration: 2000, color: 'danger' });
-                    toast.present();
-                }
-            });
-        }
-    }
-
-    cancel() {
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.challenge_token = params['token'];
+      if (!this.challenge_token) {
         this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  verify() {
+    if (this.twoFactorForm.valid) {
+      const code = this.twoFactorForm.value.code;
+      this.authService.challenge2FA({ challenge_token: this.challenge_token, code }).subscribe({
+        next: async () => {
+          const toast = await this.toastCtrl.create({ message: 'Autenticación exitosa', duration: 2000, color: 'success' });
+          toast.present();
+          this.router.navigate(['/home']);
+        },
+        error: async (err: any) => {
+          const toast = await this.toastCtrl.create({ message: err.error?.message || 'Código inválido', duration: 2000, color: 'danger' });
+          toast.present();
+        }
+      });
     }
+  }
+
+  cancel() {
+    this.router.navigate(['/login']);
+  }
 }
