@@ -55,6 +55,14 @@
                 <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn" mode="ios">
                     Iniciar Sesión
                 </ion-button>
+                <div class="or-divider">
+                    <span>o conéctate con</span>
+                </div>
+                <ion-button type="button" expand="block" shape="round" color="light" class="google-btn" mode="ios"
+                    (click)="loginWithGoogle()">
+                    <ion-icon slot="start" name="logo-google" style="color: var(--ion-color-primary);"></ion-icon>
+                    Google
+                </ion-button>
             </div>
         </form>
 

@@ -4,11 +4,13 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSegment, IonSegmentButton, IonImg, IonText, ModalController, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mail, lockClosed, person } from 'ionicons/icons';
+import { mail, lockClosed, person, logoGoogle } from 'ionicons/icons';
 import { SuccessModalComponent } from '../../components/success-modal/success-modal.component';
 import { ForgotPasswordModalComponent } from '../../components/forgot-password-modal/forgot-password-modal.component';
 import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { isLoginChallenge } from '../../../../domain/models/auth.models';
+import { SocialLogin } from '@capgo/capacitor-social-login';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
     selector: 'app-login',
@@ -30,7 +32,7 @@ export class LoginPage implements OnInit {
         private authService: AuthService,
         private alertCtrl: AlertController
     ) {
-        addIcons({ mail, lockClosed, person });
+        addIcons({ mail, lockClosed, person, logoGoogle });
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(8)]]
@@ -53,7 +55,13 @@ export class LoginPage implements OnInit {
         return password && confirmPassword && password.value === confirmPassword.value ? null : { mismatch: true };
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        SocialLogin.initialize({
+            google: {
+                webClientId: '505533022595-2dv5elq22rvmc2gi3kt0d6drh8clf9uj.apps.googleusercontent.com',
+            }
+        });
+    }
 
     onSegmentChanged(event: any) {
         this.segmentValue = event.detail.value;
@@ -122,6 +130,48 @@ export class LoginPage implements OnInit {
                 }
             }
         });
+    }
+
+    async loginWithGoogle() {
+        try {
+            const googleUser = await SocialLogin.login({
+                provider: 'google',
+                options: {
+                    scopes: ['email', 'profile']
+                }
+            });
+            if (googleUser && googleUser.result.responseType === 'online' && googleUser.result.accessToken) {
+                this.authService.verifyGoogleToken(googleUser.result.accessToken.token).subscribe({
+                    next: async (res) => {
+                        if (isLoginChallenge(res)) {
+                            this.router.navigate(['/two-factor'], { queryParams: { token: res.challenge_token } });
+                        } else {
+                            await this.showSuccessModal();
+                            this.router.navigate(['/home']);
+                        }
+                    },
+                    error: async (err) => {
+                        console.error('Backend err:', err);
+                        let msg = 'Err: ';
+                        if (err?.error?.detail) {
+                            msg += typeof err.error.detail === 'string' ? err.error.detail : JSON.stringify(err.error.detail);
+                        } else if (err?.error?.message) {
+                            msg += err.error.message;
+                        } else if (err?.message) {
+                            msg += err.message;
+                        } else {
+                            msg += JSON.stringify(err);
+                        }
+                        await this.showAlert('Error Backend', msg);
+                    }
+                });
+            } else {
+                await this.showAlert('Error', 'No se recibió un token válido de Google. res: ' + JSON.stringify(googleUser));
+            }
+        } catch (error: any) {
+            console.error('Google sign in failed', error);
+            await this.showAlert('Error Plugin', 'Fallo plugin: ' + JSON.stringify(error) + ' | ' + String(error));
+        }
     }
 
     async handleRegister() {
