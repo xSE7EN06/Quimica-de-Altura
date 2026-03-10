@@ -4,4 +4,5 @@
     <string name="title_activity_main">Quimica Altura</string>
     <string name="package_name">com.quimica.altura</string>
     <string name="custom_url_scheme">com.quimica.altura</string>
+    <string name="server_client_id">505533022595-2dv5elq22rvmc2gi3kt0d6drh8clf9uj.apps.googleusercontent.com</string>
 </resources>
