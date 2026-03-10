@@ -5,6 +5,7 @@ import { addIcons } from 'ionicons';
 import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline } from 'ionicons/icons';
 import { filter } from 'rxjs/operators';
 import { MenuController } from '@ionic/angular/standalone';
+import { AuthService } from '../../../infrastructure/services/auth.service';
 
 @Component({
   selector: 'app-mobile-layout',
@@ -51,7 +52,7 @@ import { MenuController } from '@ionic/angular/standalone';
 
               <div class="separator"></div>
 
-              <ion-item button detail="false" routerLink="/login" class="menu-item logout">
+              <ion-item button detail="false" (click)="logout()" class="menu-item logout">
                 <ion-icon slot="start" name="log-out-outline"></ion-icon>
                 <ion-label>Cerrar sesión</ion-label>
               </ion-item>
@@ -136,6 +137,7 @@ import { MenuController } from '@ionic/angular/standalone';
 export class MobileLayoutComponent {
   private router = inject(Router);
   private menuCtrl = inject(MenuController);
+  private authService = inject(AuthService);
 
   constructor() {
     addIcons({ homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline });
@@ -145,8 +147,6 @@ export class MobileLayoutComponent {
     ).subscribe((event: NavigationEnd) => {
       const url = event.urlAfterRedirects;
 
-      // We only want to enable the side menu on primary screens
-      // "solo deberia salir dentro del home, no en login etc".
       const allowedMenuRoutes = ['/home', '/chat', '/scan', '/account'];
       const isAllowed = allowedMenuRoutes.some(route => url.includes(route));
 
@@ -158,5 +158,10 @@ export class MobileLayoutComponent {
         this.menuCtrl.swipeGesture(false, 'mobile-menu');
       }
     });
+  }
+
+  logout() {
+    this.menuCtrl.close('mobile-menu');
+    this.authService.logout().subscribe();
   }
 }
