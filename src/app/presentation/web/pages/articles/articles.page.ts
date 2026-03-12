@@ -8,6 +8,7 @@ import { Article } from '../../../../domain/models/article.entity';
 import { ArticleRepository } from '../../../../domain/repositories/article.repository';
 import { ToastController } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-articles',
@@ -42,10 +43,16 @@ export class ArticlesPage implements OnInit {
 
     get hasPrevious(): boolean { return this.currentIndex > 0; }
     get hasNext(): boolean { return this.currentIndex < this.articles.length - 1; }
+    get deleteConfirmMessage(): string {
+        const n = this.articlesToDelete.length;
+        return n === 1
+            ? '¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.'
+            : `¿Estás seguro de que deseas eliminar ${n} artículos? Esta acción no se puede deshacer.`;
+    }
 
     // Confirmation modal state
     isConfirmModalOpen = false;
-    articleToDelete?: Article;
+    articlesToDelete: Article[] = [];
 
     @ViewChild('titleTpl', { static: true }) titleTpl!: TemplateRef<any>;
     @ViewChild('authorsTpl', { static: true }) authorsTpl!: TemplateRef<any>;
@@ -143,24 +150,43 @@ export class ArticlesPage implements OnInit {
     }
 
     onDeleteArticle(article: Article) {
-        this.articleToDelete = article;
+        this.articlesToDelete = [article];
         this.isConfirmModalOpen = true;
     }
 
     onBulkDelete(items: Article[]) {
-        // Simple mock for bulk delete confirmation
-        this.articleToDelete = items[0]; // Logic would need updating for true bulk delete
+        this.articlesToDelete = Array.isArray(items) ? [...items] : [items];
         this.isConfirmModalOpen = true;
     }
 
     onConfirmDelete() {
-        if (this.articleToDelete) {
-            this.articleRepository.deleteArticle(this.articleToDelete.id).subscribe(() => {
-                this.loadArticles();
-                this.showToast('Artículo eliminado del repositorio.');
-                this.isConfirmModalOpen = false;
-            });
+        if (this.articlesToDelete.length === 0) {
+            this.isConfirmModalOpen = false;
+            return;
         }
+        const ids = this.articlesToDelete.map(a => a.id);
+        const deleteAll = ids.map(id =>
+            this.articleRepository.deleteArticle(id)
+        );
+        forkJoin(deleteAll).subscribe({
+            next: () => {
+                this.loadArticles();
+                const count = ids.length;
+                this.showToast(
+                    count === 1
+                        ? 'Artículo eliminado del repositorio.'
+                        : `${count} artículos eliminados del repositorio.`
+                );
+                this.articlesToDelete = [];
+                this.isConfirmModalOpen = false;
+            },
+            error: () => {
+                this.loadArticles();
+                this.showToast('Error al eliminar uno o más artículos.');
+                this.articlesToDelete = [];
+                this.isConfirmModalOpen = false;
+            }
+        });
     }
 
     onSaveArticle(article: Article) {
