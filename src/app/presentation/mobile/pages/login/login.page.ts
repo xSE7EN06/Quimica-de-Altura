@@ -4,11 +4,13 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSegment, IonSegmentButton, IonImg, IonText, ModalController, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mail, lockClosed, person } from 'ionicons/icons';
+import { mail, lockClosed, person, logoGoogle, warning, eyeOutline, eyeOffOutline } from 'ionicons/icons';
 import { SuccessModalComponent } from '../../components/success-modal/success-modal.component';
 import { ForgotPasswordModalComponent } from '../../components/forgot-password-modal/forgot-password-modal.component';
 import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { isLoginChallenge } from '../../../../domain/models/auth.models';
+import { SocialLogin } from '@capgo/capacitor-social-login';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
     selector: 'app-login',
@@ -22,6 +24,14 @@ export class LoginPage implements OnInit {
     registerForm: FormGroup;
     segmentValue: 'login' | 'register' = 'login';
     logoUrl = 'assets/shared/images/logo.jpg';
+    submitted = false;
+
+    showLoginPassword = false;
+    showRegisterPassword = false;
+    // showConfirmPassword se elimina: el botón del ojo en registro controla ambos campos a la vez
+
+    // Misma regex que el formulario de registro
+    private readonly passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>[\]\\/+\-=~`]).*$/;
 
     constructor(
         private fb: FormBuilder,
@@ -30,7 +40,7 @@ export class LoginPage implements OnInit {
         private authService: AuthService,
         private alertCtrl: AlertController
     ) {
-        addIcons({ mail, lockClosed, person });
+        addIcons({ mail, lockClosed, person, logoGoogle, warning, eyeOutline, eyeOffOutline });
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(8)]]
@@ -42,7 +52,7 @@ export class LoginPage implements OnInit {
             first_name: ['', [Validators.required, Validators.minLength(2)]],
             last_name: ['', [Validators.required, Validators.minLength(2)]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(12), Validators.pattern(passwordRegex)]],
+            password: ['', [Validators.required, Validators.minLength(12), Validators.pattern(this.passwordRegex)]],
             confirmPassword: ['', [Validators.required]]
         }, { validators: this.passwordMatchValidator });
     }
@@ -53,11 +63,74 @@ export class LoginPage implements OnInit {
         return password && confirmPassword && password.value === confirmPassword.value ? null : { mismatch: true };
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        SocialLogin.initialize({
+            google: {
+                webClientId: '505533022595-2dv5elq22rvmc2gi3kt0d6drh8clf9uj.apps.googleusercontent.com',
+            }
+        });
+    }
 
     onSegmentChanged(event: any) {
         this.segmentValue = event.detail.value;
+        this.submitted = false;
+        this.showLoginPassword = false;
+        this.showRegisterPassword = false;
     }
+
+    toggleLoginPassword() { this.showLoginPassword = !this.showLoginPassword; }
+    toggleRegisterPassword() { this.showRegisterPassword = !this.showRegisterPassword; }
+
+    // ── Helpers de validación para errorText nativo de ion-input ──────────────
+
+    getError(form: FormGroup, field: string): string {
+        const ctrl = form.get(field);
+        if (!ctrl?.errors) return '';
+        if (ctrl.hasError('required')) {
+            const msgs: Record<string, string> = {
+                email: 'El correo electrónico es obligatorio.',
+                password: 'La contraseña es obligatoria.',
+                first_name: 'El nombre es obligatorio.',
+                last_name: 'Los apellidos son obligatorios.',
+                confirmPassword: 'Debes confirmar tu contraseña.'
+            };
+            return msgs[field] ?? 'Este campo es obligatorio.';
+        }
+        if (ctrl.hasError('email')) return 'Ingresa un correo electrónico válido.';
+        if (ctrl.hasError('minlength')) {
+            const min = ctrl.errors['minlength'].requiredLength;
+            return field === 'password'
+                ? `La contraseña debe tener al menos ${min} caracteres.`
+                : `Mínimo ${min} caracteres.`;
+        }
+        if (ctrl.hasError('pattern')) return 'Debe incluir mayúscula, minúscula, número y carácter especial.';
+        return '';
+    }
+
+    getConfirmPasswordError(): string {
+        const ctrl = this.registerForm.get('confirmPassword');
+        if (!ctrl) return '';
+        if (ctrl.hasError('required')) return 'Debes confirmar tu contraseña.';
+        if (this.registerForm.hasError('mismatch')) return 'Las contraseñas no coinciden.';
+        return '';
+    }
+
+    isTouched(form: FormGroup, field: string): boolean {
+        return (form.get(field)?.touched ?? false) || this.submitted;
+    }
+
+    isInvalid(form: FormGroup, field: string): boolean {
+        const ctrl = form.get(field);
+        return !!ctrl && this.isTouched(form, field) && ctrl.invalid;
+    }
+
+    isConfirmPasswordInvalid(): boolean {
+        const ctrl = this.registerForm.get('confirmPassword');
+        const touched = (ctrl?.touched ?? false) || this.submitted;
+        return touched && (!!ctrl?.invalid || this.registerForm.hasError('mismatch'));
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
 
     async onForgotPassword() {
         const modal = await this.modalCtrl.create({
@@ -78,17 +151,14 @@ export class LoginPage implements OnInit {
     }
 
     async onSubmit() {
+        this.submitted = true;
         if (this.segmentValue === 'login') {
             if (this.loginForm.valid) {
                 await this.handleLogin();
-            } else {
-                await this.showAlert('Datos incompletos', 'Asegúrate de ingresar un correo electrónico válido y una contraseña de al menos 8 caracteres sin espacios.');
             }
         } else if (this.segmentValue === 'register') {
             if (this.registerForm.valid) {
                 await this.handleRegister();
-            } else {
-                await this.showAlert('Contraseña o datos inválidos', 'Por favor, llena todos los campos correctamente. Tu contraseña debe tener al menos 12 caracteres, incluir una mayúscula, una minúscula, un número, un carácter especial y ambas contraseñas deben coincidir.');
             }
         }
     }
@@ -122,6 +192,48 @@ export class LoginPage implements OnInit {
                 }
             }
         });
+    }
+
+    async loginWithGoogle() {
+        try {
+            const googleUser = await SocialLogin.login({
+                provider: 'google',
+                options: {
+                    scopes: ['email', 'profile']
+                }
+            });
+            if (googleUser && googleUser.result.responseType === 'online' && googleUser.result.accessToken) {
+                this.authService.verifyGoogleToken(googleUser.result.accessToken.token).subscribe({
+                    next: async (res) => {
+                        if (isLoginChallenge(res)) {
+                            this.router.navigate(['/two-factor'], { queryParams: { token: res.challenge_token } });
+                        } else {
+                            await this.showSuccessModal();
+                            this.router.navigate(['/home']);
+                        }
+                    },
+                    error: async (err) => {
+                        console.error('Backend err:', err);
+                        let msg = 'Err: ';
+                        if (err?.error?.detail) {
+                            msg += typeof err.error.detail === 'string' ? err.error.detail : JSON.stringify(err.error.detail);
+                        } else if (err?.error?.message) {
+                            msg += err.error.message;
+                        } else if (err?.message) {
+                            msg += err.message;
+                        } else {
+                            msg += JSON.stringify(err);
+                        }
+                        await this.showAlert('Error Backend', msg);
+                    }
+                });
+            } else {
+                await this.showAlert('Error', 'No se recibió un token válido de Google. res: ' + JSON.stringify(googleUser));
+            }
+        } catch (error: any) {
+            console.error('Google sign in failed', error);
+            await this.showAlert('Error Plugin', 'Fallo plugin: ' + JSON.stringify(error) + ' | ' + String(error));
+        }
     }
 
     async handleRegister() {

@@ -197,6 +197,16 @@ export class AuthService {
     );
   }
 
+  verifyGoogleToken(accessToken: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.BASE}/oauth/google/verify-token`, { access_token: accessToken }).pipe(
+      tap(res => {
+        if (!isLoginChallenge(res as any)) {
+          this.storeTokens(res);
+        }
+      })
+    );
+  }
+
   // ─── Token & Session Helpers ──────────────────────────────────────
 
   storeTokens(tokens: LoginResponse): void {

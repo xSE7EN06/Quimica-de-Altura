@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoaderComponent } from './presentation/web/components/loader/loader.component';
+import { BiometricAuthService } from './infrastructure/services/biometric-auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,11 @@ import { LoaderComponent } from './presentation/web/components/loader/loader.com
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('plant-id-app');
+  private biometricAuthService = inject(BiometricAuthService);
+
+  async ngOnInit() {
+    await this.biometricAuthService.checkBiometricsOnStartup();
+  }
 }

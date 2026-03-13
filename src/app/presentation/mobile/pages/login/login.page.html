@@ -36,15 +36,31 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="segmentValue === 'login'">
             <div class="input-group">
-                <ion-item lines="none" class="custom-input">
-                    <ion-icon slot="start" name="mail" color="medium"></ion-icon>
-                    <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
-                </ion-item>
+                <div class="input-wrapper">
+                    <ion-item lines="none" class="custom-input" [class.field-invalid]="isInvalid(loginForm, 'email')">
+                        <ion-icon slot="start" name="mail" color="medium"></ion-icon>
+                        <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
+                    </ion-item>
+                    <p class="field-error" *ngIf="isInvalid(loginForm, 'email')">
+                        {{ getError(loginForm, 'email') }}
+                    </p>
+                </div>
 
-                <ion-item lines="none" class="custom-input">
-                    <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
-                    <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
-                </ion-item>
+                <div class="input-wrapper">
+                    <ion-item lines="none" class="custom-input"
+                        [class.field-invalid]="isInvalid(loginForm, 'password')">
+                        <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
+                        <ion-input formControlName="password" [type]="showLoginPassword ? 'text' : 'password'"
+                            placeholder="Contraseña"></ion-input>
+                        <ion-icon slot="end" class="toggle-password-btn"
+                            [name]="showLoginPassword ? 'eye-off-outline' : 'eye-outline'"
+                            (click)="toggleLoginPassword()" aria-label="Mostrar/ocultar contraseña">
+                        </ion-icon>
+                    </ion-item>
+                    <p class="field-error" *ngIf="isInvalid(loginForm, 'password')">
+                        {{ getError(loginForm, 'password') }}
+                    </p>
+                </div>
 
                 <div class="forgot-password">
                     <span (click)="onForgotPassword()">¿Olvidaste tu contraseña?</span>
@@ -55,37 +71,81 @@
                 <ion-button type="submit" expand="block" shape="round" color="primary" class="submit-btn" mode="ios">
                     Iniciar Sesión
                 </ion-button>
+                <div class="or-divider">
+                    <span>o conéctate con</span>
+                </div>
+                <ion-button type="button" expand="block" shape="round" color="light" class="google-btn" mode="ios"
+                    (click)="loginWithGoogle()">
+                    <ion-icon slot="start" name="logo-google" style="color: var(--ion-color-primary);"></ion-icon>
+                    Google
+                </ion-button>
             </div>
         </form>
 
         <div *ngIf="segmentValue === 'register'" class="register-form">
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="input-group">
-                    <ion-item lines="none" class="custom-input">
-                        <ion-icon slot="start" name="person" color="medium"></ion-icon>
-                        <ion-input formControlName="first_name" type="text" placeholder="Nombre(s)"></ion-input>
-                    </ion-item>
+                    <div class="input-wrapper">
+                        <ion-item lines="none" class="custom-input"
+                            [class.field-invalid]="isInvalid(registerForm, 'first_name')">
+                            <ion-icon slot="start" name="person" color="medium"></ion-icon>
+                            <ion-input formControlName="first_name" type="text" placeholder="Nombre(s)"></ion-input>
+                        </ion-item>
+                        <p class="field-error" *ngIf="isInvalid(registerForm, 'first_name')">
+                            {{ getError(registerForm, 'first_name') }}
+                        </p>
+                    </div>
 
-                    <ion-item lines="none" class="custom-input">
-                        <ion-icon slot="start" name="person" color="medium"></ion-icon>
-                        <ion-input formControlName="last_name" type="text" placeholder="Apellidos"></ion-input>
-                    </ion-item>
+                    <div class="input-wrapper">
+                        <ion-item lines="none" class="custom-input"
+                            [class.field-invalid]="isInvalid(registerForm, 'last_name')">
+                            <ion-icon slot="start" name="person" color="medium"></ion-icon>
+                            <ion-input formControlName="last_name" type="text" placeholder="Apellidos"></ion-input>
+                        </ion-item>
+                        <p class="field-error" *ngIf="isInvalid(registerForm, 'last_name')">
+                            {{ getError(registerForm, 'last_name') }}
+                        </p>
+                    </div>
 
-                    <ion-item lines="none" class="custom-input">
-                        <ion-icon slot="start" name="mail" color="medium"></ion-icon>
-                        <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
-                    </ion-item>
+                    <div class="input-wrapper">
+                        <ion-item lines="none" class="custom-input"
+                            [class.field-invalid]="isInvalid(registerForm, 'email')">
+                            <ion-icon slot="start" name="mail" color="medium"></ion-icon>
+                            <ion-input formControlName="email" type="email"
+                                placeholder="Correo electrónico"></ion-input>
+                        </ion-item>
+                        <p class="field-error" *ngIf="isInvalid(registerForm, 'email')">
+                            {{ getError(registerForm, 'email') }}
+                        </p>
+                    </div>
 
-                    <ion-item lines="none" class="custom-input">
-                        <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
-                        <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
-                    </ion-item>
+                    <div class="input-wrapper">
+                        <ion-item lines="none" class="custom-input"
+                            [class.field-invalid]="isInvalid(registerForm, 'password')">
+                            <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
+                            <ion-input formControlName="password" [type]="showRegisterPassword ? 'text' : 'password'"
+                                placeholder="Contraseña"></ion-input>
+                            <ion-icon slot="end" class="toggle-password-btn"
+                                [name]="showRegisterPassword ? 'eye-off-outline' : 'eye-outline'"
+                                (click)="toggleRegisterPassword()" aria-label="Mostrar/ocultar contraseñas">
+                            </ion-icon>
+                        </ion-item>
+                        <p class="field-error" *ngIf="isInvalid(registerForm, 'password')">
+                            {{ getError(registerForm, 'password') }}
+                        </p>
+                    </div>
 
-                    <ion-item lines="none" class="custom-input">
-                        <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
-                        <ion-input formControlName="confirmPassword" type="password"
-                            placeholder="Confirmar contraseña"></ion-input>
-                    </ion-item>
+                    <div class="input-wrapper">
+                        <ion-item lines="none" class="custom-input" [class.field-invalid]="isConfirmPasswordInvalid()">
+                            <ion-icon slot="start" name="lock-closed" color="medium"></ion-icon>
+                            <ion-input formControlName="confirmPassword"
+                                [type]="showRegisterPassword ? 'text' : 'password'"
+                                placeholder="Confirmar contraseña"></ion-input>
+                        </ion-item>
+                        <p class="field-error" *ngIf="isConfirmPasswordInvalid()">
+                            {{ getConfirmPasswordError() }}
+                        </p>
+                    </div>
                 </div>
 
                 <div class="button-container">
