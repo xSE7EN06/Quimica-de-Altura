@@ -52,7 +52,7 @@
     </app-article-modal>
 
     <app-confirmation-modal [isOpen]="isConfirmModalOpen" title="Eliminar Registro"
-        [message]="'¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.'"
+        [message]="deleteConfirmMessage"
         confirmText="Eliminar" (confirmed)="onConfirmDelete()" (cancelled)="isConfirmModalOpen = false">
     </app-confirmation-modal>
 
