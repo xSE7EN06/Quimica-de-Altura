@@ -1,0 +1,98 @@
+<ion-content [fullscreen]="true" class="ion-padding" (touchstart)="handleTouchStart($event)"
+  (touchend)="handleTouchEnd($event)">
+  <div class="onboarding-container">
+
+    <!-- Animated Circle -->
+    <div class="circle-container" [class.shrunk]="isShrunk">
+      <div class="circle-inner">
+        <img [src]="steps[currentStep].image" alt="Yolotl" class="robot-icon">
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="info-content" [class.fade-in]="showText">
+      <h1 class="title">{{ steps[currentStep].title }}</h1>
+      <p class="description">{{ steps[currentStep].description }}</p>
+
+      <!-- Terms & Conditions only on last step -->
+      <div *ngIf="currentStep === steps.length - 1" class="terms-container">
+        <ion-checkbox [(ngModel)]="acceptedTerms" (ionChange)="onCheckboxChange($event)" labelPlacement="end"
+          class="terms-checkbox">
+          Acepto términos y condiciones
+        </ion-checkbox>
+
+        <ion-button fill="clear" size="small" class="read-terms-btn" (click)="openModal()" mode="ios">
+          Leer términos y condiciones
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="footer-nav">
+      <div class="dots">
+        <div *ngFor="let step of steps; let i = index" class="dot" [class.active]="i === currentStep">
+        </div>
+      </div>
+
+      <ion-button (click)="nextStep()" class="next-btn" fill="clear" mode="ios"
+        [disabled]="(currentStep === steps.length - 1 && !acceptedTerms) || isLoading">
+        <ng-container *ngIf="!isLoading">
+          {{ currentStep === steps.length - 1 ? 'Empezar' : 'Siguiente' }}
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ng-container>
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+
+    <!-- Draggable Sheet Modal (Matching forgot-password style) -->
+    <ion-modal #modal [breakpoints]="[0, 0.90, 1]" [initialBreakpoint]="0.75" [canDismiss]="canDismiss" handle="true">
+      <ng-template>
+        <ion-header class="ion-no-border terms-modal-header">
+          <ion-toolbar>
+            <ion-buttons slot="end">
+              <ion-button (click)="modal.dismiss()">
+                <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="terms-modal-content ion-padding">
+          <div class="modal-wrapper">
+
+            <!-- Icon Header -->
+            <div class="terms-icon-container">
+              <img src="yolotl-terms.png" alt="Yolotl" class="robot-icon">
+            </div>
+            <div class="terms-header-text">
+              <h2>Términos y Condiciones</h2>
+              <p>Por favor lee y acepta antes de continuar</p>
+            </div>
+
+            <!-- Terms Text -->
+            <div class="terms-content-text">
+              <h3>Política de Uso y Privacidad</h3>
+              <p>Al utilizar <strong>Quimica Altura</strong>, usted accede a una plataforma educativa diseñada para la
+                identificación y estudio de compuestos químicos en plantas.</p>
+              <p>La información es generada por nuestra IA <strong>Yolotl</strong> y debe ser verificada para usos
+                críticos. Nos comprometemos a proteger su privacidad y sus datos de navegación.</p>
+              <p>Al continuar, usted acepta que es mayor de edad o cuenta con supervisión para el uso de esta
+                herramienta científica.</p>
+              <p>Usted se compromete a no utilizar la aplicación para actividades ilícitas o que comprometan la
+                seguridad de terceros.</p>
+            </div>
+
+            <!-- Checkbox Footer -->
+            <div class="modal-footer-check">
+              <ion-checkbox [(ngModel)]="acceptedTerms" (ionChange)="onCheckboxChange($event)" labelPlacement="end"
+                class="terms-checkbox modal-checkbox">
+                Acepto términos y condiciones
+              </ion-checkbox>
+              <p class="modal-hint" *ngIf="!acceptedTerms">Debes aceptar para poder cerrar este aviso.</p>
+            </div>
+
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </div>
+</ion-content>
