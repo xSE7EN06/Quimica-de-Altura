@@ -93,6 +93,7 @@ export class ForgotPasswordModalComponent implements OnInit {
         const alert = await this.alertCtrl.create({
             header,
             message,
+            mode: 'ios',
             buttons: ['OK']
         });
         await alert.present();
