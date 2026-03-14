@@ -3,8 +3,12 @@ import { Routes } from '@angular/router';
 export const MOBILE_ROUTES: Routes = [
     {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'onboarding',
         pathMatch: 'full'
+    },
+    {
+        path: 'onboarding',
+        loadComponent: () => import('./pages/onboarding/onboarding.page').then(m => m.OnboardingPage)
     },
     {
         path: 'login',

@@ -85,8 +85,8 @@ export class BiometricAuthService {
                 this.router.navigate(['/home']);
             }
         } else {
-            // No hay token, vamos al login
-            this.router.navigate(['/login']);
+            // No hay token, vamos al onboarding (antes mandaba a login)
+            this.router.navigate(['/onboarding']);
         }
     }
 }
