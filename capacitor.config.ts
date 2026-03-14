@@ -12,7 +12,19 @@ const config: CapacitorConfig = {
       providers: {
         google: true
       }
-    }
+    },
+    SplashScreen: {
+      launchShowDuration: 3000,
+      launchAutoHide: false,
+      androidSplashResourceName: "splash",
+      androidScaleType: "FIT_CENTER",
+      showSpinner: true,
+      androidSpinnerStyle: "large",
+      iosSpinnerStyle: "small",
+      spinnerColor: "#4CAF50",
+      splashFullScreen: true,
+      splashImmersive: true,
+    },
   },
 };
 

@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, Router, NavigationEnd } from '@angular/router';
-import { IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonLabel, IonMenuToggle, IonAvatar, IonIcon, IonImg, ActionSheetController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline } from 'ionicons/icons';
+import { homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline, closeOutline } from 'ionicons/icons';
 import { filter } from 'rxjs/operators';
 import { MenuController } from '@ionic/angular/standalone';
 import { AuthService } from '../../../infrastructure/services/auth.service';
@@ -52,7 +52,7 @@ import { AuthService } from '../../../infrastructure/services/auth.service';
 
               <div class="separator"></div>
 
-              <ion-item button detail="false" (click)="logout()" class="menu-item logout">
+              <ion-item button detail="false" (click)="presentActionSheet()" class="menu-item logout">
                 <ion-icon slot="start" name="log-out-outline"></ion-icon>
                 <ion-label>Cerrar sesión</ion-label>
               </ion-item>
@@ -139,8 +139,8 @@ export class MobileLayoutComponent {
   private menuCtrl = inject(MenuController);
   private authService = inject(AuthService);
 
-  constructor() {
-    addIcons({ homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline });
+  constructor(private actionSheetCtrl: ActionSheetController) {
+    addIcons({ homeOutline, chatbubblesOutline, flowerOutline, cameraOutline, personCircleOutline, logOutOutline, closeOutline });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -158,6 +158,33 @@ export class MobileLayoutComponent {
         this.menuCtrl.swipeGesture(false, 'mobile-menu');
       }
     });
+  }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: '¿Estás seguro de que quieres cerrar sesión?',
+      subHeader: 'Se cerrará la sesión actual',
+      mode: 'ios',
+      buttons: [
+        {
+          text: 'Cerrar sesión',
+          role: 'destructive',
+          icon: logOutOutline,
+          handler: () => {
+            this.logout();
+          }
+        },
+        {
+          text: 'Cancelar',
+          icon: closeOutline,
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelado');
+          }
+        }
+      ]
+    });
+    await actionSheet.present();
   }
 
   logout() {

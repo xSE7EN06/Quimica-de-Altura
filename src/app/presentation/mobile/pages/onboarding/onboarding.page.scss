@@ -1,0 +1,283 @@
+:host {
+  --bg-color: #F5FBF7;
+  --primary-color: #5E794B;
+  --text-color: #2e3d33;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+  }
+}
+
+ion-content {
+  --background: var(--bg-color);
+}
+
+.onboarding-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding-top: 10vh;
+}
+
+/* Shrinking Circle Animation - GPU Optimized */
+.circle-container {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  will-change: transform, opacity;
+  transform: translate3d(0, 5vh, 0) scale(1.6);
+  /* Native center start */
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;
+}
+
+.circle-container.shrunk {
+  transform: translate3d(0, 0, 0) scale(0.8);
+  opacity: 1;
+}
+
+.circle-inner {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: rgba(76, 175, 80, 0.05);
+  /* Lighter bg for performance */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.robot-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Reduced filter complexity */
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+}
+
+/* Content Area - snappier transitions */
+.info-content {
+  margin-top: 15px;
+  text-align: center;
+  max-width: 320px;
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  will-change: transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-out;
+}
+
+.info-content.fade-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.title,
+.description {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #5E794B;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+/* Dots and Nav */
+.footer-nav {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dots {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--text-color);
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  width: 24px;
+  opacity: 1;
+  background: #5E794B;
+}
+
+.next-btn {
+  --color: #5E794B;
+  font-weight: 700;
+  font-size: 1.1rem;
+  --ripple-color: #5E794B;
+  margin-top: 10px;
+
+  ion-spinner {
+    color: #5E794B;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Terms and Modal Styles */
+.terms-container {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Custom ion-checkbox styles */
+.terms-checkbox {
+  --size: 28px;
+  --border-radius: 6px;
+  --border-width: 2px;
+  --border-color: #5E794B;
+  --border-color-checked: #5E794B;
+  --checkbox-background-checked: #5E794B;
+  --checkmark-color: #ffffff;
+
+  margin: 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+/* Forzar visualización si el componente está pero no se ve */
+ion-checkbox {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.read-terms-btn {
+  --color: #5E794B;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  height: auto;
+  font-weight: 500;
+}
+
+/* ===== TERMS MODAL (forgot-password style) ===== */
+.terms-modal-header ion-toolbar {
+  --background: white;
+}
+
+.terms-modal-content {
+  --background: white;
+}
+
+.modal-wrapper {
+  padding: 10px 15px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.terms-icon-container {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+
+  .robot-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.terms-header-text {
+  text-align: center;
+  margin-bottom: 28px;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #5E794B;
+    margin: 0 0 6px 0;
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.terms-content-text {
+  padding: 0 4px;
+  margin-bottom: 8px;
+
+  h3 {
+    color: #5E794B;
+    font-weight: 700;
+    margin-top: 0;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: #444;
+    line-height: 1.65;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+}
+
+.modal-footer-check {
+  margin-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.modal-checkbox {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5E794B;
+}
+
+.modal-hint {
+  font-size: 0.82rem;
+  text-align: center;
+  color: #c0392b;
+  font-weight: 500;
+  width: 100%;
+  margin: 0;
+}

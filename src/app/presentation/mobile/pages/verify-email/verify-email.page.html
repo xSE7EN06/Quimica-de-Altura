@@ -41,21 +41,20 @@
 
         </form>
 
-        <!-- Success Modal -->
-        <ion-modal [isOpen]="isSuccessModalOpen" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5]"
+        <!-- Success/Error Modal -->
+        <ion-modal [isOpen]="isModalOpen" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5]"
             (didDismiss)="goToLogin()">
             <ng-template>
-                <div class="success-modal-content">
-                    <div class="modal-icon-wrapper">
-                        <ion-icon name="checkmark"></ion-icon>
+                <div class="success-modal-content" [class.error-content]="modalStatus === 'error'">
+                    <div class="modal-icon-wrapper" [class.error-icon]="modalStatus === 'error'">
+                        <ion-icon [name]="modalStatus === 'success' ? 'checkmark' : 'close'"></ion-icon>
                     </div>
-                    <h3 class="modal-title">¡Registro Exitoso!</h3>
-                    <p class="modal-text">
-                        Felicidades, tu cuenta ha sido verificada correctamente. Ahora puedes disfrutar de nuestros
-                        servicios.
-                    </p>
-                    <ion-button expand="block" (click)="goToLogin()" class="modal-btn">
-                        Regresar al Login
+                    <h2 class="modal-title">{{ modalTitle }}</h2>
+                    <p class="modal-text">{{ modalMessage }}</p>
+                    
+                    <ion-button expand="block" (click)="goToLogin()" class="modal-btn" 
+                        [class.error-btn]="modalStatus === 'error'">
+                        {{ modalStatus === 'success' ? 'Regresar al Login' : 'Entendido' }}
                     </ion-button>
                 </div>
             </ng-template>

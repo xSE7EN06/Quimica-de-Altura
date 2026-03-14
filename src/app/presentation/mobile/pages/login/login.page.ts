@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSegment, IonSegmentButton, IonImg, IonText, ModalController, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mail, lockClosed, person, logoGoogle, warning, eyeOutline, eyeOffOutline } from 'ionicons/icons';
@@ -36,6 +36,7 @@ export class LoginPage implements OnInit {
     constructor(
         private fb: FormBuilder,
         private router: Router,
+        private route: ActivatedRoute,
         private modalCtrl: ModalController,
         private authService: AuthService,
         private alertCtrl: AlertController
@@ -69,6 +70,15 @@ export class LoginPage implements OnInit {
                 webClientId: '505533022595-2dv5elq22rvmc2gi3kt0d6drh8clf9uj.apps.googleusercontent.com',
             }
         });
+
+        // Handle navigation from other pages (like verify-email)
+        this.route.queryParams.subscribe((params: Params) => {
+            if (params['segment']) {
+                this.segmentValue = params['segment'];
+                this.loginForm.reset();
+                this.registerForm.reset();
+            }
+        });
     }
 
     onSegmentChanged(event: any) {
@@ -76,6 +86,10 @@ export class LoginPage implements OnInit {
         this.submitted = false;
         this.showLoginPassword = false;
         this.showRegisterPassword = false;
+
+        // Clear forms on segment change
+        this.loginForm.reset();
+        this.registerForm.reset();
     }
 
     toggleLoginPassword() { this.showLoginPassword = !this.showLoginPassword; }
@@ -172,6 +186,7 @@ export class LoginPage implements OnInit {
                     this.router.navigate(['/two-factor'], { queryParams: { token: res.challenge_token } });
                 } else {
                     await this.showSuccessModal();
+                    this.loginForm.reset();
                     this.router.navigate(['/home']);
                 }
             },
@@ -185,6 +200,8 @@ export class LoginPage implements OnInit {
                 } else if (code === 'banned' || err.error?.banned) {
                     await this.showAlert('Cuenta Suspendida', 'Tu cuenta ha sido baneada.');
                 } else if (code === 'email_not_verified' || err.error?.email_not_verified) {
+                    this.loginForm.reset();
+                    this.registerForm.reset();
                     this.router.navigate(['/verify-email'], { queryParams: { email } });
                 } else {
                     const msg = err.status === 401 ? 'Credenciales incorrectas' : message;
@@ -248,6 +265,7 @@ export class LoginPage implements OnInit {
         this.authService.register(newUser).subscribe({
             next: async (res) => {
                 await this.showAlert('Registro exitoso', 'Por favor verifica tu correo para continuar.');
+                this.registerForm.reset();
                 this.router.navigate(['/verify-email'], { queryParams: { email: newUser.email } });
             },
             error: async (err) => {
@@ -273,6 +291,7 @@ export class LoginPage implements OnInit {
         const alert = await this.alertCtrl.create({
             header,
             message,
+            mode: 'ios',
             buttons: ['OK']
         });
         await alert.present();
