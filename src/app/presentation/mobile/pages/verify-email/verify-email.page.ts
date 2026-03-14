@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, IonButton, IonIcon, IonSpinner, ToastController, IonModal } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { lockClosed, checkmark } from 'ionicons/icons';
+import { lockClosed, checkmark, close as closeIcon } from 'ionicons/icons';
 import { AuthService } from '../../../../infrastructure/services/auth.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-verify-email',
@@ -18,14 +19,19 @@ export class VerifyEmailPage implements OnInit {
   verifyForm: FormGroup;
   email: string = '';
   isLoading: boolean = false;
-  isSuccessModalOpen: boolean = false;
+  isModalOpen: boolean = false;
+  modalStatus: 'success' | 'error' = 'success';
+  modalTitle: string = '';
+  modalMessage: string = '';
   otpControls: string[] = ['digit1', 'digit2', 'digit3', 'digit4', 'digit5', 'digit6']; // 6 digits
 
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
 
   goToLogin() {
-    this.isSuccessModalOpen = false;
-    this.router.navigate(['/login']);
+    this.isModalOpen = false;
+    if (this.modalStatus === 'success') {
+      this.router.navigate(['/login'], { queryParams: { segment: 'login' } });
+    }
   }
 
   constructor(
@@ -33,9 +39,10 @@ export class VerifyEmailPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private cdr: ChangeDetectorRef
   ) {
-    addIcons({ lockClosed, checkmark });
+    addIcons({ lockClosed, checkmark, close: closeIcon });
 
     const formGroupConfig: any = {};
     this.otpControls.forEach(control => {
@@ -79,30 +86,39 @@ export class VerifyEmailPage implements OnInit {
   async verify() {
     if (this.verifyForm.valid) {
       this.isLoading = true;
+      this.cdr.detectChanges(); // Fix ExpressionChanged error
+
       // Concatenate the 6 digits to form the code
       const code = this.otpControls.map(c => this.verifyForm.get(c)?.value).join('');
 
-      this.authService.verifyEmail({ email: this.email, code }).subscribe({
-        next: async () => {
+      this.authService.verifyEmail({ email: this.email, code }).pipe(
+        finalize(() => {
           this.isLoading = false;
-          this.isSuccessModalOpen = true;
+          this.cdr.detectChanges();
+        })
+      ).subscribe({
+        next: async () => {
+          this.modalStatus = 'success';
+          this.modalTitle = '¡Correo Verificado!';
+          this.modalMessage = 'Tu cuenta ha sido verificada correctamente. Ahora puedes disfrutar de nuestros servicios.';
+          this.isModalOpen = true;
+          this.cdr.detectChanges();
         },
         error: async (err) => {
-          this.isLoading = false;
           const detail = err.error?.detail;
-          const message = typeof detail === 'string' ? detail : (err.error?.message || 'Código inválido');
-
-          const toast = await this.toastCtrl.create({
-            message: message,
-            duration: 2500,
-            color: 'danger',
-            position: 'top'
-          });
-          toast.present();
+          const message = typeof detail === 'string' ? detail : (err.error?.message || 'Código inválido o ha expirado');
+          
+          this.modalStatus = 'error';
+          this.modalTitle = 'Error de Verificación';
+          this.modalMessage = message;
+          this.isModalOpen = true;
 
           // Clear inputs on error
           this.verifyForm.reset();
-          this.otpInputs.first.nativeElement.focus();
+          if (this.otpInputs && this.otpInputs.length > 0) {
+            this.otpInputs.first.nativeElement.focus();
+          }
+          this.cdr.detectChanges();
         }
       });
     }
